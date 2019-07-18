@@ -1,4 +1,4 @@
-# Ipi Apps
+# IPI Apps
 
 Deadline:
 XD = 2 hari (20 Juli 2019)
