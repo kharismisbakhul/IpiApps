@@ -93,14 +93,23 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>1</td>
+                                        <td>Indeks Pengembangan Sumber Daya Manusia</td>
+                                        <?php foreach ($nilai_subDimensi as $nsd) : ?>
+                                            <td><?= round($nsd['nilai_rescale'], 2) ?></td>
+                                        <?php endforeach; ?>
+                                    </tr>
+                                    <?php $a = 2;
+                                    foreach ($indikator as $i) : ?>
+                                        <tr>
+                                            <td><?= $a; ?></td>
+                                            <td><?= $i['nama_indikator'] ?></td>
+                                            <?php foreach ($i['nilai_indikator'] as $ini) : ?>
+                                                <td><?= round($ini['nilai_rescale'], 2) ?></td>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                        <?php $a++;
+                                    endforeach; ?>
                                     </tr>
                                 </tbody>
                             </table>

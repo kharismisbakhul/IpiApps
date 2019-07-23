@@ -88,15 +88,23 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>1</td>
+                                <td>Indeks Pembangunan Inklusif</td>
+                                <?php foreach ($ipi as $i) : ?>
+                                    <td><?= round($i['nilai_rescale'], 2) ?></td>
+                                <?php endforeach; ?>
                             </tr>
+                            <?php $a = 2;
+                            foreach ($dimensi as $d) : ?>
+                                <tr>
+                                    <td><?= $a; ?></td>
+                                    <td><?= $d['nama_dimensi'] ?></td>
+                                    <?php foreach ($d['nilai_dimensi'] as $nd) : ?>
+                                        <td><?= round($nd['nilai_rescale'], 2) ?></td>
+                                    <?php endforeach; ?>
+                                </tr>
+                                <?php $a++;
+                            endforeach; ?>
                         </tbody>
                     </table>
 
