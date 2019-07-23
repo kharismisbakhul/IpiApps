@@ -1,8 +1,7 @@
 /* General */
-.sidebar{
-    background-color: #485460;
-    border-color: #485460
-    /* #0ABDE3 */
-    /* linear-gradient(180deg, #4c0369 10%, rgb(35, 156, 184) 100%); */
-    /* linear-gradient(180deg, #224abe 10%, #36b9cc 100%); */
+.sidebar {
+	background-color: #4e73df;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(10%, #E44D26), to(#F16529));
+	background-image: linear-gradient(180deg, #E44D26 10%, #F16529 100%);
+	background-size: cover;
 }

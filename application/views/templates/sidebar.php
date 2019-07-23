@@ -92,7 +92,7 @@
         <!-- Menu Dropdown -->
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="collapse-inner rounded mb-0" style="color:white">
-                <a class="collapse-item text-white" href="#">II</a>
+                <a class="collapse-item text-white" href="<?= base_url('admin/inklusifitas') ?>">II</a>
                 <?php foreach ($subDimensi as $sd) :
                     if ($sd['kode_d'] == 2) { ?>
                         <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"> <?= $sd['nama_sub_dimensi']; ?></a>
@@ -115,7 +115,7 @@
         <!-- Menu Dropdown -->
         <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
             <div class="collapse-inner rounded mb-0" style="color:white">
-                <a class="collapse-item text-white" href="#">IK</a>
+                <a class="collapse-item text-white" href="<?= base_url('admin/sustainability'); ?>">IK</a>
                 <?php foreach ($subDimensi as $sd) :
                     if ($sd['kode_d'] == 3) { ?>
                         <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"> <?= $sd['nama_sub_dimensi']; ?></a>

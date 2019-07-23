@@ -55,8 +55,9 @@ class Admin extends CI_Controller
     {
         $this->login_check();
         $data = $this->initData();
+        $this->load->model('Admin_model', 'admin');
         $data['title'] = 'Indeks Pembangunan Inklusif';
-
+        $data['dimensi'] = $this->admin->getIPI();
         $this->loadTemplate($data);
         $this->load->view('menu/ipi', $data);
         $this->load->view('templates/footer');
