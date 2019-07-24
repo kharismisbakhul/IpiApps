@@ -142,6 +142,15 @@ class Admin extends CI_Controller
         $this->admin->getNilaiIndikatorJson($kode_indikator, $tahun);
     }
 
+    public function getTahun()
+    {
+        $result = $this->db->get('tahun')->result_array();
+        $tahun = [];
+        for ($i = 0; $i < count($result); $i++) {
+            array_push($tahun, $result[$i]['tahun']);
+        }
+        echo json_encode($tahun);
+    }
     public function ipi()
     {
         $this->login_check();

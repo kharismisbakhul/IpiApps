@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 23, 2019 at 06:11 PM
+-- Generation Time: Jul 24, 2019 at 11:10 AM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -114,7 +114,10 @@ INSERT INTO `indikator` (`kode_indikator`, `nama_indikator`, `status`, `max_nila
 (50, 'Rasio belanja kesehatan terhadap total penduduk', 0, 0.350097427, 0.153151906, 6),
 (51, 'Produktivitas Lahan Sawah', 0, 65.5, 61.55, 7),
 (52, 'Ketersediaan air bersih perkapita', 0, 0.070404524, 0.050192935, 7),
-(53, 'Ketersedian listrik per kapita', 0, 0.000739032, 0.000612356, 7);
+(53, 'Ketersedian listrik per kapita', 0, 0.000739032, 0.000612356, 7),
+(56, 'AAIIEEE', 1, 0, 0, 1),
+(57, 'BBIIEEE', 0, 0, 0, 1),
+(58, 'AAIIEE', 1, 0, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -513,7 +516,8 @@ INSERT INTO `nilaiindikator` (`id_nilai_i`, `tahun`, `nilai`, `nilai_rescale`, `
 (315, 2014, 0.000675874, 5.01420039, 53),
 (316, 2015, 0.000695332, 6.550245659, 53),
 (317, 2016, 0.000654812, 3.35154094, 53),
-(318, 2017, 0.000612356, 0, 53);
+(318, 2017, 0.000612356, 0, 53),
+(319, 2012, 10.123, 0, 56);
 
 -- --------------------------------------------------------
 
@@ -594,13 +598,44 @@ CREATE TABLE `subdimensi` (
 --
 
 INSERT INTO `subdimensi` (`kode_sd`, `nama_sub_dimensi`, `kode_d`, `link`) VALUES
-(1, 'II', 1, 'admin/ii'),
-(2, 'IAE', 1, 'admin/iae'),
-(3, 'IPSDM', 1, 'admin/ipsm'),
-(4, 'IPK', 2, 'admin/ipk'),
-(5, 'IP', 2, 'admin/ip'),
-(6, 'IKK', 3, 'admin/ikk'),
-(7, 'IKI', 3, 'admin/iki');
+(1, 'Indeks Inflasi', 1, 'admin/pertumbuhanEkonomi/ii'),
+(2, 'Indeks Aktivitas Ekonomi', 1, 'admin/pertumbuhanEkonomi/iae'),
+(3, 'Indeks Pembangunan Sumberdaya Manusia', 1, 'admin/pertumbuhanEkonomi/ipsdm'),
+(4, 'Indeks Penanggulangan Kemiskinan', 2, 'admin/inklusifitas/ipk'),
+(5, 'Indeks Pemerataan', 2, 'admin/inklusifitas/ip'),
+(6, 'Indeks Keberlanjutan Keuangan', 3, 'admin/sustainability/ikk'),
+(7, 'Indeks Keberlanjutan Infrastruktur', 3, 'admin/sustainability/iki');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tahun`
+--
+
+CREATE TABLE `tahun` (
+  `id_tahun` int(11) NOT NULL,
+  `tahun` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tahun`
+--
+
+INSERT INTO `tahun` (`id_tahun`, `tahun`) VALUES
+(2012, 2012),
+(2013, 2013),
+(2014, 2014),
+(2015, 2015),
+(2016, 2016),
+(2017, 2017),
+(2018, 2018),
+(2019, 2019),
+(2020, 2020),
+(2021, 2021),
+(2022, 2022),
+(2023, 2023),
+(2024, 2024),
+(2025, 2025);
 
 -- --------------------------------------------------------
 
@@ -672,6 +707,12 @@ ALTER TABLE `subdimensi`
   ADD KEY `kode_d` (`kode_d`);
 
 --
+-- Indexes for table `tahun`
+--
+ALTER TABLE `tahun`
+  ADD PRIMARY KEY (`id_tahun`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -691,7 +732,7 @@ ALTER TABLE `dimensi`
 -- AUTO_INCREMENT for table `indikator`
 --
 ALTER TABLE `indikator`
-  MODIFY `kode_indikator` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `kode_indikator` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `ipi`
@@ -709,7 +750,7 @@ ALTER TABLE `nilaidimensi`
 -- AUTO_INCREMENT for table `nilaiindikator`
 --
 ALTER TABLE `nilaiindikator`
-  MODIFY `id_nilai_i` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=319;
+  MODIFY `id_nilai_i` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=320;
 
 --
 -- AUTO_INCREMENT for table `nilaisubdimensi`
@@ -722,6 +763,12 @@ ALTER TABLE `nilaisubdimensi`
 --
 ALTER TABLE `subdimensi`
   MODIFY `kode_sd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `tahun`
+--
+ALTER TABLE `tahun`
+  MODIFY `id_tahun` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2026;
 
 --
 -- Constraints for dumped tables

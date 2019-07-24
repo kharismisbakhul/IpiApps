@@ -73,13 +73,17 @@ $(window).on('load', function () {
                                                 var ind = $('#indikator').val();
                                                 //Pilihan Tahun
                                                 if (ind != "Pilih Indikator") {
-                                                    $('#tahun').append(`
-                                                    <option>2012</option>)
-                                                    <option>2013</option>)
-                                                    <option>2014</option>)
-                                                    <option>2015</option>)
-                                                    <option>2016</option>)
-                                                    <option>2017</option>`);
+                                                    //Append Tahun
+                                                    $.ajax({
+                                                        url: 'http://localhost/IpiApps/admin/getTahun',
+                                                        method: 'get',
+                                                        dataType: 'json',
+                                                        success: function (dataTahun) {
+                                                            dataTahun.forEach(function (dataT) {
+                                                                $('#tahun').append(`<option>` + dataT + `</option>`);
+                                                            });
+                                                        }
+                                                    });
 
                                                     //Milih Tahun
                                                     $('.tahun').on('change', function () {
@@ -142,6 +146,7 @@ function reset(type) {
         reset(2);
     }
     else if (type == 2) {
+        // alert("Hai");
         $('.tahun').html(``);
         $('.tahun').append(`<option>Pilih Tahun</option>`);
         reset(3);
