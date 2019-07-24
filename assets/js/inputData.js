@@ -23,9 +23,9 @@ $(window).on('load', function () {
 
             //Milih Dimensi
             $('.dimensi').on('change', function () {
+                reset(0);
                 var a = $('#dimensi').val();
                 if (a != "Pilih Dimensi") {
-                    $('.subDimensi').html(``);
                     var regex = / /gi;
                     var b = a.replace(regex, '_');
 
@@ -39,16 +39,15 @@ $(window).on('load', function () {
                             for (i = 0; i < dataSD.length; i++) {
                                 sd.push(dataSD[i]['nama_sub_dimensi']);
                             }
-                            $('#subDimensi').append(`<option>Pilih Sub Dimensi</option>`);
                             sd.forEach(function (itemsd) {
                                 $('#subDimensi').append(`<option>` + itemsd + `</option>`);
                             });
 
                             //Milih Sub Dimensi
                             $('.subDimensi').on('change', function () {
+                                reset(1);
                                 var c = $('#subDimensi').val();
                                 if (c != "Pilih Sub Dimensi") {
-                                    $('.indikator').html(``);
                                     var regex = / /gi;
                                     var d = c.replace(regex, '_');
                                     var tahun = $('#tahun').val();
@@ -64,19 +63,17 @@ $(window).on('load', function () {
                                             for (i = 0; i < dataI.length; i++) {
                                                 indikator.push(dataI[i]['nama_indikator']);
                                             }
-                                            $('#indikator').append(`<option>Pilih Indikator</option>`);
                                             indikator.forEach(function (itemI) {
                                                 $('#indikator').append(`<option>` + itemI + `</option>`);
                                             });
 
                                             //Milih Indikator
                                             $('.indikator').on('change', function () {
+                                                reset(2);
                                                 var ind = $('#indikator').val();
                                                 //Pilihan Tahun
                                                 if (ind != "Pilih Indikator") {
-                                                    $('.tahun').html(``);
                                                     $('#tahun').append(`
-                                                    <option>Pilih Tahun</option>)
                                                     <option>2012</option>)
                                                     <option>2013</option>)
                                                     <option>2014</option>)
@@ -86,6 +83,7 @@ $(window).on('load', function () {
 
                                                     //Milih Tahun
                                                     $('.tahun').on('change', function () {
+                                                        reset(3);
                                                         var tahun = $('#tahun').val();
                                                         if (tahun != "Pilih Tahun") {
                                                             var regex = / /gi;
@@ -104,23 +102,19 @@ $(window).on('load', function () {
                                                             });
                                                         }
                                                         else {
-                                                            $("#nilai").val(``);
+                                                            reset(3);
                                                         }
                                                     });
                                                 }
                                                 else {
-                                                    $('.tahun').html(``);
-                                                    $('.tahun').append(`<option>Pilih Tahun</option>`);
+                                                    reset(2);
                                                 }
                                             });
                                         }
                                     })
                                 }
                                 else {
-                                    $('.indikator').html(``);
-                                    $('.indikator').append(`<option>Pilih Indikator</option`);
-                                    $('.tahun').html(``);
-                                    $('.tahun').append(`<option>Pilih Tahun</option>`);
+                                    reset(1);
                                 }
                             });
 
@@ -128,17 +122,34 @@ $(window).on('load', function () {
                     });
                 }
                 else {
-                    $('.subDimensi').html(``);
-                    $('.subDimensi').append(`<option>Pilih Sub Dimensi</option>`);
-                    $('.indikator').html(``);
-                    $('.indikator').append(`<option>Pilih Indikator</option>`);
-                    $('.tahun').html(``);
-                    $('.tahun').append(`<option>Pilih Tahun</option>`);
+                    reset(0);
                 }
             })
         }
     });
 })
+
+//reset field
+function reset(type) {
+    if (type == 0) {
+        $('.subDimensi').html(``);
+        $('.subDimensi').append(`<option>Pilih Sub Dimensi</option>`);
+        reset(1);
+    }
+    else if (type == 1) {
+        $('.indikator').html(``);
+        $('.indikator').append(`<option>Pilih Indikator</option`);
+        reset(2);
+    }
+    else if (type == 2) {
+        $('.tahun').html(``);
+        $('.tahun').append(`<option>Pilih Tahun</option>`);
+        reset(3);
+    }
+    else if (type == 3) {
+        $("#nilai").val(``);
+    }
+}
 
 //Tambah Indikator
 $('.tambah-indikator').on('click', function () {
