@@ -62,18 +62,26 @@
         <?php else : ?>
         <li class="nav-item">
         <?php endif; ?>
-        <a class="nav-link collapsed pb-0" href="<?= base_url('admin/aktivitasEkonomi'); ?>" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <a class="nav-link collapsed pb-0" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
             <i class="fas fa-fw fa-chart-bar"></i>
-            <span>Aktivitas Ekonomi</span>
+            <span>Pertumbuhan Ekonomi</span>
         </a>
         <!-- Menu Dropdown -->
         <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="collapse-inner rounded mb-0" style="color:white">
-                <a class="collapse-item subDimensi text-white" href="<?= base_url('admin/aktivitasEkonomi'); ?>">IPE</a>
+                <a class="collapse-item subDimensi text-white" href="<?= base_url('admin/pertumbuhanEkonomi'); ?>"><span>Indeks Pertumbuhan<br><span class="ml-0"> Ekonomi</span></span></a>
                 <?php foreach ($subDimensi as $sd) :
-                    if ($sd['kode_d'] == 1) { ?>
-                        <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"> <?= $sd['nama_sub_dimensi']; ?></a>
-                    <?php };
+                    if ($sd['kode_d'] == 1) {
+                        $str = $sd['nama_sub_dimensi'];
+                        $result = explode(" ", $str);
+                        if (count($result) < 3) {
+                            ?>
+                            <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"> <?= $str ?></a>
+                        <?php } else {
+                            ?>
+                            <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"><span><?= $result[0] . " " . $result[1] . " " ?><br><span class="ml-0"><?= $result[2] ?></span></span></a>
+                        <?php }
+                    };
                 endforeach; ?>
             </div>
         </div>
@@ -85,18 +93,26 @@
         <?php else : ?>
         <li class="nav-item">
         <?php endif; ?>
-        <a class="nav-link collapsed pb-0" href="<?= base_url('admin/inklusifitas'); ?>" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed pb-0" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-chart-bar"></i>
             <span>Inklusifitas</span>
         </a>
         <!-- Menu Dropdown -->
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="collapse-inner rounded mb-0" style="color:white">
-                <a class="collapse-item text-white" href="<?= base_url('admin/inklusifitas') ?>">II</a>
+                <a class="collapse-item text-white" href="<?= base_url('admin/inklusifitas') ?>">Indeks Inklusifitas</a>
                 <?php foreach ($subDimensi as $sd) :
-                    if ($sd['kode_d'] == 2) { ?>
-                        <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"> <?= $sd['nama_sub_dimensi']; ?></a>
-                    <?php };
+                    if ($sd['kode_d'] == 2) {
+                        $str = $sd['nama_sub_dimensi'];
+                        $result = explode(" ", $str);
+                        if (count($result) < 3) {
+                            ?>
+                            <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"> <?= $str ?></a>
+                        <?php } else {
+                            ?>
+                            <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"><span><?= $result[0] . " " . $result[1] . " " ?><br><span class="ml-0"><?= $result[2] ?></span></span></a>
+                        <?php }
+                    };
                 endforeach; ?>
             </div>
         </div>
@@ -108,18 +124,26 @@
         <?php else : ?>
         <li class="nav-item">
         <?php endif; ?>
-        <a class="nav-link collapsed pb-0" href="<?= base_url('admin/sustainability'); ?>" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+        <a class="nav-link collapsed pb-0" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
             <i class="fas fa-fw fa-chart-bar"></i>
             <span>Sustainability</span>
         </a>
         <!-- Menu Dropdown -->
         <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
             <div class="collapse-inner rounded mb-0" style="color:white">
-                <a class="collapse-item text-white" href="<?= base_url('admin/sustainability'); ?>">IK</a>
+                <a class="collapse-item text-white" href="<?= base_url('admin/sustainability'); ?>">Indeks Keberlanjutan</a>
                 <?php foreach ($subDimensi as $sd) :
-                    if ($sd['kode_d'] == 3) { ?>
-                        <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"> <?= $sd['nama_sub_dimensi']; ?></a>
-                    <?php };
+                    if ($sd['kode_d'] == 3) {
+                        $str = $sd['nama_sub_dimensi'];
+                        $result = explode(" ", $str);
+                        if (count($result) < 3) {
+                            ?>
+                            <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"> <?= $str ?></a>
+                        <?php } else {
+                            ?>
+                            <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"><span><?= $result[0] . " " . $result[1] . " " ?><br><span class="ml-0"><?= $result[2] ?></span></span></a>
+                        <?php }
+                    };
                 endforeach; ?>
             </div>
         </div>

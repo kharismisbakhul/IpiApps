@@ -6,6 +6,29 @@ class Admin_model extends CI_Model
     {
         return $this->db->get('ipi')->result_array();
     }
+    public function getDimensiJson()
+    {
+        $result = $this->db->get('dimensi')->result_array();
+        echo json_encode($result);
+    }
+    public function getSubDimensiJson($kode_d)
+    {
+        $result = $this->db->get_where('subdimensi', ['kode_d' => $kode_d])->result_array();
+        echo json_encode($result);
+    }
+    public function getIndikatorJson($kode_sd)
+    {
+        $result = $this->db->get_where('indikator', ['kode_sd' => $kode_sd])->result_array();
+        echo json_encode($result);
+    }
+    public function getNilaiIndikatorJson($kode_i)
+    {
+        $this->db->where('nilaiindikator.kode_indikator', $kode_i);
+        $this->db->select('*');
+        $this->db->from('nilaiindikator');
+        $result = $this->db->get()->result_array();
+        echo json_encode($result);
+    }
     public function getDimensi()
     {
         return $this->db->get('dimensi')->result_array();

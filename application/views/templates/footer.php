@@ -28,7 +28,7 @@
 
 <!-- Custom scripts for all pages-->
 <script src="<?= base_url('assets/') ?>js/sb-admin-2.min.js"></script>
-<script src="<?= base_url(); ?>assets/js/sweetalert2.all.min.js"></script>
+<script src="<?= base_url('assets/'); ?>js/sweetalert2.all.min.js"></script>
 
 <!-- Page level plugins -->
 <script src="<?= base_url('assets/') ?>vendor/datatables/jquery.dataTables.min.js"></script>
@@ -40,9 +40,11 @@
 <!-- Sweet alert custom -->
 <script src="<?= base_url('assets/') ?>js/sweet-alert.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
 <!-- Script Modal -->
 <script src="<?= base_url('assets/'); ?>js/script.js"></script>
 <script src="<?= base_url('assets/'); ?>js/demo/chart-bar-demo.js"></script>
+<script src="<?= base_url('assets/'); ?>js/inputData.js"></script>
 
 </body>
 

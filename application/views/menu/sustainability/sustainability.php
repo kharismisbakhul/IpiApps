@@ -93,14 +93,23 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>1</td>
+                                        <td>Indeks Keberlanjutan</td>
+                                        <?php foreach ($nilai_dimensi as $nd) : ?>
+                                            <td><?= round($nd['nilai_rescale'], 2) ?></td>
+                                        <?php endforeach; ?>
+                                    </tr>
+                                    <?php $a = 2;
+                                    foreach ($subDimensi as $sd) : ?>
+                                        <tr>
+                                            <td><?= $a; ?></td>
+                                            <td><?= $sd['nama_sub_dimensi'] ?></td>
+                                            <?php foreach ($sd['nilai_subDimensi'] as $snd) : ?>
+                                                <td><?= round($snd['nilai_rescale'], 2) ?></td>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                        <?php $a++;
+                                    endforeach; ?>
                                     </tr>
                                 </tbody>
                             </table>

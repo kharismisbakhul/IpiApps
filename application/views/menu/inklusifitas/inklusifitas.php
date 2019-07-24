@@ -93,9 +93,8 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                    <tr>
                                         <td>1</td>
-                                        <td>Indeks Pembangunan Ekonomi</td>
+                                        <td>Indeks Inklusifitas</td>
                                         <?php foreach ($nilai_dimensi as $nd) : ?>
                                             <td><?= round($nd['nilai_rescale'], 2) ?></td>
                                         <?php endforeach; ?>
