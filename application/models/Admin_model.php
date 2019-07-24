@@ -6,6 +6,33 @@ class Admin_model extends CI_Model
     {
         return $this->db->get('ipi')->result_array();
     }
+    public function getKodeDimensi($nama_d)
+    {
+        $this->db->where('nama_dimensi', $nama_d);
+        $this->db->select('kode_d');
+        $this->db->from('dimensi');
+        $result = $this->db->get()->row_array();
+        $kode_d = intval($result['kode_d']);
+        return $kode_d;
+    }
+    public function getKodeSubDimensi($nama_sd)
+    {
+        $this->db->where('nama_sub_dimensi', $nama_sd);
+        $this->db->select('kode_sd');
+        $this->db->from('subdimensi');
+        $result = $this->db->get()->row_array();
+        $kode_sd = intval($result['kode_sd']);
+        return $kode_sd;
+    }
+    public function getKodeIndikator($nama_indikator)
+    {
+        $this->db->where('nama_indikator', $nama_indikator);
+        $this->db->select('kode_indikator');
+        $this->db->from('indikator');
+        $result = $this->db->get()->row_array();
+        $kode_indikator = intval($result['kode_indikator']);
+        return $kode_indikator;
+    }
     public function getDimensiJson()
     {
         $result = $this->db->get('dimensi')->result_array();
@@ -21,12 +48,13 @@ class Admin_model extends CI_Model
         $result = $this->db->get_where('indikator', ['kode_sd' => $kode_sd])->result_array();
         echo json_encode($result);
     }
-    public function getNilaiIndikatorJson($kode_i)
+    public function getNilaiIndikatorJson($kode_i, $tahun)
     {
         $this->db->where('nilaiindikator.kode_indikator', $kode_i);
+        $this->db->where('nilaiindikator.tahun', $tahun);
         $this->db->select('*');
         $this->db->from('nilaiindikator');
-        $result = $this->db->get()->result_array();
+        $result = $this->db->get()->row_array();
         echo json_encode($result);
     }
     public function getDimensi()

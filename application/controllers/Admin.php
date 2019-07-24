@@ -45,9 +45,72 @@ class Admin extends CI_Controller
         $this->login_check();
         $data = $this->initData();
         $data['title'] = 'Input Data';
-        $this->loadTemplate($data);
-        $this->load->view('menu/inputData', $data);
-        $this->load->view('templates/footer');
+        $this->form_validation->set_rules('dimensi', 'Dimensi', 'required|trim');
+        $this->form_validation->set_rules('subDimensi', 'Sub Dimensi', 'required|trim');
+        $this->form_validation->set_rules('indikator', 'Indikator', 'required|trim');
+        $this->form_validation->set_rules('tahun', 'Tahun', 'required|trim');
+        $this->form_validation->set_rules('nilai', 'Nilai', 'required|trim', [
+            'required' => 'Nilai tidak boleh kosong!!'
+        ]);
+        if ($this->form_validation->run() == false) {
+            $this->loadTemplate($data);
+            $this->load->view('menu/inputData', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $this->load->model('Admin_model', 'admin');
+            $indikator = $this->input->post('indikator');
+            $kode_indikator = $this->admin->getKodeIndikator($indikator);
+            $tahun = $this->input->post('tahun');
+            $nilai = $this->input->post('nilai');
+            $data = array(
+                'tahun' => $tahun,
+                'nilai' => $nilai,
+                'kode_indikator' => $kode_indikator
+            );
+            $cek_data = $this->db->get_where('nilaiindikator', ['kode_indikator' => $kode_indikator, 'tahun' => $tahun])->row_array();
+            if ($cek_data['nilai'] != null) {
+                $this->db->set($data);
+                $this->db->where('kode_indikator', $kode_indikator);
+                $this->db->where('tahun', $tahun);
+                $this->db->update('nilaiindikator');
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil Diperbarui</div>');
+            } else {
+                $this->db->insert('nilaiindikator', $data);
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil Ditambahkan</div>');
+            }
+            redirect('admin/inputData');
+        }
+    }
+
+    public function tambahIndikator()
+    {
+        $this->load->model('Admin_model', 'admin');
+        $Dimensi = $this->input->post('modal-dimensi');
+        $subDimensi = $this->input->post('modal-subDimensi');
+        $kode_sd = $this->admin->getKodeSubDimensi($subDimensi);
+        $nama_indikator = $this->input->post('modal-indikator');
+        $status = $this->input->post('modal-status');
+        $status_kode = 0;
+        ($status === "Merah") ? $status_kode = 1 : $status_kode = 0;
+        $data = array(
+            'nama_indikator' => $nama_indikator,
+            'status' => $status_kode,
+            'kode_sd' => $kode_sd
+        );
+        if ($Dimensi == "Pilih Dimensi" && $subDimensi == "Pilih Sub Dimensi") {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Dimensi Belum ada yang dipilih</div>');
+        } else if ($subDimensi == "Pilih Sub Dimensi") {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Sub Dimensi belum ada yang dipilih</div>');
+        } else {
+            $cek_indikator =  $this->db->get_where('indikator', ['nama_indikator' => $nama_indikator])->row_array();
+            if ($cek_indikator != null) {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Indikator sudah ada!!</div>');
+            } else {
+                $this->db->insert('indikator', $data);
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Variabel indikator berhasil ditambahkan</div>');
+            }
+        }
+        redirect('admin/inputData');
     }
 
     public function getDimensi()
@@ -56,27 +119,28 @@ class Admin extends CI_Controller
         $this->admin->getDimensiJson();
     }
 
-    public function getSubDimensi($nama_d)
+    public function getSubDimensi($url_nama_d)
     {
+        $nama_d = str_replace("_", " ", $url_nama_d);
         $this->load->model('Admin_model', 'admin');
-        $this->db->where('nama_dimensi', $nama_d);
-        $result = $this->db->get('dimensi')->row();
-        // $this->admin->getSubDimensiJson($kode_d);
+        $kode_d = $this->admin->getKodeDimensi($nama_d);
+        $this->admin->getSubDimensiJson($kode_d);
     }
 
-    public function getIndikator($kode_sd)
+    public function getIndikator($url_nama_sd)
     {
+        $nama_sd = str_replace("_", " ", $url_nama_sd);
         $this->load->model('Admin_model', 'admin');
+        $kode_sd = $this->admin->getKodeSubDimensi($nama_sd);
         $this->admin->getIndikatorJson($kode_sd);
     }
-    public function getNilaiIndikator($kode_i)
+    public function getNilaiIndikator($url_nama_indikator, $tahun)
     {
         $this->load->model('Admin_model', 'admin');
-        $this->admin->getNilaiIndikatorJson($kode_i);
+        $nama_indikator = str_replace("_", " ", $url_nama_indikator);
+        $kode_indikator = $this->admin->getKodeIndikator($nama_indikator);
+        $this->admin->getNilaiIndikatorJson($kode_indikator, $tahun);
     }
-
-    public function tambahIndikator()
-    { }
 
     public function ipi()
     {
