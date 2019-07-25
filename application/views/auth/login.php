@@ -37,9 +37,9 @@
                 <img src="<?= base_url('assets/img/login_page_1.svg') ?>" class="rounded mx-auto d-block mt-5" style="width: 100%;">
               </div>
               <div class="col-lg-5 col-sm-12 mx-auto">
-                <div class="py-4">
+                <div class="pt-5">
                   <div class="text-center div-title">
-                    <h2 class="h4 title mb-2 mt-2 font-weight-bold" style="color:black;">Selamat Datang di <br>IPI APPS</h2>
+                    <h2 class="h4 title mb-2 mt-0 font-weight-bold" style="color:black;">IPI APPS</h2>
                     <h6 class="sub-title mb-3 font-weight-normal" style="font-size: 0.6rem;">Untuk menggunakan sistem ini harap untuk login menggunakan<br> username dan password yang sudah terdaftar</h6>
                   </div>
                   <?= $this->session->flashdata('message');  ?>

@@ -1,6 +1,6 @@
 <!-- Footer -->
-<footer class="sticky-footer bg-white">
-    <div class="container my-auto">
+<footer class="sticky-footer bg-white shadow" style="margin-top: 6.5rem; position: relative; bottom:0; width: 100%;">
+    <div class=" container my-auto">
         <div class="copyright text-center my-auto">
             <span>Copyright © <?= date('Y') ?> AKD Web Development Team. All Rights Reserved. </span>
         </div>
@@ -35,14 +35,16 @@
 <script src="<?= base_url('assets/') ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
 <!-- Page level custom scripts -->
-<script src="<?= base_url('assets/') ?>js/demo/datatables-demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="<?= base_url('assets/') ?>js/custom/mixed-chart.js"></script>
+<script src="<?= base_url('assets/') ?>js/custom/aktivitas-ek-chart.js"></script>
 
 <!-- Sweet alert custom -->
 <script src="<?= base_url('assets/') ?>js/sweet-alert.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
 <!-- Script Modal -->
 <script src="<?= base_url('assets/'); ?>js/script.js"></script>
-<script src="<?= base_url('assets/'); ?>js/demo/chart-bar-demo.js"></script>
+<script src="<?= base_url('assets/'); ?>js/inputData.js"></script>
 
 </body>
 
