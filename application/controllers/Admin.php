@@ -351,6 +351,7 @@ class Admin extends CI_Controller
     }
     public function getDataTahun()
     {
+        // $this->db->where('tahun > ', 2012);
         $this->db->where('tahun < ', 2018);
         $result = $this->db->get('tahun')->result_array();
         $tahun = [];

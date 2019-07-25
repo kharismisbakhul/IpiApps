@@ -30,16 +30,31 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 // Bar Chart Example
 var ctx = document.getElementById("myBarChart");
 var myBarChart = new Chart(ctx, {
-	type: 'bar',
 	data: {
-		labels: ["January", "February", "March", "April", "May", "June"],
+		labels: ["2012", "2013", "2014", "2015", "2016", "2017"],
 		datasets: [{
-			label: "Revenue",
-			backgroundColor: "#4e73df",
-			hoverBackgroundColor: "#2e59d9",
-			borderColor: "#4e73df",
-			data: [4215, 5312, 6251, 7841, 9821, 14984],
-		}],
+			label: "Europe",
+			type: "line",
+			fillColor: "rgba(220,220,220,0.2)",
+			strokeColor: "rgba(220,220,220,1)",
+			pointColor: "rgba(220,220,220,1)",
+			pointStrokeColor: "#fff",
+			pointHighlightFill: "#fff",
+			pointHighlightStroke: "rgba(220,220,220,1)",
+			data: [10, 20, 28, 25],
+		}, {
+			label: "Africa",
+			type: "bar",
+			backgroundColor: "#3e95cd",
+			data: [5, 10, 15, 12]
+		},
+		{
+			label: "Europe",
+			type: "bar",
+			backgroundColor: "#8e5ea2",
+			data: [10, 20, 28, 25]
+		}
+		],
 	},
 	options: {
 		maintainAspectRatio: false,
@@ -54,7 +69,7 @@ var myBarChart = new Chart(ctx, {
 		scales: {
 			xAxes: [{
 				time: {
-					unit: 'month'
+					unit: 'year'
 				},
 				gridLines: {
 					display: false,
@@ -68,8 +83,8 @@ var myBarChart = new Chart(ctx, {
 			yAxes: [{
 				ticks: {
 					min: 0,
-					max: 15000,
-					maxTicksLimit: 5,
+					max: 100,
+					maxTicksLimit: 10,
 					padding: 10,
 					// Include a dollar sign in the ticks
 					callback: function (value, index, values) {

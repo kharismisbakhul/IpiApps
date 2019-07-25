@@ -1,15 +1,12 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-
 class Auth extends CI_Controller
 {
-
     public function __construct()
     {
         parent::__construct();
         $this->load->library('form_validation');
     }
-
     public function index()
     {
         if ($this->session->userdata('username')) {
@@ -26,7 +23,6 @@ class Auth extends CI_Controller
             $this->_login();
         }
     }
-
     private function _login()
     {
         $username = $this->input->post('username');
@@ -41,25 +37,21 @@ class Auth extends CI_Controller
                 $this->session->set_userdata('username', $username);
                 redirect('admin');
             } else {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Password salah !</div>');
+                $this->session->set_flashdata('message', '<div class="alert alert-danger text-center align-middle mb-3" role="alert"><p>Password salah !</p></div>');
                 redirect('auth');
             }
         } else {
-            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Username tidak terdaftar !</div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-danger text-center align-middle mb-3" role="alert"><p>Username tidak terdaftar !</p></div>');
             redirect('auth');
         }
     }
-
-
     public function logout()
     {
         $this->session->unset_userdata('username');
 
-        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert">Logout berhasil</div>');
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center align-middle mb-3" role="alert"><p>Logout berhasil</p></div>');
         redirect('auth');
     }
-
-
     public function blocked()
     {
         $this->load->view('error403');
