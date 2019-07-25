@@ -55,9 +55,72 @@ class Admin extends CI_Controller
     {
         $this->login_check();
         $data = $this->initData();
-        $this->load->model('Admin_model', 'admin');
         $data['title'] = 'Indeks Pembangunan Inklusif';
-        $data['dimensi'] = $this->admin->getIPI();
+        $this->load->model('Admin_model', 'admin');
+        $data['star_date'] = $this->input->get('star_date');
+        $data['end_date'] = $this->input->get('end_date');
+        $data['nilaiDimensi'] = $this->admin->getNilaiDimensiPeriode($data['star_date'],  $data['end_date']);
+        $data['tahun_selc'] = $this->db->get('tahun')->result_array();
+        $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('tahun')->row_array();
+        $data['tahun'] = $this->admin->getPeriode($data['star_date'],  $data['end_date']);
+        $data['dimensi'] = $this->db->get('dimensi')->result_array();
+        $data['ipi_index'] = $this->admin->getIpiPeriode($data['star_date'], $data['end_date']);
+        $this->loadTemplate($data);
+        $this->load->view('menu/ipi', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function getIpi()
+    {
+        $star_date = $this->input->get('star_date');
+        $end_date = $this->input->get('end_date');
+        if ($star_date > $end_date) {
+            return;
+        }
+        $this->load->model('Admin_model', 'admin');
+        $nilaiDimensi = $this->db->get('nilaidimensi')->result_array();
+        $tahun = $this->admin->getPeriode($star_date, $end_date);
+        $dimensi = $this->db->get('dimensi')->result_array();
+        $data = [];
+        foreach ($dimensi as $d) {
+            $data[$d['kode_d']] = [];
+        }
+        // ipi
+        $ipi_index = $this->admin->getIpiPeriode($star_date, $end_date);
+        $data2 = [];
+        $count = 0;
+        $count2 = 1;
+        foreach ($ipi_index as $i) {
+            $data2[$count]['nilai_rescale'] = $i['nilai_rescale'];
+            $data2[$count]['tahun'] = $i['tahun'];
+            $count++;
+        }
+        foreach ($dimensi as $d) {
+            foreach ($nilaiDimensi as $n) {
+                if ($d['kode_d'] == $n['kode_d']) {
+                    $data[$count2][] = $n['nilai_rescale'];
+                }
+            }
+            $count2++;
+        }
+        $cek['nama_dimensi'] = $dimensi;
+        $cek['ipi'] = $data2;
+        $cek['dimensi'] = $data;
+        $cek['tahun'] = $tahun;
+        echo json_encode($cek);
+    }
+
+    public function ubahData()
+    {
+        $this->login_check();
+        $data = $this->initData();
+        $data['title'] = 'Indeks Pembangunan Inklusif';
+        $this->load->model('Admin_model', 'admin');
+        $data['nilaiDimensi'] = $this->admin->getNilaiDimensiPeriode($this->input->post('star_date'), $this->input->post('end_date'));
+        $data['tahun_selc'] = $this->db->get('tahun')->result_array();
+        $data['tahun'] = $this->admin->getPeriode($this->input->post('star_date'), $this->input->post('end_date'));
+        $data['dimensi'] = $this->db->get('dimensi')->result_array();
+        $data['ipi_index'] = $this->admin->getIpiPeriode($this->input->post('star_date'), $this->input->post('end_date'));
         $this->loadTemplate($data);
         $this->load->view('menu/ipi', $data);
         $this->load->view('templates/footer');

@@ -34,27 +34,37 @@
                             tabel dan chart, harap untuk
                             mengisi rentan tahun di bawah
                         </div>
-                        <div class="col-lg-12 mb-2">
-                            <small>dari tahun</small>
-                            <select class="custom-select" id="inputGroupSelect01">
-                                <option selected>Choose...</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-12 mb-2">
-                            <small>sampai tahun</small>
-                            <select class="custom-select" id="inputGroupSelect01">
-                                <option selected>Choose...</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-12 mt-2">
-                            <button type="submit" class="btn btn-primary" style="width: 100%">Submit</button>
-                        </div>
+                        <form action="<?= base_url('admin/ipi') ?>" method="get">
+                            <div class="row ml-1 mr-1">
+                                <div class="col-lg-12 mb-2">
+                                    <small>dari tahun</small>
+                                    <select class="custom-select" id="inputGroupSelect01" name="star_date">
+                                        <?php foreach ($tahun_selc as $t) : ?>
+                                            <?php if ($t['id'] == $star_date) : ?>
+                                                <option value="<?= $t['id'] ?>" selected id="star_date"><?= $t['tahun'] ?></option>
+                                            <?php else : ?>
+                                                <option value="<?= $t['id'] ?>" id="star_date"><?= $t['tahun'] ?></option>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="col-lg-12 mb-2">
+                                    <small>sampai tahun</small>
+                                    <select class="custom-select" id="inputGroupSelect01" name="end_date">
+                                        <?php foreach ($tahun_selc as $t) : ?>
+                                            <?php if ($t['id'] == $end_date) : ?>
+                                                <option value="<?= $t['id'] ?>" selected id="end_date"><?= $t['tahun'] ?></option>
+                                            <?php else : ?>
+                                                <option value="<?= $t['id'] ?>" id="end_date"><?= $t['tahun'] ?></option>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="col-lg-12 mt-2">
+                                    <button type="submit" class="btn btn-primary submit" style="width: 100%" id="submit">Submit</button>
+                                </div>
+                            </div>
+                        </form>
 
                     </div>
                 </div>
@@ -70,35 +80,49 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body bClip">
-                    <table class="table table-bordered text-center tClip">
-                        <thead>
-                            <tr style="background-color: #f8f8f8; color: #101010">
-                                <th class="py-5" rowspan="2">#</th>
-                                <th class="py-5" rowspan="2">Dimensi</th>
-                                <th colspan="6">Skor</th>
-                            </tr>
-                            <tr style="background-color: #f8f8f8; color: #101010">
-                                <th scope="col">2012</th>
-                                <th scope="col">2013</th>
-                                <th scope="col">2014</th>
-                                <th scope="col">2015</th>
-                                <th scope="col">2016</th>
-                                <th scope="col">2017</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center tClip">
+                            <thead>
+                                <tr style="background-color: #f8f8f8; color: #101010">
+                                    <th class="py-5" rowspan="2">#</th>
+                                    <th class="py-5" rowspan="2">Dimensi</th>
+                                    <th colspan="6">Skor</th>
+                                </tr>
+                                <tr style="background-color: #f8f8f8; color: #101010">
+                                    <?php foreach ($tahun as $t) : ?>
+                                        <th scope="col"><?= $t['tahun'] ?></th>
+                                    <?php endforeach; ?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Indeks Pertumbuhan Inklusif</td>
+                                    <?php $j = 0;
+                                    foreach ($ipi_index as $i) : ?>
+                                        <?php if ($i['tahun'] == $tahun[$j]['id']) : ?>
+                                            <td><?= round($i['nilai_rescale'], 2) ?></td>
+                                        <?php endif;
+                                        $j++; ?>
+                                    <?php endforeach; ?>
+
+                                </tr>
+                                <?php $count = 2;
+                                foreach ($dimensi as $d) : ?>
+                                    <tr>
+                                        <td><?= $count++ ?></td>
+                                        <td><?= $d['nama_dimensi'] ?></td>
+                                        <?php foreach ($nilaiDimensi as $n) : ?>
+                                            <?php if ($n['kode_d'] == $d['kode_d']) : ?>
+                                                <td><?= $n['nilai_rescale'] ?></td>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </tr>
+                                <?php endforeach; ?>
+
+                            </tbody>
+                        </table>
+                    </div>
 
                 </div>
             </div>
@@ -114,8 +138,10 @@
                     <h6 class="m-0 font-weight-bold text-primary">Chart Data Indeks Pembangunan Inklusif</h6>
                 </div>
                 <!-- Card Body -->
-                <div class="card-body bClip">
-                    <canvas id="myBarChart" width="400" height="400"></canvas>
+                <div class="table-responsive" style="height: 600px;">
+                    <div class="card-body chart">
+                        <canvas id="ipi-chart" width="200" height="500"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
