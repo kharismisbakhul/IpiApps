@@ -6,6 +6,13 @@ class Admin_model extends CI_Model
     {
         return $this->db->get('ipi')->result_array();
     }
+    public function getIPIPerTahun($tahun)
+    {
+        $this->db->where('ipi.tahun', $tahun);
+        $this->db->select('*');
+        $this->db->from('ipi');
+        return $this->db->get()->row_array();
+    }
     public function getKodeDimensi($nama_d)
     {
         $this->db->where('nama_dimensi', $nama_d);
