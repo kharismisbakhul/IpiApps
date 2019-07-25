@@ -2,11 +2,11 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 class Admin_model extends CI_Model
 {
-    public function getIPI()
+    public function getTahunNilaiDimensi()
     {
-        $this->db->select('dimensi.nama_dimensi,nilaidimensi.nilai_rescale,nilaidimensi.tahun,nilaidimensi.kode_d');
-        $this->db->from('dimensi');
-        $this->db->join('nilaidimensi', 'nilaidimensi.kode_d=dimensi.kode_d', 'left');
+        $this->db->select('tahun');
+        $this->db->from('nilaidimensi');
+        $this->db->group_by('tahun', 'ASC');
         return $this->db->get()->result_array();
     }
 
@@ -18,13 +18,14 @@ class Admin_model extends CI_Model
     }
     public function getPeriode($star_date = null, $end_date = null)
     {
-        $this->db->select('*');
-        $this->db->from('tahun');
+        $this->db->select('ipi.tahun');
+        $this->db->from('ipi');
         if ($star_date != null && $star_date != null) {
-            $this->db->where('id >=', $star_date);
-            $this->db->where('id <=', $end_date);
+            $this->db->where('tahun >=', $star_date);
+            $this->db->where('tahun <=', $end_date);
         }
-        $this->db->order_by('id', 'ASC');
+        $this->db->order_by('tahun', 'ASC');
+        $this->db->group_by('ipi.tahun');
         return $this->db->get()->result_array();
     }
     public function getNilaiDimensiPeriode($star_date = null, $end_date = null)
@@ -32,8 +33,8 @@ class Admin_model extends CI_Model
         $this->db->select('*');
         $this->db->from('nilaidimensi');
         if ($star_date != null && $star_date != null) {
-            $this->db->where('tahun_nilaidimensi >=', $star_date);
-            $this->db->where('tahun_nilaidimensi <=', $end_date);
+            $this->db->where('tahun >=', $star_date);
+            $this->db->where('tahun <=', $end_date);
         }
         $this->db->order_by('kode_d');
         return $this->db->get()->result_array();
@@ -48,5 +49,115 @@ class Admin_model extends CI_Model
         }
         $this->db->order_by('id_nilai_ipi');
         return $this->db->get()->result_array();
+    }
+
+    public function getKodeDimensi($nama_d)
+    {
+        $this->db->where('nama_dimensi', $nama_d);
+        $this->db->select('kode_d');
+        $this->db->from('dimensi');
+        $result = $this->db->get()->row_array();
+        $kode_d = intval($result['kode_d']);
+        return $kode_d;
+    }
+    public function getKodeSubDimensi($nama_sd)
+    {
+        $this->db->where('nama_sub_dimensi', $nama_sd);
+        $this->db->select('kode_sd');
+        $this->db->from('subdimensi');
+        $result = $this->db->get()->row_array();
+        $kode_sd = intval($result['kode_sd']);
+        return $kode_sd;
+    }
+    public function getKodeIndikator($nama_indikator)
+    {
+        $this->db->where('nama_indikator', $nama_indikator);
+        $this->db->select('kode_indikator');
+        $this->db->from('indikator');
+        $result = $this->db->get()->row_array();
+        $kode_indikator = intval($result['kode_indikator']);
+        return $kode_indikator;
+    }
+    public function getDimensiJson()
+    {
+        $result = $this->db->get('dimensi')->result_array();
+        echo json_encode($result);
+    }
+    public function getSubDimensiJson($kode_d)
+    {
+        $result = $this->db->get_where('subdimensi', ['kode_d' => $kode_d])->result_array();
+        echo json_encode($result);
+    }
+    public function getIndikatorJson($kode_sd)
+    {
+        $result = $this->db->get_where('indikator', ['kode_sd' => $kode_sd])->result_array();
+        echo json_encode($result);
+    }
+    public function getNilaiIndikatorJson($kode_i, $tahun)
+    {
+        $this->db->where('nilaiindikator.kode_indikator', $kode_i);
+        $this->db->where('nilaiindikator.tahun', $tahun);
+        $this->db->select('*');
+        $this->db->from('nilaiindikator');
+        $result = $this->db->get()->row_array();
+        echo json_encode($result);
+    }
+    public function getDimensi()
+    {
+        return $this->db->get('dimensi')->result_array();
+    }
+    public function getNilaiDimensi($kode_d)
+    {
+        $this->db->where('nilaidimensi.kode_d', $kode_d);
+        $this->db->select('*');
+        $this->db->from('nilaidimensi');
+        return $this->db->get()->result_array();
+    }
+    public function getNilaiDimensiPerTahun($kode_d, $tahun)
+    {
+        $this->db->where('nilaidimensi.kode_d', $kode_d);
+        $this->db->where('nilaidimensi.tahun', $tahun);
+        $this->db->select('*');
+        $this->db->from('nilaidimensi');
+        return $this->db->get()->row_array();
+    }
+    public function getSubDimensi($kode_d)
+    {
+        return $this->db->get_where('subdimensi', ['kode_d' => $kode_d])->result_array();
+    }
+    public function getNilaiSubDimensi($kode_sd)
+    {
+        $this->db->where('nilaisubdimensi.kode_sd', $kode_sd);
+        $this->db->select('*');
+        $this->db->from('nilaisubdimensi');
+        return $this->db->get()->result_array();
+    }
+    public function getNilaiSubDimensiPerTahun($kode_sd, $tahun)
+    {
+        $this->db->where('nilaisubdimensi.kode_sd', $kode_sd);
+        $this->db->where('nilaisubdimensi.tahun', $tahun);
+        $this->db->select('*');
+        $this->db->from('nilaisubdimensi');
+        return $this->db->get()->row_array();
+    }
+    public function getIndikator($kode_sd)
+    {
+        return $this->db->get_where('indikator', ['kode_sd' => $kode_sd])->result_array();
+    }
+    public function getNilaiIndikator($kode_indikator)
+    {
+        $this->db->where('nilaiindikator.kode_indikator', $kode_indikator);
+        $this->db->select('*');
+        $this->db->from('nilaiindikator');
+        return $this->db->get()->result_array();
+    }
+    public function getNilaiIndikatorPerTahun($kode_indikator, $tahun)
+    {
+        $this->db->where('nilaiindikator.kode_indikator', $kode_indikator);
+        $this->db->where('nilaiindikator.tahun', $tahun);
+        $this->db->select('*');
+        $this->db->from('nilaiindikator');
+        $result = $this->db->get()->row_array();
+        return $result;
     }
 }

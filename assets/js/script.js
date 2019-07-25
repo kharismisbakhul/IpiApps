@@ -1,4 +1,4 @@
-// Indeks Pertumbuhan Ekonomi
+// Indeks Pembangunan Inklusif
 let url = $(location).attr('href');
 let segments = url.split('/');
 let action = segments[5];
@@ -50,25 +50,6 @@ $(document).ready(function () {
 					'data': data['dimensi'][count++]
 				});
 			}
-			setDataDimensi.push({
-				'label': 't',
-				'type': "line",
-				'backgroundColor': "rgb(243, 156, 18,0.3)",
-				'data': [4, 4, 4, 4, 4, 4],
-				'fill': true
-			}, {
-				'label': 't',
-				'type': "line",
-				'backgroundColor': "rgb(255, 112, 112,0.3)",
-				'data': [7, 7, 7, 7, 7, 7],
-				'fill': true
-			}, {
-				'label': 't',
-				'type': "line",
-				'backgroundColor': "rgb(112, 165, 255,0.3)",
-				'data': [10, 10, 10, 10, 10, 10],
-				'fill': true
-			})
 			const canvas = document.querySelector("#ipi-chart");
 			const ctx = canvas.getContext('2d');
 			new Chart(ctx, {
@@ -101,7 +82,7 @@ $(document).ready(function () {
 								max: 0,
 								maxTicksLimit: 7
 							},
-							maxBarThickness: 30,
+							maxBarThickness: 70,
 						}],
 						yAxes: [{
 							ticks: {
@@ -118,6 +99,33 @@ $(document).ready(function () {
 								borderDash: [5, 5],
 								zeroLineBorderDash: [2],
 							}
+						}],
+					},
+					annotation: {
+						annotations: [{
+							type: 'box',
+							yScaleID: 'y-axis-0',
+							yMin: 0,
+							yMax: 4,
+							borderColor: 'rgba(255, 51, 51, 0.1',
+							borderWidth: 2,
+							backgroundColor: 'rgba(255, 51, 51, 0.1)',
+						}, {
+							type: 'box',
+							yScaleID: 'y-axis-0',
+							yMin: 4,
+							yMax: 7,
+							borderColor: 'rgba(255, 255, 0, 0.1)',
+							borderWidth: 1,
+							backgroundColor: 'rgba(255, 255, 0, 0.1)',
+						}, {
+							type: 'box',
+							yScaleID: 'y-axis-0',
+							yMin: 7,
+							yMax: 10,
+							borderColor: 'rgba(0, 204, 0, 0.1)',
+							borderWidth: 1,
+							backgroundColor: 'rgba(0, 204, 0, 0.1)',
 						}],
 					},
 					legend: {
@@ -141,8 +149,135 @@ $(document).ready(function () {
 		},
 		error: function (data) {
 			$('#ipi-chart').remove();
-			$('.chart').append('<img src="http://localhost:8080/IpiApps/assets/img/erorr_data.png" width="60%" alt="no data" class="rounded mx-auto d-block">')
+			$('.chart').append('<img src="http://localhost:8080/IpiApps/assets/img/error_data.png" width="60%" alt="no data" class="rounded mx-auto d-block">')
 		}
 	});
 })
-// Akhir Indeks Pertumbuhan Ekonomi
+// Akhir Indeks Pembangunan Inklusif
+
+// Aktivitas Ekonomi
+var c = new Chart(document.getElementById("pertumbuhan-ek"), {
+	type: 'bar',
+	data: {
+		labels: ["0", "2012", "2013", "2014", "2015", "2016", "2017", "0"],
+		datasets: [{
+				label: "Indeks Pembangunan Ekonomi (IPE)",
+				type: "line",
+				borderColor: '#654321',
+				data: [{
+					"2012": 6.23,
+					"2013": 5.40,
+					"2014": 4.36,
+					"2015": 4.72,
+					"2016": 3.68,
+					"2017": 3.39
+				}],
+				fill: false
+			},
+			{
+				label: "Indeks Inflasi (II)",
+				type: "bar",
+				backgroundColor: "rgb(248, 194, 145)",
+				data: [0, 8.86, 6.67, 4.23, 3.89, 3.12, 1.29]
+			}, {
+				label: "Indeks Aktivitas Ekonomi (IAE)",
+				type: "bar",
+				backgroundColor: "rgb(241, 196, 15)",
+				data: [0, 2.59, 4.37, 5.37, 3.86, 7.74, 5.85]
+			}, {
+				label: "Indeks Pembangunan Sumberdaya Manusia (IPSDM)",
+				type: "bar",
+				backgroundColor: "rgb(243, 156, 18)",
+				data: [0, 4.98, 3.50, 5.30, 7.13, 5.08, 5.90]
+			}
+		]
+	},
+	options: {
+		maintainAspectRatio: false,
+		layout: {
+			padding: {
+				left: 10,
+				right: 25,
+				top: 25,
+				bottom: 0
+			}
+		},
+		scales: {
+			xAxes: [{
+				time: {
+					unit: 'year'
+				},
+				gridLines: {
+					display: false,
+					drawBorder: false
+				},
+				ticks: {
+					maxTicksLimit: 10
+				},
+				maxBarThickness: 30,
+			}],
+			yAxes: [{
+				ticks: {
+					min: 0,
+					max: 10,
+					maxTicksLimit: 20,
+					padding: 10,
+					// Include a dollar sign in the ticks
+				},
+				gridLines: {
+					color: "#ff0000",
+					zeroLineColor: "rgb(234, 236, 244)",
+					drawBorder: false,
+					borderDash: [5, 5],
+					zeroLineBorderDash: [2],
+				}
+			}],
+		},
+		annotation: {
+			annotations: [{
+				type: 'box',
+				yScaleID: 'y-axis-0',
+				yMin: 4,
+				yMax: 7,
+				borderColor: 'rgba(255, 51, 51, 0.25)',
+				borderWidth: 2,
+				backgroundColor: 'rgba(255, 51, 51, 0.25)',
+			}, {
+				type: 'box',
+				yScaleID: 'y-axis-0',
+				yMin: -1,
+				yMax: 1,
+				borderColor: 'rgba(255, 255, 0, 0.25)',
+				borderWidth: 1,
+				backgroundColor: 'rgba(255, 255, 0, 0.25)',
+			}, {
+				type: 'box',
+				yScaleID: 'y-axis-0',
+				yMin: -2,
+				yMax: -1,
+				borderColor: 'rgba(0, 204, 0, 0.25)',
+				borderWidth: 1,
+				backgroundColor: 'rgba(0, 204, 0, 0.25)',
+			}],
+		},
+		legend: {
+			display: false
+		},
+		tooltips: {
+			titleMarginBottom: 10,
+			titleFontColor: '#6e707e',
+			titleFontSize: 14,
+			backgroundColor: "rgb(255,255,255)",
+			bodyFontColor: "#858796",
+			borderColor: '#dddfeb',
+			borderWidth: 1,
+			xPadding: 15,
+			yPadding: 15,
+			displayColors: false,
+			caretPadding: 10,
+		},
+	}
+
+})
+console.log(c)
+// Akhir Aktivitas Ekonomi

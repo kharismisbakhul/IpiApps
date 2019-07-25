@@ -40,10 +40,10 @@
                                     <small>dari tahun</small>
                                     <select class="custom-select" id="inputGroupSelect01" name="star_date">
                                         <?php foreach ($tahun_selc as $t) : ?>
-                                            <?php if ($t['id'] == $star_date) : ?>
-                                                <option value="<?= $t['id'] ?>" selected id="star_date"><?= $t['tahun'] ?></option>
+                                            <?php if ($t['tahun'] == $star_date) : ?>
+                                                <option value="<?= $t['tahun'] ?>" selected id="star_date"><?= $t['tahun'] ?></option>
                                             <?php else : ?>
-                                                <option value="<?= $t['id'] ?>" id="star_date"><?= $t['tahun'] ?></option>
+                                                <option value="<?= $t['tahun'] ?>" id="star_date"><?= $t['tahun'] ?></option>
                                             <?php endif; ?>
                                         <?php endforeach; ?>
                                     </select>
@@ -52,10 +52,10 @@
                                     <small>sampai tahun</small>
                                     <select class="custom-select" id="inputGroupSelect01" name="end_date">
                                         <?php foreach ($tahun_selc as $t) : ?>
-                                            <?php if ($t['id'] == $end_date) : ?>
-                                                <option value="<?= $t['id'] ?>" selected id="end_date"><?= $t['tahun'] ?></option>
+                                            <?php if ($t['tahun'] == $end_date) : ?>
+                                                <option value="<?= $t['tahun'] ?>" selected id="end_date"><?= $t['tahun'] ?></option>
                                             <?php else : ?>
-                                                <option value="<?= $t['id'] ?>" id="end_date"><?= $t['tahun'] ?></option>
+                                                <option value="<?= $t['tahun'] ?>" id="end_date"><?= $t['tahun'] ?></option>
                                             <?php endif; ?>
                                         <?php endforeach; ?>
                                     </select>
@@ -100,7 +100,7 @@
                                     <td>Indeks Pertumbuhan Inklusif</td>
                                     <?php $j = 0;
                                     foreach ($ipi_index as $i) : ?>
-                                        <?php if ($i['tahun'] == $tahun[$j]['id']) : ?>
+                                        <?php if ($i['tahun'] == $tahun[$j]['tahun']) : ?>
                                             <td><?= round($i['nilai_rescale'], 2) ?></td>
                                         <?php endif;
                                         $j++; ?>
@@ -138,9 +138,53 @@
                     <h6 class="m-0 font-weight-bold text-primary">Chart Data Indeks Pembangunan Inklusif</h6>
                 </div>
                 <!-- Card Body -->
-                <div class="table-responsive" style="height: 600px;">
+                <div class="table-responsive" style="height: 700px;">
                     <div class="card-body chart">
                         <canvas id="ipi-chart" width="200" height="500"></canvas>
+                    </div>
+                    <div class="col-md-12 mr-2">
+                        <div class="text-gray-800 mt-0">
+                            <div class="legenda card no-border" style="width: auto;">
+                                <div class="card-body">
+                                    <div class="container">
+                                        <div class="row ml-1 mt-0">
+                                            <div class="col-md-6">
+                                                <div class="label-1">
+                                                    <a href="#" role="button" class="btn square-legend bg-brown"></a>
+                                                    <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Pertumbuhan Ekonomi</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="label-1">
+                                                    <a href="#" role="button" class="btn square-legend bg-carrot"></a>
+                                                    <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Keberlanjutan</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mt-3">
+                                                <div class="label-1">
+                                                    <a href="#" role="button" class="btn square-legend bg-green"></a>
+                                                    <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Inklusifitas</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mt-3">
+                                                <div class="label-1">
+                                                    <div class="row">
+                                                        <div class="col-2">
+                                                            <a href="">
+                                                                <hr class="ml-1 line-legend">
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-8">
+                                                            <a href="#" class="text-sm text-decoration-none text-secondary">Indeks Pembangunan Inklusifitas</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

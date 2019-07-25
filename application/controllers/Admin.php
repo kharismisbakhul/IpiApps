@@ -60,7 +60,7 @@ class Admin extends CI_Controller
         $data['star_date'] = $this->input->get('star_date');
         $data['end_date'] = $this->input->get('end_date');
         $data['nilaiDimensi'] = $this->admin->getNilaiDimensiPeriode($data['star_date'],  $data['end_date']);
-        $data['tahun_selc'] = $this->db->get('tahun')->result_array();
+        $data['tahun_selc'] = $this->admin->getTahunNilaiDimensi();
         $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('tahun')->row_array();
         $data['tahun'] = $this->admin->getPeriode($data['star_date'],  $data['end_date']);
         $data['dimensi'] = $this->db->get('dimensi')->result_array();
@@ -110,30 +110,44 @@ class Admin extends CI_Controller
         echo json_encode($cek);
     }
 
-    public function ubahData()
+    public function pertumbuhanEkonomi()
     {
         $this->login_check();
-        $data = $this->initData();
-        $data['title'] = 'Indeks Pembangunan Inklusif';
         $this->load->model('Admin_model', 'admin');
-        $data['nilaiDimensi'] = $this->admin->getNilaiDimensiPeriode($this->input->post('star_date'), $this->input->post('end_date'));
-        $data['tahun_selc'] = $this->db->get('tahun')->result_array();
-        $data['tahun'] = $this->admin->getPeriode($this->input->post('star_date'), $this->input->post('end_date'));
-        $data['dimensi'] = $this->db->get('dimensi')->result_array();
-        $data['ipi_index'] = $this->admin->getIpiPeriode($this->input->post('star_date'), $this->input->post('end_date'));
-        $this->loadTemplate($data);
-        $this->load->view('menu/ipi', $data);
-        $this->load->view('templates/footer');
-    }
-
-    public function aktivitasEkonomi()
-    {
-        $this->login_check();
         $data = $this->initData();
-        $data['title'] = 'Aktivitas Ekonomi';
-
+        $link = "";
+        if ($this->uri->segment(3)) {
+            $subDimensi = $this->uri->segment(3);
+            if ($subDimensi == "ii") {
+                $data['title2'] = 'Indeks Inflasi';
+                $data['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi(1);
+                $data['indikator'] = $this->admin->getIndikator(1);
+                $link = "sd_II";
+            } else if ($subDimensi == "iae") {
+                $data['title2'] = 'Indeks Aktivitas Ekonomi';
+                $data['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi(2);
+                $data['indikator'] = $this->admin->getIndikator(2);
+                $link = "sd_IAE";
+            } else if ($subDimensi == "ipsdm") {
+                $data['title2'] = 'Indeks Pembangunan Sumberdaya Manusia';
+                $data['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi(3);
+                $data['indikator'] = $this->admin->getIndikator(3);
+                $link = "sd_IPSDM";
+            }
+            for ($i = 0; $i < count($data['indikator']); $i++) {
+                $data['indikator'][$i]['nilai_indikator'] = $this->admin->getNilaiIndikator($data['indikator'][$i]['kode_indikator']);
+            }
+        } else {
+            $data['nilai_dimensi'] = $this->admin->getNilaiDimensi(1);
+            $data['subDimensi'] = $this->admin->getSubDimensi(1);
+            for ($i = 0; $i < count($data['subDimensi']); $i++) {
+                $data['subDimensi'][$i]['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi($data['subDimensi'][$i]['kode_sd']);
+            }
+            $link = "pertumbuhanEkonomi";
+        }
+        $data['title'] = 'Pertumbuhan Ekonomi';
         $this->loadTemplate($data);
-        $this->load->view('menu/aktivitasEkonomi', $data);
+        $this->load->view('menu/pertumbuhanEkonomi/' . $link, $data);
         $this->load->view('templates/footer');
     }
 
