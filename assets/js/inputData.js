@@ -15,7 +15,7 @@ $(window).on('load', function () {
             $('#dimensi').append(`<option>Pilih Dimensi</option>`);
             $('#subDimensi').append(`<option>Pilih Sub Dimensi</option>`);
             $('#indikator').append(`<option>Pilih Indikator</option>`);
-            $('.tahun').html(``);
+            $('.tahun').empty();
             $('#tahun').append(`<option>Pilih Tahun</option>`);
             d.forEach(function (item) {
                 $('#dimensi').append(`<option>` + item + `</option>`);
@@ -25,6 +25,7 @@ $(window).on('load', function () {
             $('.dimensi').on('change', function () {
                 reset(0);
                 var a = $('#dimensi').val();
+                console.log(a);
                 if (a != "Pilih Dimensi") {
                     var regex = / /gi;
                     var b = a.replace(regex, '_');
@@ -46,11 +47,12 @@ $(window).on('load', function () {
                             //Milih Sub Dimensi
                             $('.subDimensi').on('change', function () {
                                 reset(1);
+                                //bug disini keatas
                                 var c = $('#subDimensi').val();
+                                console.log(c);
                                 if (c != "Pilih Sub Dimensi") {
                                     var regex = / /gi;
                                     var d = c.replace(regex, '_');
-                                    var tahun = $('#tahun').val();
                                     // window.location = window.location.origin + "/IpiApps/admin/getIndikator/" + d;
 
                                     // Pilihan Indikator
@@ -68,9 +70,11 @@ $(window).on('load', function () {
                                             });
 
                                             //Milih Indikator
+                                            //Normal
                                             $('.indikator').on('change', function () {
                                                 reset(2);
                                                 var ind = $('#indikator').val();
+                                                console.log(ind);
                                                 //Pilihan Tahun
                                                 if (ind != "Pilih Indikator") {
                                                     //Append Tahun
@@ -79,6 +83,8 @@ $(window).on('load', function () {
                                                         method: 'get',
                                                         dataType: 'json',
                                                         success: function (dataTahun) {
+                                                            $('.tahun').empty();
+                                                            $('.tahun').append(`<option>Pilih Tahun</option>`);
                                                             dataTahun.forEach(function (dataT) {
                                                                 $('#tahun').append(`<option>` + dataT + `</option>`);
                                                             });
@@ -89,6 +95,7 @@ $(window).on('load', function () {
                                                     $('.tahun').on('change', function () {
                                                         reset(3);
                                                         var tahun = $('#tahun').val();
+                                                        console.log(tahun);
                                                         if (tahun != "Pilih Tahun") {
                                                             var regex = / /gi;
                                                             var ind_nama = ind.replace(regex, '_');
@@ -146,7 +153,7 @@ function reset(type) {
         reset(2);
     }
     else if (type == 2) {
-        $('.tahun').html(``);
+        $('.tahun').empty();
         $('.tahun').append(`<option>Pilih Tahun</option>`);
         reset(3);
     }
@@ -176,9 +183,10 @@ $('.tambah-indikator').on('click', function () {
 
             //Milih Dimensi
             $('.modal-dimensi').on('change', function () {
+                $('#modal-subDimensi').html(``);
+                $('#modal-subDimensi').append(`<option>Pilih Sub Dimensi</option>`);
                 var a = $('#modal-dimensi').val();
                 if (a != "Pilih Dimensi") {
-                    $('.subDimensi').html(``);
                     var regex = / /gi;
                     var b = a.replace(regex, '_');
 

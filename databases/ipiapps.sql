@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 24, 2019 at 11:10 AM
+-- Generation Time: Jul 25, 2019 at 08:15 AM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -114,10 +114,7 @@ INSERT INTO `indikator` (`kode_indikator`, `nama_indikator`, `status`, `max_nila
 (50, 'Rasio belanja kesehatan terhadap total penduduk', 0, 0.350097427, 0.153151906, 6),
 (51, 'Produktivitas Lahan Sawah', 0, 65.5, 61.55, 7),
 (52, 'Ketersediaan air bersih perkapita', 0, 0.070404524, 0.050192935, 7),
-(53, 'Ketersedian listrik per kapita', 0, 0.000739032, 0.000612356, 7),
-(56, 'AAIIEEE', 1, 0, 0, 1),
-(57, 'BBIIEEE', 0, 0, 0, 1),
-(58, 'AAIIEE', 1, 0, 0, 3);
+(53, 'Ketersedian listrik per kapita', 0, 0.000739032, 0.000612356, 7);
 
 -- --------------------------------------------------------
 
@@ -516,8 +513,7 @@ INSERT INTO `nilaiindikator` (`id_nilai_i`, `tahun`, `nilai`, `nilai_rescale`, `
 (315, 2014, 0.000675874, 5.01420039, 53),
 (316, 2015, 0.000695332, 6.550245659, 53),
 (317, 2016, 0.000654812, 3.35154094, 53),
-(318, 2017, 0.000612356, 0, 53),
-(319, 2012, 10.123, 0, 56);
+(318, 2017, 0.000612356, 0, 53);
 
 -- --------------------------------------------------------
 
