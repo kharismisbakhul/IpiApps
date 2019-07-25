@@ -83,11 +83,13 @@ class Admin_model extends CI_Model
     {
         return $this->db->get_where('indikator', ['kode_sd' => $kode_sd])->result_array();
     }
-    public function getNilaiIndikator($kode_i)
+    public function getNilaiIndikator($kode_i, $tahun)
     {
         $this->db->where('nilaiindikator.kode_indikator', $kode_i);
+        $this->db->where('nilaiindikator.tahun', $tahun);
         $this->db->select('*');
         $this->db->from('nilaiindikator');
-        return $this->db->get()->result_array();
+        $result = $this->db->get()->row_array();
+        return $result;
     }
 }

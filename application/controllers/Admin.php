@@ -142,6 +142,137 @@ class Admin extends CI_Controller
         $this->admin->getNilaiIndikatorJson($kode_indikator, $tahun);
     }
 
+    //Untuk hitung max min nilai
+    public function getNilaiIndikatorPerTahun($kode_indikator, $tahun)
+    {
+        $this->load->model('Admin_model', 'admin');
+        $result = $this->admin->getNilaiIndikator($kode_indikator, $tahun);
+        return $result;
+    }
+
+    //Set Nilai max indikator tertentu
+    public function setNilaiMax($kode_indikator)
+    {
+        $result = $this->db->get_where('nilaiindikator', ['kode_indikator' => $kode_indikator])->result_array();
+        $jumlah_data_nilai = count($result);
+        $max = $result[0];
+        for ($i = 0; $i < ($jumlah_data_nilai - 1); $i++) {
+            if (doubleval($max['nilai']) < doubleval($result[$i + 1]['nilai'])) {
+                $max = $result[$i + 1];
+            }
+        }
+        echo json_encode(doubleval($max['nilai']));
+    }
+
+    //Set Nilai min indikator tertentu
+    public function setNilaiMin($kode_indikator)
+    {
+        $result = $this->db->get_where('nilaiindikator', ['kode_indikator' => $kode_indikator])->result_array();
+        $jumlah_data_nilai = count($result);
+        $min = $result[0];
+        for ($i = 0; $i < ($jumlah_data_nilai - 1); $i++) {
+            if (doubleval($min['nilai']) > doubleval($result[$i + 1]['nilai'])) {
+                $min = $result[$i + 1];
+            }
+        }
+        echo json_encode(doubleval($min['nilai']));
+    }
+
+    //Ambil status indikator (merah/putih) untuk ditentukan rumusnya
+    public function getStatusIndikator($kode_indikator)
+    {
+        $result = $this->db->get_where('indikator', ['kode_indikator' => $kode_indikator])->row_array();
+        echo json_encode(intval($result['status']));
+    }
+
+    //Set Nilai rescale Indikator tiap tahun
+    public function setNilaiRescaleIndikator($kode_indikator)
+    {
+        //Ambil indikator
+        $indikator = $this->db->get_where('indikator', ['kode_indikator' => $kode_indikator])->row_array();
+        $kode_sd = intval($indikator['kode_sd']);
+        $max = doubleval($indikator['max_nilai']);
+        $min = doubleval($indikator['min_nilai']);
+        $status = doubleval($indikator['status']);
+
+        $this->load->model('Admin_model', 'admin');
+        $result = $this->db->get_where('nilaiindikator', ['kode_indikator' => $kode_indikator])->result_array();
+        $jumlah_data_nilai = count($result);
+        echo "Indikator = " . $indikator['nama_indikator'] . "<br>";
+        echo "Kode Indikator = " . $kode_indikator . "<br>";
+        for ($i = 0; $i < $jumlah_data_nilai; $i++) {
+            $tahun = intval($result[$i]['tahun']);
+            $nilaiEksisting = doubleval($result[$i]['nilai']);
+            $nilai_rescale = 0;
+            if ($status == 0) {
+                //Rumus (putih) --> ((eksisting sesuai tahun - min)/(max-min))*10 
+                $nilai_rescale = (($nilaiEksisting - $min) / ($max - $min)) * 10;
+            } else if ($status == 1 && $kode_sd == 4) {
+                //Rumus (merah - IPK) --> (((eksisting sesuai tahun - min)/(max-min))*-10)+10 
+                $nilai_rescale = ((($nilaiEksisting - $min) / ($max - $min)) * (-10)) + 10;
+            } else {
+                //Rumus (merah) --> ((max - eksisting sesuai tahun - min)/(max-min))*10 
+                $nilai_rescale = (($max - $nilaiEksisting) / ($max - $min)) * 10;
+            }
+            print "<br>Nilai Rescale tahun " . $tahun . " = " . $nilai_rescale . "<br>";
+        }
+
+        // echo json_encode($indikator);
+    }
+
+    //Set Nilai rescale Indikator tiap tahun
+    public function setNilaiRescaleSubDimensi($kode_indikator)
+    {
+        //Ambil detail indikator
+        $indikator = $this->db->get_where('indikator', ['kode_indikator' => $kode_indikator])->row_array();
+        $kode_sd = intval($indikator['kode_sd']);
+        $max = doubleval($indikator['max_nilai']);
+        $min = doubleval($indikator['min_nilai']);
+        $status = doubleval($indikator['status']);
+        $result = $this->db->get_where('nilaiindikator', ['kode_indikator' => $kode_indikator])->result_array();
+        $jumlah_data_nilai_indikator = count($result);
+
+        //Ambil SubDimensi
+        $this->load->model('Admin_model', 'admin');
+        $nilai_subDimensi = $this->admin->getNilaiSubDimensi($kode_sd);
+        $detail_subDimensi = $this->db->get_where('subDimensi', ['kode_sd' => $kode_sd])->row_array();
+        $nama_subDimensi = $detail_subDimensi['nama_sub_dimensi'];
+        $jumlah_data_nilai_subDimensi = count($nilai_subDimensi);
+
+        //Ambil Semua indikator sesuai subDimensi
+        $this->load->model('Admin_model', 'admin');
+        $data_indikator =  $this->admin->getIndikator($kode_sd);
+        $jumlah_data_indikator = count($data_indikator);
+
+        //Ambil data tahun
+        $data_tahun = $this->getDataTahun();
+        $jumlah_data_tahun = count($data_tahun);
+
+        for ($i = 0; $i < $jumlah_data_indikator; $i++) {
+            $kode_indikator = intval($data_indikator[$i]['kode_indikator']);
+            $nama_indikator = $data_indikator[$i]['nama_indikator'];
+            for ($j = 0; $j < $jumlah_data_tahun; $j++) {
+                $tahun = intval($data_tahun[$i]['tahun']);
+                $nilai_data_indikator = $this->admin->getNilaiIndikator($kode_indikator, $tahun);
+                print "<br> I > Nilai Rescale Indikator (" . $nama_indikator . ") tahun " . $tahun . " = " . $nilai_data_indikator['nilai_rescale'] . "<br>";
+            }
+        }
+
+        // echo "Indikator = " . $indikator['nama_indikator'] . "<br>";
+        // echo "Kode Indikator = " . $kode_indikator . "<br>";
+        // for ($i = 0; $i < $jumlah_data_nilai_indikator; $i++) {
+        //     $tahun = intval($result[$i]['tahun']);
+        //     $nilaiEksisting = doubleval($result[$i]['nilai']);
+        //     $nilai_rescale_indikator = doubleval($result[$i]['nilai_rescale']);
+        //     $nilai_rescale = 0;
+        //     $nilai_rescale += 0;
+        //     print "<br> I > Nilai Rescale Indikator tahun " . $tahun . " = " . $nilai_rescale_indikator . "<br>";
+        //     print "<br> SD > Nilai Rescale Sub Dimensi tahun " . $tahun . " = " . $nilai_rescale . "<br>";
+        // }
+
+        // echo json_encode($jumlah_data_tahun);
+    }
+
     public function getTahun()
     {
         $result = $this->db->get('tahun')->result_array();
@@ -150,6 +281,16 @@ class Admin extends CI_Controller
             array_push($tahun, $result[$i]['tahun']);
         }
         echo json_encode($tahun);
+    }
+    public function getDataTahun()
+    {
+        $this->db->where('tahun < ', 2018);
+        $result = $this->db->get('tahun')->result_array();
+        $tahun = [];
+        for ($i = 0; $i < count($result); $i++) {
+            array_push($tahun, intval($result[$i]['tahun']));
+        }
+        return $tahun;
     }
     public function ipi()
     {

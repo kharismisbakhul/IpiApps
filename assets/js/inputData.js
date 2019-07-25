@@ -146,7 +146,6 @@ function reset(type) {
         reset(2);
     }
     else if (type == 2) {
-        // alert("Hai");
         $('.tahun').html(``);
         $('.tahun').append(`<option>Pilih Tahun</option>`);
         reset(3);
