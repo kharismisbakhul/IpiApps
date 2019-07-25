@@ -136,18 +136,10 @@ class Admin extends CI_Controller
     }
     public function getNilaiIndikator($url_nama_indikator, $tahun)
     {
-        $this->load->model('Admin_model', 'admin');
         $nama_indikator = str_replace("_", " ", $url_nama_indikator);
+        $this->load->model('Admin_model', 'admin');
         $kode_indikator = $this->admin->getKodeIndikator($nama_indikator);
         $this->admin->getNilaiIndikatorJson($kode_indikator, $tahun);
-    }
-
-    //Untuk hitung max min nilai
-    public function getNilaiIndikatorPerTahun($kode_indikator, $tahun)
-    {
-        $this->load->model('Admin_model', 'admin');
-        $result = $this->admin->getNilaiIndikator($kode_indikator, $tahun);
-        return $result;
     }
 
     //Set Nilai max indikator tertentu
@@ -189,38 +181,43 @@ class Admin extends CI_Controller
     public function setNilaiRescaleIndikator($kode_indikator)
     {
         //Ambil indikator
-        $indikator = $this->db->get_where('indikator', ['kode_indikator' => $kode_indikator])->row_array();
-        $kode_sd = intval($indikator['kode_sd']);
-        $max = doubleval($indikator['max_nilai']);
-        $min = doubleval($indikator['min_nilai']);
-        $status = doubleval($indikator['status']);
+        $data_indikator = $this->db->get_where('indikator', ['kode_indikator' => $kode_indikator])->row_array();
+        $kode_sd = intval($data_indikator['kode_sd']);
+        $max = doubleval($data_indikator['max_nilai']);
+        $min = doubleval($data_indikator['min_nilai']);
+        $status = doubleval($data_indikator['status']);
+        $nama_indikator = $data_indikator['nama_indikator'];
+
+        //Ambil data tahun
+        $data_tahun = $this->getDataTahun();
+        $jumlah_data_tahun = count($data_tahun);
 
         $this->load->model('Admin_model', 'admin');
-        $result = $this->db->get_where('nilaiindikator', ['kode_indikator' => $kode_indikator])->result_array();
-        $jumlah_data_nilai = count($result);
-        echo "Indikator = " . $indikator['nama_indikator'] . "<br>";
+
+        echo "Indikator = " . $nama_indikator . "<br>";
         echo "Kode Indikator = " . $kode_indikator . "<br>";
-        for ($i = 0; $i < $jumlah_data_nilai; $i++) {
-            $tahun = intval($result[$i]['tahun']);
-            $nilaiEksisting = doubleval($result[$i]['nilai']);
+        for ($j = 0; $j < $jumlah_data_tahun; $j++) {
+            $tahun = $data_tahun[$j];
+            $nilai_data_indikator = $this->admin->getNilaiIndikatorPerTahun($kode_indikator, $tahun);
+            $nilai_eksisting_perTahun = $nilai_data_indikator['nilai'];
             $nilai_rescale = 0;
             if ($status == 0) {
                 //Rumus (putih) --> ((eksisting sesuai tahun - min)/(max-min))*10 
-                $nilai_rescale = (($nilaiEksisting - $min) / ($max - $min)) * 10;
+                $nilai_rescale = (($nilai_eksisting_perTahun - $min) / ($max - $min)) * 10;
             } else if ($status == 1 && $kode_sd == 4) {
                 //Rumus (merah - IPK) --> (((eksisting sesuai tahun - min)/(max-min))*-10)+10 
-                $nilai_rescale = ((($nilaiEksisting - $min) / ($max - $min)) * (-10)) + 10;
+                $nilai_rescale = ((($nilai_eksisting_perTahun - $min) / ($max - $min)) * (-10)) + 10;
             } else {
                 //Rumus (merah) --> ((max - eksisting sesuai tahun - min)/(max-min))*10 
-                $nilai_rescale = (($max - $nilaiEksisting) / ($max - $min)) * 10;
+                $nilai_rescale = (($max - $nilai_eksisting_perTahun) / ($max - $min)) * 10;
             }
-            print "<br>Nilai Rescale tahun " . $tahun . " = " . $nilai_rescale . "<br>";
+            print "<br>Nilai Rescale tahun " . $tahun . " = " . round($nilai_rescale, 2) . "<br>";
         }
 
         // echo json_encode($indikator);
     }
 
-    //Set Nilai rescale Indikator tiap tahun
+    //Set Nilai rescale Sub Dimensi tiap tahun
     public function setNilaiRescaleSubDimensi($kode_indikator)
     {
         //Ambil detail indikator
@@ -248,29 +245,99 @@ class Admin extends CI_Controller
         $data_tahun = $this->getDataTahun();
         $jumlah_data_tahun = count($data_tahun);
 
-        for ($i = 0; $i < $jumlah_data_indikator; $i++) {
-            $kode_indikator = intval($data_indikator[$i]['kode_indikator']);
-            $nama_indikator = $data_indikator[$i]['nama_indikator'];
-            for ($j = 0; $j < $jumlah_data_tahun; $j++) {
-                $tahun = intval($data_tahun[$i]['tahun']);
-                $nilai_data_indikator = $this->admin->getNilaiIndikator($kode_indikator, $tahun);
-                print "<br> I > Nilai Rescale Indikator (" . $nama_indikator . ") tahun " . $tahun . " = " . $nilai_data_indikator['nilai_rescale'] . "<br>";
+        for ($j = 0; $j < $jumlah_data_tahun; $j++) {
+            $nilai_rescale_subDimensi_temp = 0;
+            $tahun = $data_tahun[$j];
+            for ($i = 0; $i < $jumlah_data_indikator; $i++) {
+                $kode_indikator = intval($data_indikator[$i]['kode_indikator']);
+                $nama_indikator = $data_indikator[$i]['nama_indikator'];
+                $nilai_data_indikator = $this->admin->getNilaiIndikatorPerTahun($kode_indikator, $tahun);
+                $nilai_rescale_indikator = doubleval($nilai_data_indikator['nilai_rescale']);
+                // print "<br> I > Kode " . $kode_indikator . " Nilai Rescale Indikator (" . $nama_indikator . ") tahun " . $tahun . " = " . round($nilai_rescale_indikator, 2) . "<br>";
+                $nilai_rescale_subDimensi_temp += $nilai_rescale_indikator;
+                // echo json_encode($nama_indikator . " Tahun : " . $tahun . " Re-Scale : " . $nilai_rescale_indikator . "<br>");
             }
+            $nilai_rescale_subDimensi = $nilai_rescale_subDimensi_temp / $jumlah_data_indikator;
+            print "<br> I > Kode " . $kode_sd . " Nilai Rescale Sub Dimensi (" . $nama_subDimensi . ") tahun " . $tahun . " = " . round($nilai_rescale_subDimensi, 2) . "<br>";
         }
 
-        // echo "Indikator = " . $indikator['nama_indikator'] . "<br>";
-        // echo "Kode Indikator = " . $kode_indikator . "<br>";
-        // for ($i = 0; $i < $jumlah_data_nilai_indikator; $i++) {
-        //     $tahun = intval($result[$i]['tahun']);
-        //     $nilaiEksisting = doubleval($result[$i]['nilai']);
-        //     $nilai_rescale_indikator = doubleval($result[$i]['nilai_rescale']);
-        //     $nilai_rescale = 0;
-        //     $nilai_rescale += 0;
-        //     print "<br> I > Nilai Rescale Indikator tahun " . $tahun . " = " . $nilai_rescale_indikator . "<br>";
-        //     print "<br> SD > Nilai Rescale Sub Dimensi tahun " . $tahun . " = " . $nilai_rescale . "<br>";
-        // }
+        // echo json_encode($jumlah_data_indikator);
+    }
 
-        // echo json_encode($jumlah_data_tahun);
+    //Set Nilai rescale Dimensi tiap tahun
+    public function setNilaiRescaleDimensi($kode_indikator)
+    {
+        //Ambil detail indikator
+        $indikator = $this->db->get_where('indikator', ['kode_indikator' => $kode_indikator])->row_array();
+        $kode_sd = intval($indikator['kode_sd']);
+
+        //Ambil SubDimensi
+        $this->load->model('Admin_model', 'admin');
+        $subDimensi = $this->db->get_where('subDimensi', ['kode_sd' => $kode_sd])->row_array();
+        $kode_d = intval($subDimensi['kode_d']);
+
+        //Ambil Dimensi
+        $this->load->model('Admin_model', 'admin');
+        $dimensi = $this->db->get_where('dimensi', ['kode_d' => $kode_d])->row_array();
+        $nama_dimensi = $dimensi['nama_dimensi'];
+
+        //Ambil Semua subDimensi sesuai Dimensi
+        $this->load->model('Admin_model', 'admin');
+        $data_subDimensi =  $this->admin->getsubDimensi($kode_d);
+        $jumlah_data_subDimensi = count($data_subDimensi);
+
+        //Ambil data tahun
+        $data_tahun = $this->getDataTahun();
+        $jumlah_data_tahun = count($data_tahun);
+        // print_r($data_subDimensi);
+
+        for ($j = 0; $j < $jumlah_data_tahun; $j++) {
+            $nilai_rescale_Dimensi_temp = 0;
+            $tahun = $data_tahun[$j];
+            for ($i = 0; $i < $jumlah_data_subDimensi; $i++) {
+                $kode_subDimensi = intval($data_subDimensi[$i]['kode_sd']);
+                $nama_subDimensi = $data_subDimensi[$i]['nama_sub_dimensi'];
+                $nilai_data_subDimensi = $this->admin->getNilaiSubDimensiPerTahun($kode_subDimensi, $tahun);
+                $nilai_rescale_subDimensi = doubleval($nilai_data_subDimensi['nilai_rescale']);
+                // print "<br> I > Kode " . $kode_sd . " Nilai Rescale Sub Dimensi (" . $nama_subDimensi . ") tahun " . $tahun . " = " . round($nilai_rescale_subDimensi, 2) . "<br>";
+                $nilai_rescale_Dimensi_temp += $nilai_rescale_subDimensi;
+                //         // echo json_encode($nama_indikator . " Tahun : " . $tahun . " Re-Scale : " . $nilai_rescale_indikator . "<br>");
+            }
+            $nilai_rescale_Dimensi = $nilai_rescale_Dimensi_temp / $jumlah_data_subDimensi;
+            print "<br> I > Kode " . $kode_d . " Nilai Rescale Dimensi (" . $nama_dimensi . ") tahun " . $tahun . " = " . round($nilai_rescale_Dimensi, 2) . "<br>";
+            // die;
+        }
+    }
+
+    //Set Nilai rescale IPI tiap tahun
+    public function setNilaiRescaleIPI()
+    {
+        //Ambil Dimensi
+        $this->load->model('Admin_model', 'admin');
+        $data_dimensi = $this->admin->getDimensi();
+        $jumlah_data_dimensi = count($data_dimensi);
+
+        //Ambil data tahun
+        $data_tahun = $this->getDataTahun();
+        $jumlah_data_tahun = count($data_tahun);
+        // print_r($jumlah_data_dimensi);
+
+        for ($j = 0; $j < $jumlah_data_tahun; $j++) {
+            $nilai_rescale_IPI_temp = 0;
+            $tahun = $data_tahun[$j];
+            for ($i = 0; $i < $jumlah_data_dimensi; $i++) {
+                $kode_dimensi = intval($data_dimensi[$i]['kode_d']);
+                $nama_dimensi = $data_dimensi[$i]['nama_dimensi'];
+                $nilai_data_dimensi = $this->admin->getNilaiDimensiPerTahun($kode_dimensi, $tahun);
+                $nilai_rescale_dimensi = doubleval($nilai_data_dimensi['nilai_rescale']);
+                // print "<br> I > Kode " . $kode_dimensi . " Nilai Rescale Dimensi (" . $nama_dimensi . ") tahun " . $tahun . " = " . round($nilai_rescale_dimensi, 2) . "<br>";
+                $nilai_rescale_IPI_temp += $nilai_rescale_dimensi;
+                //         // echo json_encode($nama_indikator . " Tahun : " . $tahun . " Re-Scale : " . $nilai_rescale_indikator . "<br>");
+            }
+            $nilai_rescale_IPI = $nilai_rescale_IPI_temp / $jumlah_data_dimensi;
+            print "I > Nilai Rescale IPI tahun " . $tahun . " = " . round($nilai_rescale_IPI, 2) . "<br>";
+            // die;
+        }
     }
 
     public function getTahun()
@@ -317,17 +384,17 @@ class Admin extends CI_Controller
         if ($this->uri->segment(3)) {
             $subDimensi = $this->uri->segment(3);
             if ($subDimensi == "ii") {
-                $data['title'] = 'Indeks Inflasi';
+                $data['title2'] = 'Indeks Inflasi';
                 $data['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi(1);
                 $data['indikator'] = $this->admin->getIndikator(1);
                 $link = "sd_II";
             } else if ($subDimensi == "iae") {
-                $data['title'] = 'Indeks Aktivitas Ekonomi';
+                $data['title2'] = 'Indeks Aktivitas Ekonomi';
                 $data['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi(2);
                 $data['indikator'] = $this->admin->getIndikator(2);
                 $link = "sd_IAE";
             } else if ($subDimensi == "ipsdm") {
-                $data['title'] = 'Indeks Pembangunan Sumberdaya Manusia';
+                $data['title2'] = 'Indeks Pembangunan Sumberdaya Manusia';
                 $data['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi(3);
                 $data['indikator'] = $this->admin->getIndikator(3);
                 $link = "sd_IPSDM";
@@ -336,7 +403,6 @@ class Admin extends CI_Controller
                 $data['indikator'][$i]['nilai_indikator'] = $this->admin->getNilaiIndikator($data['indikator'][$i]['kode_indikator']);
             }
         } else {
-            $data['title'] = 'Pertumbuhan Ekonomi';
             $data['nilai_dimensi'] = $this->admin->getNilaiDimensi(1);
             $data['subDimensi'] = $this->admin->getSubDimensi(1);
             for ($i = 0; $i < count($data['subDimensi']); $i++) {
@@ -344,6 +410,7 @@ class Admin extends CI_Controller
             }
             $link = "pertumbuhanEkonomi";
         }
+        $data['title'] = 'Pertumbuhan Ekonomi';
         $this->loadTemplate($data);
         $this->load->view('menu/pertumbuhanEkonomi/' . $link, $data);
         $this->load->view('templates/footer');
@@ -358,12 +425,12 @@ class Admin extends CI_Controller
         if ($this->uri->segment(3)) {
             $subDimensi = $this->uri->segment(3);
             if ($subDimensi == "ipk") {
-                $data['title'] = 'Indeks Penanggulangan Kemiskinan';
+                $data['title2'] = 'Indeks Penanggulangan Kemiskinan';
                 $data['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi(4);
                 $data['indikator'] = $this->admin->getIndikator(4);
                 $link = "sd_IPK";
             } else if ($subDimensi == "ip") {
-                $data['title'] = 'Indeks Pemerataan';
+                $data['title2'] = 'Indeks Pemerataan';
                 $data['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi(5);
                 $data['indikator'] = $this->admin->getIndikator(5);
                 $link = "sd_IP";
@@ -372,7 +439,6 @@ class Admin extends CI_Controller
                 $data['indikator'][$i]['nilai_indikator'] = $this->admin->getNilaiIndikator($data['indikator'][$i]['kode_indikator']);
             }
         } else {
-            $data['title'] = 'Inklusifitas';
             $data['nilai_dimensi'] = $this->admin->getNilaiDimensi(2);
             $data['subDimensi'] = $this->admin->getSubDimensi(2);
             for ($i = 0; $i < count($data['subDimensi']); $i++) {
@@ -380,6 +446,7 @@ class Admin extends CI_Controller
             }
             $link = "inklusifitas";
         }
+        $data['title'] = 'Inklusifitas';
         $this->loadTemplate($data);
         $this->load->view('menu/inklusifitas/' . $link, $data);
         $this->load->view('templates/footer');
@@ -393,13 +460,13 @@ class Admin extends CI_Controller
         $link = "";
         if ($this->uri->segment(3)) {
             $subDimensi = $this->uri->segment(3);
-            if ($subDimensi == "iku") {
-                $data['title'] = 'Indeks Keberlanjutan Keuangan';
+            if ($subDimensi == "ikk") {
+                $data['title2'] = 'Indeks Keberlanjutan Keuangan';
                 $data['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi(6);
                 $data['indikator'] = $this->admin->getIndikator(6);
-                $link = "sd_IKU";
+                $link = "sd_IKK";
             } else if ($subDimensi == "iki") {
-                $data['title'] = 'Indeks Keberlanjutan Infrastruktur';
+                $data['title2'] = 'Indeks Keberlanjutan Infrastruktur';
                 $data['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi(7);
                 $data['indikator'] = $this->admin->getIndikator(7);
                 $link = "sd_IKI";
@@ -408,7 +475,6 @@ class Admin extends CI_Controller
                 $data['indikator'][$i]['nilai_indikator'] = $this->admin->getNilaiIndikator($data['indikator'][$i]['kode_indikator']);
             }
         } else {
-            $data['title'] = 'Sustainability';
             $data['nilai_dimensi'] = $this->admin->getNilaiDimensi(3);
             $data['subDimensi'] = $this->admin->getSubDimensi(3);
             for ($i = 0; $i < count($data['subDimensi']); $i++) {
@@ -416,6 +482,7 @@ class Admin extends CI_Controller
             }
             $link = "sustainability";
         }
+        $data['title'] = 'Sustainability';
         $this->loadTemplate($data);
         $this->load->view('menu/sustainability/' . $link, $data);
         $this->load->view('templates/footer');

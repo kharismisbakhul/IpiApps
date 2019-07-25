@@ -7,7 +7,7 @@
             <i class="fas fa-fw fa-chart-bar fo"></i>
         </div>
         <div class="col-sm-6">
-            <h1 class="h3 mb-4 text-gray-800"><?= $title;  ?></h1>
+            <h1 class="h3 mb-4 text-gray-800"><?= $title2;  ?></h1>
         </div>
     </div>
 

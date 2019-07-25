@@ -57,7 +57,7 @@
     <?php $subDimensi = $this->db->get('subDimensi')->result_array(); ?>
     <!-- Nav Item - Pages Collapse Menu -->
     <!-- Aktivitas Ekonomi -->
-    <?php if ($title == "Aktivitas Ekonomi") : ?>
+    <?php if ($title == "Pertumbuhan Ekonomi") : ?>
         <li class="nav-item active">
         <?php else : ?>
         <li class="nav-item">
