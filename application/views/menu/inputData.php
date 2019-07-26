@@ -56,6 +56,8 @@
                             <button type="button" class="btn btn-primary tambah-indikator col-sm-2" data-toggle="modal" data-target="#ModalTambahIndikator">
                                 <i class="fas fa-fw fa-plus"></i>Indikator
                             </button>
+                            <div class="col-sm-1"></div>
+
                         </div>
                         <div class="form-group row">
                             <label for="tahun" class="col-sm-2 col-form-label">Tahun</label>
@@ -75,6 +77,9 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-lg action text-right mt-2 mb-0">
+                                <button type="button" class="btn btn-danger hapus-indikator" data-toggle="modal" data-target="#ModalHapusIndikator">
+                                    <i class="fas fa-fw fa-trash"></i>Hapus Indikator
+                                </button>
                                 <button class="btn btn-secondary">
                                     <a href="<?= base_url('admin'); ?>" style="text-decoration: none; color: white;">
                                         <i class="fas fa-fw fa-times"></i>Kembali
@@ -143,10 +148,57 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary tombolTambah">Tambah Data</button>
+                    <button type="submit" class="btn btn-primary tombolTambah">Tambah Indikator</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <!-- Akhir Modal Tambah Indikator -->
+
+<!-- Modal Hapus Indikator -->
+<div class="modal fade" id="ModalHapusIndikator" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-blue">
+                <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Variabel Indikator</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="formIsian" action="<?= base_url('inputData/hapusIndikator') ?>" method="post">
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="modal-dimensi-hapus" class="col-sm-4 col-form-label">Dimensi</label>
+                        <div class="col-sm-8">
+                            <select class="form-control modal-dimensi-hapus" name="modal-dimensi-hapus" id="modal-dimensi-hapus">
+                            </select>
+                            <?= form_error('modal-dimensi-hapus', '<small class="text-danger pl-3">', '</small>'); ?>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="modal-subDimensi-hapus" class="col-sm-4 col-form-label">Sub Dimensi</label>
+                        <div class="col-sm-8">
+                            <select class="form-control modal-subDimensi-hapus" name="modal-subDimensi-hapus" id="modal-subDimensi-hapus">
+                            </select>
+                            <?= form_error('modal-subDimensi-hapus', '<small class="text-danger pl-3">', '</small>'); ?>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="modal-indikator-hapus" class="col-sm-4 col-form-label">Indikator</label>
+                        <div class="col-sm-8">
+                            <select class="form-control modal-indikator-hapus" name="modal-indikator-hapus" id="modal-indikator-hapus">
+                            </select>
+                            <?= form_error('modal-indikator-hapus', '<small class="text-danger pl-3">', '</small>'); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-danger tombolTambah">Hapus Indikator</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Akhir Modal Hapus Indikator -->

@@ -81,7 +81,7 @@ class Admin_model extends CI_Model
             $Dimensi[$i]['nilai'] = $this->getDimensiRangeNilai($kode_d, $start, $end);
             $Dimensi[$i]['subDimensi'] = $this->getSubDimensiRange($kode_d, $start, $end);
         }
-        echo json_encode($Dimensi);
+        return $Dimensi;
     }
     public function getDimensiRangeNilai($kode_d, $start, $end)
     {

@@ -4,62 +4,24 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-3">
         <h1 class="h3 mb-0 text-gray-800"><?= $title;  ?> Data</h1>
+        <button class="btn btn-primary">
+                                    <a href="<?= base_url('data/reset'); ?>" style="text-decoration: none; color: white;">
+                                        Reset Perhitungan data
+                                    </a>
+                                </button>
         <div class="tanggal">
             <div class="text-s mb-0 font-weight-bold text-gray-400">
                 <span><i class="fas fa-calendar-day text-gray-400"></i></span> <?= date('d M Y') ?>
             </div>
         </div>
     </div>
-
-    <!-- <div class="row">
-        <div class="col-lg-8 col-md-12 col-sm-12 mt-3">
+    <div class="row">
+        <div class="col-lg-12">
             <?= $this->session->flashdata('message');  ?>
-            <div class="col-xl-12 col-md-12 col-sm-12 mb-4">
-              <div class="card shadow h-100">
-                <div class="card-header bg-red">
-                    <div class="text-sm font-weight-bold text-uppercase mb-1 text-white">
-                        Pilih Tahun untuk data <?= $title;  ?>
-                    </div>
-                </div>
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col-md-12 mr-2">
-                        <div class="text-gray-800 mt-1">
-                        Untuk menampilkan data pada
-                            tabel dan chart, harap untuk
-                            mengisi <br> rentan tahun di bawah
-                            <form action="" class="mt-3">
-                                <div class="form-row">
-                                    <div class="form-group col-md-12">
-                                        <label for="dariTahun" class="text-xs">Dari Tahun</label>
-                                        <select type="email" class="form-control" id="dariTahun">
-                                            <option selected>Pilih tahun</option>
-                                            <option>...</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-12">
-                                        <label for="sampaiTahun" class="text-xs">Sampai Tahun</label>
-                                        <select type="email" class="form-control" id="dariTahun">
-                                            <option selected>Pilih tahun</option>
-                                            <option>...</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-12 mt-3">
-                                        <button type="button" class="btn btn-primary" style="width: 100%;">Cari</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
         </div>
-    </div> -->
+    </div>
 
     <div class="row mt-4">
-        <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="col-xl-12 col-md-12 col-sm-12 mb-4">
               <div class="card shadow h-100">
                 <div class="card-header text-white" style="background-color:#3867d6;">
@@ -76,382 +38,330 @@
                                     <tr style="background-color: #485460; color: #ecf0f1; border: none;">
                                         <th class="align-middle" rowspan="2" colspan="3">Kode</th>
                                         <th class="align-middle" rowspan="2">Dimensi</th>
-                                        <th colspan="14" class="align-middle">Nilai Indikator Eksisting</th>
+                                        <th colspan="<?= $col_span ?>" class="align-middle">Nilai Indikator Eksisting</th>
                                         <th rowspan="2" class="align-middle">Nilai Max</th>
                                         <th rowspan="2" class="align-middle">Nilai Min</th>
-                                        <th class="align-middle" colspan="14">Re-Scale Indikator (SCORE)</th>
+                                        <th colspan="<?= $col_span ?>" class="align-middle">Re-Scale Indikator (SCORE)</th>
                                     </tr>
                                     <tr style="background-color: #485460; color: #ecf0f1;">
 
                                         <!-- Tahun Nilai Indikator -->
-                                        <th scope="col" class="pb-3">2012</th>
-                                        <th scope="col" class="pb-3">2013</th>
-                                        <th scope="col" class="pb-3">2014</th>
-                                        <th scope="col" class="pb-3">2015</th>
-                                        <th scope="col" class="pb-3">2016</th>
-                                        <th scope="col" class="pb-3">2017</th>
-                                        <th scope="col" class="pb-3">2018</th>
-                                        <th scope="col" class="pb-3">2019</th>
-                                        <th scope="col" class="pb-3">2020</th>
-                                        <th scope="col" class="pb-3">2021</th>
-                                        <th scope="col" class="pb-3">2022</th>
-                                        <th scope="col" class="pb-3">2023</th>
-                                        <th scope="col" class="pb-3">2024</th>
-                                        <th scope="col" class="pb-3">2025</th>
+                                        <?php foreach ($range_tahun as $rt) : ?>
+                                                <th scope="col"><?= $rt ?></th>
+                                            <?php endforeach; ?>
 
                                         <!-- Tahun Re-Scale Indikator (SCORE) -->
-                                        <th scope="col" class="pb-3">2012</th>
-                                        <th scope="col" class="pb-3">2013</th>
-                                        <th scope="col" class="pb-3">2014</th>
-                                        <th scope="col" class="pb-3">2015</th>
-                                        <th scope="col" class="pb-3">2016</th>
-                                        <th scope="col" class="pb-3">2017</th>
-                                        <th scope="col" class="pb-3">2018</th>
-                                        <th scope="col" class="pb-3">2019</th>
-                                        <th scope="col" class="pb-3">2020</th>
-                                        <th scope="col" class="pb-3">2021</th>
-                                        <th scope="col" class="pb-3">2022</th>
-                                        <th scope="col" class="pb-3">2023</th>
-                                        <th scope="col" class="pb-3">2024</th>
-                                        <th scope="col" class="pb-3">2025</th>
+                                        <?php foreach ($range_tahun as $rt) : ?>
+                                                <th scope="col"><?= $rt ?></th>
+                                            <?php endforeach; ?>
 
                                     </tr>
                                 </thead>
                                 <tbody style="color: #101010">
                                 <!-- IPI Column -->
-                                    <tr class="font-weight-bold" style="background-color:yellow">
+                                    <tr class="font-weight-bold text-center" style="background-color:yellow">
                                         <td colspan="4">Indeks Pembangunan Inklusif</td>
+                                        <?php foreach ($range_tahun as $rt) : ?>
+                                            <td scope="col"></td>
+                                        <?php endforeach; ?>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <?php foreach ($ipi['nilai_rescale'] as $inr) : ?>
+                                        <td><?= $inr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
                                 <!-- IPI Column End -->
 
-                                <!-- Indeks Pertumbuhan Ekonomi -->
+                                <!-- Dimensi -->
                                     <tr class="dimensi bg-blue font-weight-bold text-white">
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 1 </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td>Indeks Pertumbuhan Ekonomi</td>
+                                        <td><?= $dimensi[0]['data']['nama_dimensi'] ?></td>
+                                        <?php foreach ($range_tahun as $rt) : ?>
+                                            <td scope="col"></td>
+                                        <?php endforeach; ?>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <?php foreach ($dimensi[0]['nilai_rescale'] as $nr) : ?>
+                                        <td class="text-center"><?= $nr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
 
+                                    <!-- Sub Dimensi 1 -->
                                     <tr class="sub-dimensi bg-orange font-weight-bold">
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 1 </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td>Indeks Inflasi</td>
+                                        <td><?= $subDimensi[0]['data']['nama_sub_dimensi'] ?></td>
+                                        <?php foreach ($range_tahun as $rt) : ?>
+                                            <td scope="col"></td>
+                                        <?php endforeach; ?>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <?php foreach ($subDimensi[0]['nilai_rescale'] as $snr) : ?>
+                                        <td class="text-center"><?= $snr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
 
-                                    <tr class="indikator bg-red text-white">
-                                        <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 1 </td>
-                                        <td>Deflator PDRB</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                    <!-- Indikator -->
+                                    <?php $i = 1; foreach($indikator_sd[0] as $isd0) : ?>
+                                    <tr class="indikator">
+                                        <td class="bg-red text-white"> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
+                                        <td class="bg-red text-white"> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
+                                        <td class="bg-red text-white"><?= $i; ?></td>
+                                        <td class="bg-red text-white"><?= $isd0['nama_indikator'] ?></td>
+                                        <?php foreach ($isd0['nilai_eksisting'] as $ine) : ?>
+                                        <td class="text-center"><?= $ine ?></td>
+                                        <?php endforeach; ?>
+                                        <td class="text-center"><?= round($isd0['max_nilai'],2);?></td>
+                                        <td class="text-center"><?= round($isd0['min_nilai'],2);?></td>
+                                        <?php foreach ($isd0['nilai_rescale'] as $inr) : ?>
+                                        <td class="text-center"><?= $inr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
+                                    <?php $i++; endforeach;?>
 
+                                    <!-- Sub Dimensi 2 -->
                                     <tr class="sub-dimensi bg-orange font-weight-bold">
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 2 </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td>Indeks AKtivitas Ekonomi</td>
+                                        <td><?= $subDimensi[1]['data']['nama_sub_dimensi'] ?></td>
+                                        <?php foreach ($range_tahun as $rt) : ?>
+                                            <td scope="col"></td>
+                                        <?php endforeach; ?>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <?php foreach ($subDimensi[2]['nilai_rescale'] as $snr) : ?>
+                                        <td class="text-center"><?= $snr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
 
-                                    <tr class="indikator bg-white-gray">
+                                    <?php $i = 1; foreach($indikator_sd[1] as $isd1) : ?>
+                                    <tr class="indikator">
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 1 </td>
-                                        <td>Pertumbuhan PDRB Harga Konstan</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td><?= $i; ?></td>
+                                        <td><?= $isd1['nama_indikator'] ?></td>
+                                        <?php foreach ($isd1['nilai_eksisting'] as $ine) : ?>
+                                        <td class="text-center"><?= $ine ?></td>
+                                        <?php endforeach; ?>
+                                        <td class="text-center"><?= round($isd1['max_nilai'],2);?></td>
+                                        <td class="text-center"><?= round($isd1['min_nilai'],2);?></td>
+                                        <?php foreach ($isd1['nilai_rescale'] as $inr) : ?>
+                                        <td class="text-center"><?= $inr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
+                                    <?php $i++; endforeach;?>
 
+                                    <!-- Sub Dimensi 3 -->
                                     <tr class="sub-dimensi bg-orange font-weight-bold">
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 3 </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td>Indeks Pembangunan Sumber Daya</td>
+                                        <td><?= $subDimensi[2]['data']['nama_sub_dimensi'] ?></td>
+                                        <?php foreach ($range_tahun as $rt) : ?>
+                                            <td scope="col"></td>
+                                        <?php endforeach; ?>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <?php foreach ($subDimensi[2]['nilai_rescale'] as $snr) : ?>
+                                        <td class="text-center"><?= $snr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
 
-                                    <tr class="indikator bg-gray">
+                                    <!-- Indikator -->
+                                    <?php $i = 1; foreach($indikator_sd[2] as $isd2) : ?>
+                                    <tr class="indikator">
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 1 </td>
-                                        <td>Persentase Tenaga Kerja Sektor Industri</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td><?= $i; ?></td>
+                                        <td><?= $isd2['nama_indikator'] ?></td>
+                                        <?php foreach ($isd2['nilai_eksisting'] as $ine) : ?>
+                                        <td class="text-center"><?= $ine ?></td>
+                                        <?php endforeach; ?>
+                                        <td class="text-center"><?= round($isd2['max_nilai'],2);?></td>
+                                        <td class="text-center"><?= round($isd2['min_nilai'],2);?></td>
+                                        <?php foreach ($isd2['nilai_rescale'] as $inr) : ?>
+                                        <td class="text-center"><?= $inr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
+                                    <?php $i++; endforeach;?>
                                 <!-- Indeks Pertumbuhan Ekonomi End-->
 
-                                <!-- Indeks Inklusifitas -->
+                                <!-- Dimensi -->
                                     <tr class="dimensi bg-blue font-weight-bold text-white">
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 2 </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td>Indeks Inklusifitas</td>
+                                        <td><?= $dimensi[1]['data']['nama_dimensi'] ?></td>
+                                        <?php foreach ($range_tahun as $rt) : ?>
+                                            <td scope="col"></td>
+                                        <?php endforeach; ?>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <?php foreach ($dimensi[1]['nilai_rescale'] as $nr) : ?>
+                                        <td class="text-center"><?= $nr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
-
+                                    <!-- Sub Dimensi 4 -->
                                     <tr class="sub-dimensi bg-orange font-weight-bold">
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 1 </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td>Indeks Penanggulangan Kemiskinan</td>
+                                        <td><?= $subDimensi[3]['data']['nama_sub_dimensi'] ?></td>
+                                        <?php foreach ($range_tahun as $rt) : ?>
+                                            <td scope="col"></td>
+                                        <?php endforeach; ?>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <?php foreach ($subDimensi[3]['nilai_rescale'] as $snr) : ?>
+                                        <td class="text-center"><?= $snr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
-
-                                    <tr class="indikator bg-red text-white">
-                                        <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 1 </td>
-                                        <td>Persentase Penduduk Kemiskinan</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                    <!-- Indikator -->
+                                    <?php $i = 1; foreach($indikator_sd[3] as $isd3) : ?>
+                                    <tr class="indikator">
+                                        <td class="bg-red text-white"> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
+                                        <td class="bg-red text-white"> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
+                                        <td class="bg-red text-white"><?= $i; ?></td>
+                                        <td class="bg-red text-white"><?= $isd3['nama_indikator'] ?></td>
+                                        <?php foreach ($isd3['nilai_eksisting'] as $ine) : ?>
+                                        <td class="text-center"><?= $ine ?></td>
+                                        <?php endforeach; ?>
+                                        <td class="text-center"><?= round($isd3['max_nilai'],2);?></td>
+                                        <td class="text-center"><?= round($isd3['min_nilai'],2);?></td>
+                                        <?php foreach ($isd3['nilai_rescale'] as $inr) : ?>
+                                        <td class="text-center"><?= $inr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
-
+                                    <?php $i++; endforeach;?>
+                                    <!-- Sub Dimensi 5 -->
                                     <tr class="sub-dimensi bg-orange font-weight-bold">
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 2 </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td>Indeks Pemerataan</td>
+                                        <td><?= $subDimensi[4]['data']['nama_sub_dimensi'] ?></td>
+                                        <?php foreach ($range_tahun as $rt) : ?>
+                                            <td scope="col"></td>
+                                        <?php endforeach; ?>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <?php foreach ($subDimensi[4]['nilai_rescale'] as $snr) : ?>
+                                        <td class="text-center"><?= $snr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
                                     
-                                    <tr class="indikator bg-gray-white">
+                                    <?php $i = 1; foreach($indikator_sd[4] as $isd4) : ?>
+                                    <tr class="indikator">
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 1 </td>
-                                        <td>Indeks Pemberdayaan Gender</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td><?= $i; ?></td>
+                                        <td><?= $isd4['nama_indikator'] ?></td>
+                                        <?php foreach ($isd4['nilai_eksisting'] as $ine) : ?>
+                                        <td class="text-center"><?= $ine ?></td>
+                                        <?php endforeach; ?>
+                                        <td class="text-center"><?= round($isd4['max_nilai'],2);?></td>
+                                        <td class="text-center"><?= round($isd4['min_nilai'],2);?></td>
+                                        <?php foreach ($isd4['nilai_rescale'] as $inr) : ?>
+                                        <td class="text-center"><?= $inr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
+                                    <?php $i++; endforeach;?>
 
-                                    <tr class="indikator bg-yellow">
-                                        <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 2 </td>
+                                    <!-- <tr class="indikator bg-yellow">
+                                        <td> buat kode tiap dimensi/sub-dimensi/indikator </td>
+                                        <td> buat kode tiap dimensi/sub-dimensi/indikator </td>
+                                        <td> buat kode tiap dimensi/sub-dimensi/indikator2 </td>
                                         <td>Persentase Rumah Tangga Dengan Luas Lantai Hunian >= 50 m2</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                    </tr>
+                                    </tr> -->
                                 <!-- Indeks Inklusifitas End-->
 
-                                <!-- Indeks Keberlanjuatan -->
+                                <!-- Dimensi -->
                                     <tr class="dimensi bg-blue font-weight-bold text-white">
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 3 </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td>Indeks Keberlanjutan</td>
+                                        <td><?= $dimensi[2]['data']['nama_dimensi'] ?></td>
+                                        <?php foreach ($range_tahun as $rt) : ?>
+                                            <td scope="col"></td>
+                                        <?php endforeach; ?>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <?php foreach ($dimensi[2]['nilai_rescale'] as $nr) : ?>
+                                        <td class="text-center"><?= $nr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
-
+                                    <!-- Sub Dimensi 6 -->
                                     <tr class="sub-dimensi bg-orange font-weight-bold">
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 1 </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td>Indeks Keberlanjutan Keuangan</td>
+                                        <td><?= $subDimensi[5]['data']['nama_sub_dimensi'] ?></td>
+                                        <?php foreach ($range_tahun as $rt) : ?>
+                                            <td scope="col"></td>
+                                        <?php endforeach; ?>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <?php foreach ($subDimensi[5]['nilai_rescale'] as $snr) : ?>
+                                        <td class="text-center"><?= $snr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
 
-                                    <tr class="indikator bg-gray-white">
+                                    <?php $i = 1; foreach($indikator_sd[5] as $isd5) : ?>
+                                    <tr class="indikator">
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 1 </td>
-                                        <td>Ruang Fiskal Daerah</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td><?= $i; ?></td>
+                                        <td><?= $isd5['nama_indikator'] ?></td>
+                                        <?php foreach ($isd5['nilai_eksisting'] as $ine) : ?>
+                                        <td class="text-center"><?= $ine ?></td>
+                                        <?php endforeach; ?>
+                                        <td class="text-center"><?= round($isd5['max_nilai'],2);?></td>
+                                        <td class="text-center"><?= round($isd5['min_nilai'],2);?></td>
+                                        <?php foreach ($isd5['nilai_rescale'] as $inr) : ?>
+                                        <td class="text-center"><?= $inr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
-
+                                    <?php $i++; endforeach;?>
+                                    <!-- Sub Dimensi 7 -->
                                     <tr class="sub-dimensi bg-orange font-weight-bold">
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 2 </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td>Indeks Keberlanjutan Infrastruktur</td>
+                                        <td><?= $subDimensi[6]['data']['nama_sub_dimensi'] ?></td>
+                                        <?php foreach ($range_tahun as $rt) : ?>
+                                            <td scope="col"></td>
+                                        <?php endforeach; ?>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <?php foreach ($subDimensi[6]['nilai_rescale'] as $snr) : ?>
+                                        <td class="text-center"><?= $snr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
 
-                                    <tr class="indikator bg-gray-white">
+                                    <?php $i = 1; foreach($indikator_sd[6] as $isd6) : ?>
+                                    <tr class="indikator">
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
                                         <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> </td>
-                                        <td> <!-- buat kode tiap dimensi/sub-dimensi/indikator --> 1 </td>
-                                        <td>Produktivitas Lahan Sawah</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td><?= $i; ?></td>
+                                        <td><?= $isd6['nama_indikator'] ?></td>
+                                        <?php foreach ($isd6['nilai_eksisting'] as $ine) : ?>
+                                        <td class="text-center"><?= $ine ?></td>
+                                        <?php endforeach; ?>
+                                        <td class="text-center"><?= round($isd6['max_nilai'],2);?></td>
+                                        <td class="text-center"><?= round($isd6['min_nilai'],2);?></td>
+                                        <?php foreach ($isd6['nilai_rescale'] as $inr) : ?>
+                                        <td class="text-center"><?= $inr ?></td>
+                                        <?php endforeach; ?>
                                     </tr>
+                                    <?php $i++; endforeach;?>
 
                                 <!-- Indeks Keberlanjutan End -->
                                 </tbody>
@@ -462,7 +372,6 @@
                 </div>
               </div>
             </div>
-        </div>
     </div>
 
 </div>

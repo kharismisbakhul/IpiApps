@@ -10,7 +10,7 @@ class Data_model extends CI_Model
         return $data;
     }
 
-    public function detailIndikator($data_subDimensi, $data_indikator, $keterangan_subDimensi, $keterangan_dimensi)
+    public function detailIndikator($data_subDimensi, $data_indikator, $keterangan_subDimensi, $keterangan_dimensi, $kode_sd)
     {
         //Inisialisasi tahun
         $data = $this->initData();
@@ -21,10 +21,12 @@ class Data_model extends CI_Model
         $data['indikator'] = $data_indikator;
         $subDimensi = $keterangan_subDimensi;
         $dimensi = $keterangan_dimensi;
+        $kode_subDimensi = $kode_sd;
 
         $data['subDimensi']['nilai_rescale'] = [];
         for ($i = 0; $i < count($data['indikator']); $i++) {
             $data['indikator'][$i]['nilai_indikator'] = [];
+            $data['indikator'][$i]['nilai_eksisting'] = [];
         }
 
         //Seleksi Input Range Tahun
@@ -45,20 +47,22 @@ class Data_model extends CI_Model
         //Loop Data
         for ($j = 0; $j < $data['col_span']; $j++) {
             $tahunSelect = $start_date++;
-            $data_subDimensi_sesuai_tahun = $this->admin->getNilaiSubDimensiPerTahun(1, $tahunSelect);
+            $data_subDimensi_sesuai_tahun = $this->admin->getNilaiSubDimensiPerTahun($kode_subDimensi, $tahunSelect);
             $rescale_subDimensi = doubleval($data_subDimensi_sesuai_tahun['nilai_rescale']);
             array_push($data['subDimensi']['nilai_rescale'], round($rescale_subDimensi, 2));
             for ($i = 0; $i < count($data['indikator']); $i++) {
                 $kode_indikator = $data['indikator'][$i]['kode_indikator'];
                 $data_indikator_sesuai_tahun = $this->admin->getNilaiIndikatorPerTahun($kode_indikator, $tahunSelect);
                 $rescale_indikator = doubleval($data_indikator_sesuai_tahun['nilai_rescale']);
+                $eksisting_indikator = doubleval($data_indikator_sesuai_tahun['nilai']);
                 array_push($data['indikator'][$i]['nilai_indikator'], round($rescale_indikator, 2));
+                array_push($data['indikator'][$i]['nilai_eksisting'], round($eksisting_indikator, 2));
             }
         }
         return $data;
     }
 
-    public function detailSubDimensi($data_dimensi, $data_subDimensi, $keterangan_dimensi)
+    public function detailSubDimensi($data_dimensi, $data_subDimensi, $keterangan_dimensi, $kode_d)
     {
         //Inisialisasi tahun
         $data = $this->initData();
@@ -68,6 +72,7 @@ class Data_model extends CI_Model
         $data['dimensi'] = $data_dimensi;
         $data['subDimensi'] = $data_subDimensi;
         $dimensi = $keterangan_dimensi;
+        $kode_dimensi = $kode_d;
 
         $data['dimensi']['nilai_rescale'] = [];
         for ($i = 0; $i < count($data['subDimensi']); $i++) {
@@ -91,7 +96,7 @@ class Data_model extends CI_Model
         //Loop Data
         for ($j = 0; $j < $data['col_span']; $j++) {
             $tahunSelect = $start_date++;
-            $data_dimensi_sesuai_tahun = $this->admin->getNilaiDimensiPerTahun(1, $tahunSelect);
+            $data_dimensi_sesuai_tahun = $this->admin->getNilaiDimensiPerTahun($kode_d, $tahunSelect);
             $rescale_dimensi = doubleval($data_dimensi_sesuai_tahun['nilai_rescale']);
             array_push($data['dimensi']['nilai_rescale'], round($rescale_dimensi, 2));
             for ($i = 0; $i < count($data['subDimensi']); $i++) {

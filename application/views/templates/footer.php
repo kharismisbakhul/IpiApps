@@ -47,6 +47,7 @@
 <script src="<?= base_url('assets/'); ?>js/demo/chart-bar-demo.js"></script>
 <script src="<?= base_url('assets/'); ?>js/inputData.js"></script>
 <script src="<?= base_url('assets/'); ?>js/inputIndikator.js"></script>
+<script src="<?= base_url('assets/'); ?>js/hapusIndikator.js"></script>
 <script src="<?= base_url('assets/'); ?>js/chart.js"></script>
 <script src="<?= base_url('assets/'); ?>js/mixed-chart.js"></script>
 <script src="<?= base_url('assets/'); ?>js/filter.js"></script>

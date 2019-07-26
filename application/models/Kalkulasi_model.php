@@ -48,6 +48,7 @@ class Kalkulasi_model extends CI_Model
     public function tahunTerakhirDataIndikator($kode_indikator)
     {
         $this->db->where('kode_indikator', $kode_indikator);
+        $this->db->where('nilai !=', 0);
         $this->db->select('MAX(tahun) as tahun_terakhir');
         $this->db->from('nilaiindikator');
         $result = $this->db->get()->row_array();
@@ -57,6 +58,7 @@ class Kalkulasi_model extends CI_Model
     }
     public function tahunTerakhirDataSemuaIndikator()
     {
+        $this->db->where('nilai !=', 0);
         $this->db->select('MAX(tahun) as tahun_terakhir');
         $this->db->from('nilaiindikator');
         $result = $this->db->get()->row_array();

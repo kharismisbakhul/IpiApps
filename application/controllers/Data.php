@@ -3,6 +3,23 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Data extends CI_Controller
 {
+    public function reset()
+    {
+        // $indikator = $this->db->get('indikator')->result_array();
+        // for ($i = 0; $i < count($indikator); $i++) {
+        $kode_indikator = 1;
+        $this->load->model('Kalkulasi_model', 'kalkulasi');
+        $this->kalkulasi->setNilaiMax($kode_indikator);
+        $this->kalkulasi->setNilaiMin($kode_indikator);
+        $this->kalkulasi->setNilaiRescaleIndikator($kode_indikator);
+        $this->kalkulasi->setNilaiRescaleSubDimensi($kode_indikator);
+        $this->kalkulasi->setNilaiRescaleDimensi($kode_indikator);
+        $this->kalkulasi->setNilaiRescaleIPI();
+        // }
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Perhitungan ulang data berhasil</div>');
+        redirect('report');
+    }
+
     public function getDimensi()
     {
         $this->load->model('Admin_model', 'admin');

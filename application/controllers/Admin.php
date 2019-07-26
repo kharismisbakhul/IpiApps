@@ -99,28 +99,32 @@ class Admin extends CI_Controller
 
         if ($this->uri->segment(3)) {
             $subDimensi = $this->uri->segment(3);
+            $kode_subDimensi = 0;
 
             if ($subDimensi == "ii") {
                 $title2 = 'Indeks Inflasi';
                 $data['subDimensi'] = $this->admin->getNilaiSubDimensi(1);
                 $data['indikator'] = $this->admin->getIndikator(1);
+                $kode_subDimensi = 1;
                 $link = "sd_II";
             } else if ($subDimensi == "iae") {
                 $title2 = 'Indeks Aktivitas Ekonomi';
                 $data['subDimensi'] = $this->admin->getNilaiSubDimensi(2);
                 $data['indikator'] = $this->admin->getIndikator(2);
+                $kode_subDimensi = 2;
                 $link = "sd_IAE";
             } else if ($subDimensi == "ipsdm") {
                 $title2 = 'Indeks Pembangunan Sumberdaya Manusia';
                 $data['subDimensi'] = $this->admin->getNilaiSubDimensi(3);
                 $data['indikator'] = $this->admin->getIndikator(3);
+                $kode_subDimensi = 3;
                 $link = "sd_IPSDM";
             }
 
             //Data
             $data_subDimensi = $data['subDimensi'];
             $data_indikator = $data['indikator'];
-            $data = $this->data->detailIndikator($data_subDimensi, $data_indikator, $subDimensi, $dimensi);
+            $data = $this->data->detailIndikator($data_subDimensi, $data_indikator, $subDimensi, $dimensi, $kode_subDimensi);
             $data['title2'] = $title2;
         } else {
             $data['dimensi'] = $this->admin->getNilaiDimensi(1);
@@ -128,7 +132,7 @@ class Admin extends CI_Controller
 
             $data_dimensi = $data['dimensi'];
             $data_subDimensi = $data['subDimensi'];
-            $data = $this->data->detailSubDimensi($data_dimensi, $data_subDimensi, $dimensi);
+            $data = $this->data->detailSubDimensi($data_dimensi, $data_subDimensi, $dimensi, 1);
         }
         $data['title'] = 'Pertumbuhan Ekonomi';
         $this->loadTemplate($data);
@@ -147,22 +151,25 @@ class Admin extends CI_Controller
 
         if ($this->uri->segment(3)) {
             $subDimensi = $this->uri->segment(3);
+            $kode_subDimensi = 0;
             if ($subDimensi == "ipk") {
                 $title2 = 'Indeks Penanggulangan Kemiskinan';
                 $data['subDimensi'] = $this->admin->getNilaiSubDimensi(4);
                 $data['indikator'] = $this->admin->getIndikator(4);
+                $kode_subDimensi = 4;
                 $link = "sd_IPK";
             } else if ($subDimensi == "ip") {
                 $title2 = 'Indeks Pemerataan';
                 $data['subDimensi'] = $this->admin->getNilaiSubDimensi(5);
                 $data['indikator'] = $this->admin->getIndikator(5);
+                $kode_subDimensi = 5;
                 $link = "sd_IP";
             }
 
             //Data
             $data_subDimensi = $data['subDimensi'];
             $data_indikator = $data['indikator'];
-            $data = $this->data->detailIndikator($data_subDimensi, $data_indikator, $subDimensi, $dimensi);
+            $data = $this->data->detailIndikator($data_subDimensi, $data_indikator, $subDimensi, $dimensi, $kode_subDimensi);
             $data['title2'] = $title2;
         } else {
             $data['dimensi'] = $this->admin->getNilaiDimensi(2);
@@ -170,7 +177,7 @@ class Admin extends CI_Controller
 
             $data_dimensi = $data['dimensi'];
             $data_subDimensi = $data['subDimensi'];
-            $data = $this->data->detailSubDimensi($data_dimensi, $data_subDimensi, $dimensi);
+            $data = $this->data->detailSubDimensi($data_dimensi, $data_subDimensi, $dimensi, 2);
         }
         $data['title'] = 'Inklusifitas';
         $this->loadTemplate($data);
@@ -189,22 +196,25 @@ class Admin extends CI_Controller
 
         if ($this->uri->segment(3)) {
             $subDimensi = $this->uri->segment(3);
+            $kode_subDimensi = 0;
             if ($subDimensi == "ikk") {
                 $title2 = 'Indeks Keberlanjutan Keuangan';
                 $data['subDimensi'] = $this->admin->getNilaiSubDimensi(6);
                 $data['indikator'] = $this->admin->getIndikator(6);
+                $kode_subDimensi = 6;
                 $link = "sd_IKK";
             } else if ($subDimensi == "iki") {
                 $title2 = 'Indeks Keberlanjutan Infrastruktur';
                 $data['subDimensi'] = $this->admin->getNilaiSubDimensi(7);
                 $data['indikator'] = $this->admin->getIndikator(7);
+                $kode_subDimensi = 7;
                 $link = "sd_IKI";
             }
 
             //Data
             $data_subDimensi = $data['subDimensi'];
             $data_indikator = $data['indikator'];
-            $data = $this->data->detailIndikator($data_subDimensi, $data_indikator, $subDimensi, $dimensi);
+            $data = $this->data->detailIndikator($data_subDimensi, $data_indikator, $subDimensi, $dimensi, $kode_subDimensi);
             $data['title2'] = $title2;
         } else {
             $data['dimensi'] = $this->admin->getNilaiDimensi(3);
@@ -212,7 +222,7 @@ class Admin extends CI_Controller
 
             $data_dimensi = $data['dimensi'];
             $data_subDimensi = $data['subDimensi'];
-            $data = $this->data->detailSubDimensi($data_dimensi, $data_subDimensi, $dimensi);
+            $data = $this->data->detailSubDimensi($data_dimensi, $data_subDimensi, $dimensi, 3);
         }
         $data['title'] = 'Sustainability';
         $this->loadTemplate($data);

@@ -74,7 +74,7 @@ class InputData extends CI_Controller
             $this->kalkulasi->setNilaiRescaleSubDimensi($kode_indikator);
             $this->kalkulasi->setNilaiRescaleDimensi($kode_indikator);
             $this->kalkulasi->setNilaiRescaleIPI();
-            redirect('admin/inputData');
+            redirect('inputData');
         }
     }
 
@@ -106,6 +106,20 @@ class InputData extends CI_Controller
                 $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Variabel indikator berhasil ditambahkan</div>');
             }
         }
+        redirect('inputData');
+    }
+    public function hapusIndikator()
+    {
+        $nama_indikator = $this->input->post('modal-indikator-hapus');
+        $this->load->model('Admin_model', 'admin');
+        $kode_indikator = $this->admin->getKodeIndikator($nama_indikator);
+        $this->db->where('kode_indikator', $kode_indikator);
+        $this->db->delete('nilaiindikator');
+
+        $this->db->where('kode_indikator', $kode_indikator);
+        $this->db->delete('indikator');
+
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Variabel indikator berhasil dihapus</div>');
         redirect('inputData');
     }
 }
