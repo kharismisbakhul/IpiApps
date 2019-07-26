@@ -34,24 +34,22 @@
                                 Untuk menampilkan data pada
                                 tabel dan chart, harap untuk
                                 mengisi <br> rentan tahun di bawah
-                                <form action="" class="mt-3">
+                                <form action="<?= base_url('admin/sustainability'); ?>" method="get" class="mt-3">
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
-                                            <label for="dariTahun" class="text-xs">Dari Tahun</label>
-                                            <select type="email" class="form-control" id="dariTahun">
-                                                <option selected>Pilih tahun</option>
-                                                <option>...</option>
+                                            <label for="start-date" class="text-xs">Dari Tahun</label>
+                                            <select class="form-control start-date" id="start-date" name="start-date">
+                                                <option>Pilih tahun</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-12">
-                                            <label for="sampaiTahun" class="text-xs">Sampai Tahun</label>
-                                            <select type="email" class="form-control" id="dariTahun">
-                                                <option selected>Pilih tahun</option>
-                                                <option>...</option>
+                                            <label for="end-date" class="text-xs">Sampai Tahun</label>
+                                            <select class="form-control end-date" id="end-date" name="end-date">
+                                                <option>Pilih tahun</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-12 mt-3">
-                                            <button type="button" class="btn btn-primary" style="width: 100%;">Cari</button>
+                                            <button type="submit" class="btn btn-primary" style="width: 100%;">Cari</button>
                                         </div>
                                     </div>
                                 </form>
@@ -81,22 +79,19 @@
                                         <tr style="background-color: #f8f8f8; color: #101010">
                                             <th class="py-5" rowspan="2">#</th>
                                             <th class="py-5" rowspan="2">Dimensi</th>
-                                            <th colspan="6">Skor</th>
+                                            <th colspan="<?= $col_span ?>">Skor</th>
                                         </tr>
                                         <tr style="background-color: #f8f8f8; color: #101010">
-                                            <th scope="col">2012</th>
-                                            <th scope="col">2013</th>
-                                            <th scope="col">2014</th>
-                                            <th scope="col">2015</th>
-                                            <th scope="col">2016</th>
-                                            <th scope="col">2017</th>
+                                            <?php foreach ($range_tahun as $rt) : ?>
+                                                <th scope="col"><?= $rt ?></th>
+                                            <?php endforeach; ?>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td colspan="2">Indeks Keberlanjutan</td>
-                                            <?php foreach ($nilai_dimensi as $nd) : ?>
-                                                <td><?= round($nd['nilai_rescale'], 2) ?></td>
+                                            <?php foreach ($dimensi['nilai_rescale'] as $nd) : ?>
+                                                <td><?= $nd ?></td>
                                             <?php endforeach; ?>
                                         </tr>
                                         <?php $a = 1;
@@ -105,12 +100,11 @@
                                                 <td><?= $a; ?></td>
                                                 <td><?= $sd['nama_sub_dimensi'] ?></td>
                                                 <?php foreach ($sd['nilai_subDimensi'] as $snd) : ?>
-                                                    <td><?= round($snd['nilai_rescale'], 2) ?></td>
+                                                    <td><?= $snd ?></td>
                                                 <?php endforeach; ?>
                                             </tr>
                                             <?php $a++;
                                         endforeach; ?>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

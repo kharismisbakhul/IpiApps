@@ -38,4 +38,14 @@ class Data extends CI_Controller
         }
         echo json_encode($tahun);
     }
+    public function getTahunSelected($tahun)
+    {
+        $this->db->where('tahun >', intval($tahun));
+        $result = $this->db->get('tahun')->result_array();
+        $tahun = [];
+        for ($i = 0; $i < count($result); $i++) {
+            array_push($tahun, $result[$i]['tahun']);
+        }
+        echo json_encode($tahun);
+    }
 }

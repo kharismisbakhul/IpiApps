@@ -40,14 +40,16 @@
 <!-- Sweet alert custom -->
 <script src="<?= base_url('assets/') ?>js/sweet-alert.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="<?= base_url('assets/vendor/chartjs/chartjs-plugin-annotation.js') ?>"></script>
 
 <!-- Custom js -->
-<script src="<?= base_url('assets/'); ?>js/script.js"></script>
+<!-- <script src="<?= base_url('assets/'); ?>js/script.js"></script> -->
 <script src="<?= base_url('assets/'); ?>js/demo/chart-bar-demo.js"></script>
 <script src="<?= base_url('assets/'); ?>js/inputData.js"></script>
 <script src="<?= base_url('assets/'); ?>js/inputIndikator.js"></script>
 <script src="<?= base_url('assets/'); ?>js/chart.js"></script>
 <script src="<?= base_url('assets/'); ?>js/mixed-chart.js"></script>
+<script src="<?= base_url('assets/'); ?>js/filter.js"></script>
 
 </body>
 

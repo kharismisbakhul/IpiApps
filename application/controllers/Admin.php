@@ -126,14 +126,126 @@ class Admin extends CI_Controller
         $data = $this->initData();
         $this->load->model('Admin_model', 'admin');
         $data['title'] = 'Indeks Pembangunan Inklusif';
+
+        //Inisialisasi Data
         $data['ipi'] = $this->admin->getIPI();
         $data['dimensi'] = $this->admin->getDimensi();
+        $data['ipi']['nilai_rescale'] = [];
         for ($i = 0; $i < count($data['dimensi']); $i++) {
-            $data['dimensi'][$i]['nilai_dimensi'] = $this->admin->getNilaiDimensi($data['dimensi'][$i]['kode_d']);
+            $data['dimensi'][$i]['nilai_dimensi'] = [];
         }
+        $start_date = 2012;
+        $end_date = 0;
+        $data['range_tahun'] = [];
+        $data['col_span'] = 0;
+
+        //Seleksi Input Range Tahun
+        if ($this->input->get('start-date') && $this->input->get('end-date')) {
+            $start_date = intval($this->input->get('start-date'));
+            $end_date = intval($this->input->get('end-date'));
+            //Inputan tanggal salah
+            if ($start_date === 0 || $end_date === 0) {
+                redirect('admin/ipi');
+            }
+            $data['range_tahun'] = $this->admin->getRangeTahun($start_date, $end_date);
+            $data['col_span'] = $end_date - $start_date + 1;
+            // $result = $this->admin->getIPIRange();
+        } else {
+            $data['col_span'] = 2017 - 2012 + 1;
+            $data['range_tahun'] = $this->admin->getSemuaTahun();
+        }
+
+        //Loop Data
+        // for ($j = 0; $j < $data['col_span']; $j++) {
+        //     $tahunSelect = $start_date++;
+        //     $data_IPI_sesuai_tahun = $this->admin->getIPIPerTahun($tahunSelect);
+        //     $rescale_IPI = doubleval($data_IPI_sesuai_tahun['nilai_rescale']);
+        //     array_push($data['ipi']['nilai_rescale'], round($rescale_IPI, 2));
+        //     for ($i = 0; $i < count($data['dimensi']); $i++) {
+        //         $kode_d = $data['dimensi'][$i]['kode_d'];
+        //         $data_Dimensi_sesuai_tahun = $this->admin->getNilaiDimensiPerTahun($kode_d, $tahunSelect);
+        //         $rescale_dimensi = doubleval($data_Dimensi_sesuai_tahun['nilai_rescale']);
+        //         array_push($data['dimensi'][$i]['nilai_dimensi'], round($rescale_dimensi, 2));
+        //     }
+        // }
+
         $this->loadTemplate($data);
         $this->load->view('menu/ipi', $data);
         $this->load->view('templates/footer');
+    }
+
+    //Data Json IPI buat JS
+    public function getIpi()
+    {
+        $star_date = $this->input->get('star_date');
+        $end_date = $this->input->get('end_date');
+        if ($star_date > $end_date) {
+            return;
+        }
+        $this->load->model('Admin_model', 'admin');
+        $nilaiDimensi = $this->db->get('nilaidimensi')->result_array();
+        $tahun = $this->admin->getPeriode($star_date, $end_date);
+        $dimensi = $this->db->get('dimensi')->result_array();
+        $data = [];
+        foreach ($dimensi as $d) {
+            $data[$d['kode_d']] = [];
+        }
+        // ipi
+        $ipi_index = $this->admin->getIpiPeriode($star_date, $end_date);
+        $data2 = [];
+        $count = 0;
+        $count2 = 1;
+        foreach ($ipi_index as $i) {
+            $data2[$count]['nilai_rescale'] = $i['nilai_rescale'];
+            $data2[$count]['tahun'] = $i['tahun'];
+            $count++;
+        }
+        foreach ($dimensi as $d) {
+            foreach ($nilaiDimensi as $n) {
+                if ($d['kode_d'] == $n['kode_d']) {
+                    $data[$count2][] = $n['nilai_rescale'];
+                }
+            }
+            $count2++;
+        }
+        $cek['nama_dimensi'] = $dimensi;
+        $cek['ipi'] = $data2;
+        $cek['dimensi'] = $data;
+        $cek['tahun'] = $tahun;
+        echo json_encode($cek);
+    }
+
+    public function getIndikator()
+    {
+        $this->load->model('Admin_model', 'admin');
+        $result = $this->admin->getIndikator(1);
+        for ($i = 0; $i < count($result); $i++) {
+            $result[$i]['nilai_indikator'] = [];
+        }
+        echo json_encode($result);
+    }
+    public function getSubDimensi()
+    {
+        $this->load->model('Admin_model', 'admin');
+        $result = $this->admin->getSubDimensi(1);
+        for ($i = 0; $i < count($result); $i++) {
+            $result[$i]['nilai_subDimensi'] = [];
+        }
+        $result['nilai_rescale'] = [];
+        echo json_encode($result);
+    }
+    public function getNilaiDimensi()
+    {
+        $this->load->model('Admin_model', 'admin');
+        $result = $this->admin->getNilaiDimensi(1);
+        $result['nilai_rescale'] = [];
+        echo json_encode($result);
+    }
+    public function getNilaiSubDimensi()
+    {
+        $this->load->model('Admin_model', 'admin');
+        $result = $this->admin->getNilaiSubDimensi(1);
+        echo json_encode($result);
     }
 
     public function pertumbuhanEkonomi()
@@ -146,12 +258,52 @@ class Admin extends CI_Controller
             $subDimensi = $this->uri->segment(3);
             if ($subDimensi == "ii") {
                 $data['title2'] = 'Indeks Inflasi';
-                $data['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi(1);
+                $data['subDimensi'] = $this->admin->getNilaiSubDimensi(1);
                 $data['indikator'] = $this->admin->getIndikator(1);
+
+                //tambahan
+                $data['subDimensi']['nilai_rescale'] = [];
+                for ($i = 0; $i < count($data['indikator']); $i++) {
+                    $data['indikator'][$i]['nilai_indikator'] = [];
+                }
+                $start_date = 2012;
+                $end_date = 0;
+                $data['range_tahun'] = [];
+                $data['col_span'] = 0;
+
+                //Seleksi Input Range Tahun
+                if ($this->input->get('start-date') && $this->input->get('end-date')) {
+                    $start_date = intval($this->input->get('start-date'));
+                    $end_date = intval($this->input->get('end-date'));
+                    //Inputan tanggal salah
+                    if ($start_date === 0 || $end_date === 0) {
+                        redirect('admin/pertumbuhanEkonomi/ii');
+                    }
+                    $data['range_tahun'] = $this->admin->getRangeTahun($start_date, $end_date);
+                    $data['col_span'] = $end_date - $start_date + 1;
+                } else {
+                    $data['col_span'] = 2017 - 2012 + 1;
+                    $data['range_tahun'] = $this->admin->getSemuaTahun();
+                }
+
+                //Loop Data
+                for ($j = 0; $j < $data['col_span']; $j++) {
+                    $tahunSelect = $start_date++;
+                    $data_subDimensi_sesuai_tahun = $this->admin->getNilaiSubDimensiPerTahun(1, $tahunSelect);
+                    $rescale_subDimensi = doubleval($data_subDimensi_sesuai_tahun['nilai_rescale']);
+                    array_push($data['subDimensi']['nilai_rescale'], round($rescale_subDimensi, 2));
+                    for ($i = 0; $i < count($data['indikator']); $i++) {
+                        $kode_indikator = $data['indikator'][$i]['kode_indikator'];
+                        $data_indikator_sesuai_tahun = $this->admin->getNilaiIndikatorPerTahun($kode_indikator, $tahunSelect);
+                        $rescale_indikator = doubleval($data_indikator_sesuai_tahun['nilai_rescale']);
+                        array_push($data['indikator'][$i]['nilai_indikator'], round($rescale_indikator, 2));
+                    }
+                }
+
                 $link = "sd_II";
             } else if ($subDimensi == "iae") {
                 $data['title2'] = 'Indeks Aktivitas Ekonomi';
-                $data['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi(2);
+                $data['subDimensi'] = $this->admin->getNilaiSubDimensi(2);
                 $data['indikator'] = $this->admin->getIndikator(2);
                 $link = "sd_IAE";
             } else if ($subDimensi == "ipsdm") {
@@ -164,10 +316,46 @@ class Admin extends CI_Controller
                 $data['indikator'][$i]['nilai_indikator'] = $this->admin->getNilaiIndikator($data['indikator'][$i]['kode_indikator']);
             }
         } else {
-            $data['nilai_dimensi'] = $this->admin->getNilaiDimensi(1);
+            $data['dimensi'] = $this->admin->getNilaiDimensi(1);
             $data['subDimensi'] = $this->admin->getSubDimensi(1);
+            //tambahan
+            $data['dimensi']['nilai_rescale'] = [];
             for ($i = 0; $i < count($data['subDimensi']); $i++) {
-                $data['subDimensi'][$i]['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi($data['subDimensi'][$i]['kode_sd']);
+                $data['subDimensi'][$i]['nilai_subDimensi'] = [];
+            }
+            $start_date = 2012;
+            $end_date = 0;
+            $data['range_tahun'] = [];
+            $data['col_span'] = 0;
+
+            //Seleksi Input Range Tahun
+            if ($this->input->get('start-date') && $this->input->get('end-date')) {
+                $start_date = intval($this->input->get('start-date'));
+                $end_date = intval($this->input->get('end-date'));
+                //Inputan tanggal salah
+                if ($start_date === 0 || $end_date === 0) {
+                    redirect('admin/pertumbuhanEkonomi');
+                }
+                $data['range_tahun'] = $this->admin->getRangeTahun($start_date, $end_date);
+                $data['col_span'] = $end_date - $start_date + 1;
+            } else {
+                $data['col_span'] = 2017 - 2012 + 1;
+                $data['range_tahun'] = $this->admin->getSemuaTahun();
+            }
+
+            //Loop Data
+            for ($j = 0; $j < $data['col_span']; $j++) {
+                $tahunSelect = $start_date++;
+                $data_dimensi_sesuai_tahun = $this->admin->getNilaiDimensiPerTahun(1, $tahunSelect);
+                $rescale_dimensi = doubleval($data_dimensi_sesuai_tahun['nilai_rescale']);
+                array_push($data['dimensi']['nilai_rescale'], round($rescale_dimensi, 2));
+                for ($i = 0; $i < count($data['subDimensi']); $i++) {
+                    $kode_sd = $data['subDimensi'][$i]['kode_sd'];
+                    $data_subDimensi_sesuai_tahun = $this->admin->getNilaiSubDimensiPerTahun($kode_sd, $tahunSelect);
+                    // echo json_encode($data_subDimensi_sesuai_tahun);
+                    $rescale_subDimensi = doubleval($data_subDimensi_sesuai_tahun['nilai_rescale']);
+                    array_push($data['subDimensi'][$i]['nilai_subDimensi'], round($rescale_subDimensi, 2));
+                }
             }
             $link = "pertumbuhanEkonomi";
         }
@@ -200,11 +388,49 @@ class Admin extends CI_Controller
                 $data['indikator'][$i]['nilai_indikator'] = $this->admin->getNilaiIndikator($data['indikator'][$i]['kode_indikator']);
             }
         } else {
-            $data['nilai_dimensi'] = $this->admin->getNilaiDimensi(2);
+            $data['dimensi'] = $this->admin->getNilaiDimensi(2);
             $data['subDimensi'] = $this->admin->getSubDimensi(2);
+
+            //tambahan
+            $data['dimensi']['nilai_rescale'] = [];
             for ($i = 0; $i < count($data['subDimensi']); $i++) {
-                $data['subDimensi'][$i]['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi($data['subDimensi'][$i]['kode_sd']);
+                $data['subDimensi'][$i]['nilai_subDimensi'] = [];
             }
+            $start_date = 2012;
+            $end_date = 0;
+            $data['range_tahun'] = [];
+            $data['col_span'] = 0;
+
+            //Seleksi Input Range Tahun
+            if ($this->input->get('start-date') && $this->input->get('end-date')) {
+                $start_date = intval($this->input->get('start-date'));
+                $end_date = intval($this->input->get('end-date'));
+                //Inputan tanggal salah
+                if ($start_date === 0 || $end_date === 0) {
+                    redirect('admin/inklusifitas');
+                }
+                $data['range_tahun'] = $this->admin->getRangeTahun($start_date, $end_date);
+                $data['col_span'] = $end_date - $start_date + 1;
+            } else {
+                $data['col_span'] = 2017 - 2012 + 1;
+                $data['range_tahun'] = $this->admin->getSemuaTahun();
+            }
+
+            //Loop Data
+            for ($j = 0; $j < $data['col_span']; $j++) {
+                $tahunSelect = $start_date++;
+                $data_dimensi_sesuai_tahun = $this->admin->getNilaiDimensiPerTahun(1, $tahunSelect);
+                $rescale_dimensi = doubleval($data_dimensi_sesuai_tahun['nilai_rescale']);
+                array_push($data['dimensi']['nilai_rescale'], round($rescale_dimensi, 2));
+                for ($i = 0; $i < count($data['subDimensi']); $i++) {
+                    $kode_sd = $data['subDimensi'][$i]['kode_sd'];
+                    $data_subDimensi_sesuai_tahun = $this->admin->getNilaiSubDimensiPerTahun($kode_sd, $tahunSelect);
+                    // echo json_encode($data_subDimensi_sesuai_tahun);
+                    $rescale_subDimensi = doubleval($data_subDimensi_sesuai_tahun['nilai_rescale']);
+                    array_push($data['subDimensi'][$i]['nilai_subDimensi'], round($rescale_subDimensi, 2));
+                }
+            }
+
             $link = "inklusifitas";
         }
         $data['title'] = 'Inklusifitas';
@@ -236,11 +462,49 @@ class Admin extends CI_Controller
                 $data['indikator'][$i]['nilai_indikator'] = $this->admin->getNilaiIndikator($data['indikator'][$i]['kode_indikator']);
             }
         } else {
-            $data['nilai_dimensi'] = $this->admin->getNilaiDimensi(3);
+            $data['dimensi'] = $this->admin->getNilaiDimensi(3);
             $data['subDimensi'] = $this->admin->getSubDimensi(3);
+
+            //tambahan
+            $data['dimensi']['nilai_rescale'] = [];
             for ($i = 0; $i < count($data['subDimensi']); $i++) {
-                $data['subDimensi'][$i]['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi($data['subDimensi'][$i]['kode_sd']);
+                $data['subDimensi'][$i]['nilai_subDimensi'] = [];
             }
+            $start_date = 2012;
+            $end_date = 0;
+            $data['range_tahun'] = [];
+            $data['col_span'] = 0;
+
+            //Seleksi Input Range Tahun
+            if ($this->input->get('start-date') && $this->input->get('end-date')) {
+                $start_date = intval($this->input->get('start-date'));
+                $end_date = intval($this->input->get('end-date'));
+                //Inputan tanggal salah
+                if ($start_date === 0 || $end_date === 0) {
+                    redirect('admin/sustainability');
+                }
+                $data['range_tahun'] = $this->admin->getRangeTahun($start_date, $end_date);
+                $data['col_span'] = $end_date - $start_date + 1;
+            } else {
+                $data['col_span'] = 2017 - 2012 + 1;
+                $data['range_tahun'] = $this->admin->getSemuaTahun();
+            }
+
+            //Loop Data
+            for ($j = 0; $j < $data['col_span']; $j++) {
+                $tahunSelect = $start_date++;
+                $data_dimensi_sesuai_tahun = $this->admin->getNilaiDimensiPerTahun(1, $tahunSelect);
+                $rescale_dimensi = doubleval($data_dimensi_sesuai_tahun['nilai_rescale']);
+                array_push($data['dimensi']['nilai_rescale'], round($rescale_dimensi, 2));
+                for ($i = 0; $i < count($data['subDimensi']); $i++) {
+                    $kode_sd = $data['subDimensi'][$i]['kode_sd'];
+                    $data_subDimensi_sesuai_tahun = $this->admin->getNilaiSubDimensiPerTahun($kode_sd, $tahunSelect);
+                    // echo json_encode($data_subDimensi_sesuai_tahun);
+                    $rescale_subDimensi = doubleval($data_subDimensi_sesuai_tahun['nilai_rescale']);
+                    array_push($data['subDimensi'][$i]['nilai_subDimensi'], round($rescale_subDimensi, 2));
+                }
+            }
+
             $link = "sustainability";
         }
         $data['title'] = 'Sustainability';

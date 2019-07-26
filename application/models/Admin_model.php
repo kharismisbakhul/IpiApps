@@ -2,9 +2,72 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 class Admin_model extends CI_Model
 {
+    public function getRangeTahun($start_date, $end_date)
+    {
+        $this->db->where('tahun >', $start_date - 1);
+        $this->db->where('tahun <', $end_date + 1);
+        $this->db->select('tahun');
+        $this->db->from('tahun');
+        $result = $this->db->get()->result_array();
+
+        $tahun = [];
+        for ($i = 0; $i < count($result); $i++) {
+            array_push($tahun, intval($result[$i]['tahun']));
+        }
+        return $tahun;
+    }
+    public function getSemuaTahun()
+    {
+        $this->load->model('Kalkulasi_model', 'kalkulasi');
+        $tahun = $this->kalkulasi->tahunTerakhirDataSemuaIndikator();
+        $this->db->where('tahun <=', $tahun);
+        $this->db->select('tahun');
+        $this->db->from('tahun');
+        $result = $this->db->get()->result_array();
+        $tahun = [];
+        for ($i = 0; $i < count($result); $i++) {
+            array_push($tahun, $result[$i]['tahun']);
+        }
+        return $tahun;
+    }
     public function getIPI()
     {
         return $this->db->get('ipi')->result_array();
+    }
+    public function getIPIRange($start, $end)
+    {
+        $this->db->where('tahun >', $start - 1);
+        $this->db->where('tahun <', $end + 1);
+        $this->db->select('*');
+        $this->db->from('ipi');
+        return $this->db->get()->result_array();
+    }
+    public function getDimensiRange($start, $end)
+    {
+        $this->db->where('tahun >', $start - 1);
+        $this->db->where('tahun <', $end + 1);
+        $this->db->select('*');
+        $this->db->from('nilaidimensi');
+        return $this->db->get()->result_array();
+    }
+    public function getSubDimensiRange($kode_sd, $start, $end)
+    {
+        $this->db->where('nilaisubdimensi.kode_sd', $kode_sd);
+        $this->db->where('tahun >', $start - 1);
+        $this->db->where('tahun <', $end + 1);
+        $this->db->select('*');
+        $this->db->from('nilaisubdimensi');
+        return $this->db->get()->result_array();
+    }
+    public function getIndikatorRange($kode_indikator, $start, $end)
+    {
+        //     return $this->db->get_where('indikator', ['kode_sd' => $kode_sd])->result_array();
+        $this->db->where('nilaiindikator.kode_sd', $kode_indikator);
+        $this->db->where('tahun >', $start - 1);
+        $this->db->where('tahun <', $end + 1);
+        $this->db->select('*');
+        $this->db->from('nilaiindikator');
+        return $this->db->get()->result_array();
     }
     public function getIPIPerTahun($tahun)
     {
