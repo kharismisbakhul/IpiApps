@@ -100,7 +100,7 @@
                                                 <td><?= $a; ?></td>
                                                 <td><?= $in['nama_indikator'] ?></td>
                                                 <?php foreach ($in['nilai_indikator'] as $inni) : ?>
-                                                    <td><?= $inni['nilai_rescale'] ?></td>
+                                                    <td><?= $inni ?></td>
                                                 <?php endforeach; ?>
                                             </tr>
                                             <?php $a++;

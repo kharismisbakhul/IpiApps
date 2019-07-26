@@ -29,7 +29,7 @@
                 <!-- Card Body -->
                 <div class="card-body bClip">
                     <div class="row">
-                        <form action="<?= base_url('admin/ipi'); ?>" method="get">
+                        <form action="<?= base_url('ipi'); ?>" method="get">
                             <div class="col-lg-12 mb-2 text-justify">
                                 Untuk menampilkan data pada
                                 tabel dan chart, harap untuk

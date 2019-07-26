@@ -34,39 +34,62 @@ class Admin_model extends CI_Model
     {
         return $this->db->get('ipi')->result_array();
     }
-    public function getIPIRange($start, $end)
+    public function getIndikatorRange($kode_sd, $start, $end)
     {
-        $this->db->where('tahun >', $start - 1);
-        $this->db->where('tahun <', $end + 1);
+        $indikator = $this->db->get_where('indikator', ['kode_sd' => $kode_sd])->result_array();
+        for ($i = 0; $i < count($indikator); $i++) {
+            $kode_indikator = $indikator[$i]['kode_indikator'];
+            $indikator[$i]['nilai_indikator'] = $this->getIndikatorRangeNilai($kode_indikator, $start, $end);
+        }
+        // echo json_encode($indikator);
+        return $indikator;
+    }
+    public function getIndikatorRangeNilai($kode_indikator, $start, $end)
+    {
+        $this->db->where('nilaiindikator.kode_indikator', $kode_indikator);
+        $this->db->where('tahun >=', $start);
+        $this->db->where('tahun <=', $end);
         $this->db->select('*');
-        $this->db->from('ipi');
+        $this->db->from('nilaiindikator');
         return $this->db->get()->result_array();
     }
-    public function getDimensiRange($start, $end)
+    public function getSubDimensiRange($kode_d, $start, $end)
     {
-        $this->db->where('tahun >', $start - 1);
-        $this->db->where('tahun <', $end + 1);
-        $this->db->select('*');
-        $this->db->from('nilaidimensi');
-        return $this->db->get()->result_array();
+        $subDimensi = $this->db->get_where('subdimensi', ['kode_d' => $kode_d])->result_array();
+        for ($i = 0; $i < count($subDimensi); $i++) {
+            $kode_sd = $subDimensi[$i]['kode_sd'];
+            $subDimensi[$i]['nilai'] = $this->getSubDimensiRangeNilai($kode_sd, $start, $end);
+            $subDimensi[$i]['indikator'] = $this->getIndikatorRange($kode_sd, $start, $end);
+        }
+        // echo json_encode($subDimensi);
+        return $subDimensi;
     }
-    public function getSubDimensiRange($kode_sd, $start, $end)
+    public function getSubDimensiRangeNilai($kode_sd, $start, $end)
     {
         $this->db->where('nilaisubdimensi.kode_sd', $kode_sd);
-        $this->db->where('tahun >', $start - 1);
-        $this->db->where('tahun <', $end + 1);
+        $this->db->where('tahun >=', $start);
+        $this->db->where('tahun <=', $end);
         $this->db->select('*');
         $this->db->from('nilaisubdimensi');
         return $this->db->get()->result_array();
     }
-    public function getIndikatorRange($kode_indikator, $start, $end)
+    public function getDimensiRange($start, $end)
     {
-        //     return $this->db->get_where('indikator', ['kode_sd' => $kode_sd])->result_array();
-        $this->db->where('nilaiindikator.kode_sd', $kode_indikator);
-        $this->db->where('tahun >', $start - 1);
-        $this->db->where('tahun <', $end + 1);
+        $Dimensi = $this->db->get('dimensi')->result_array();
+        for ($i = 0; $i < count($Dimensi); $i++) {
+            $kode_d = $Dimensi[$i]['kode_d'];
+            $Dimensi[$i]['nilai'] = $this->getDimensiRangeNilai($kode_d, $start, $end);
+            $Dimensi[$i]['subDimensi'] = $this->getSubDimensiRange($kode_d, $start, $end);
+        }
+        echo json_encode($Dimensi);
+    }
+    public function getDimensiRangeNilai($kode_d, $start, $end)
+    {
+        $this->db->where('nilaidimensi.kode_d', $kode_d);
+        $this->db->where('tahun >=', $start);
+        $this->db->where('tahun <=', $end);
         $this->db->select('*');
-        $this->db->from('nilaiindikator');
+        $this->db->from('nilaidimensi');
         return $this->db->get()->result_array();
     }
     public function getIPIPerTahun($tahun)

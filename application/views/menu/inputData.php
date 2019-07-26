@@ -30,7 +30,7 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <form action="<?= base_url('admin/inputData') ?>" method="post">
+                    <form action="<?= base_url('inputData') ?>" method="post">
                         <div class="form-group row">
                             <label for="dimensi" class="col-sm-2 col-form-label">Dimensi</label>
                             <div class="col-sm-6">
@@ -105,7 +105,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="formIsian" action="<?= base_url('admin/tambahIndikator') ?>" method="post">
+            <form class="formIsian" action="<?= base_url('inputData/tambahIndikator') ?>" method="post">
                 <div class="modal-body">
                     <div class="form-group row">
                         <label for="modal-dimensi" class="col-sm-4 col-form-label">Dimensi</label>

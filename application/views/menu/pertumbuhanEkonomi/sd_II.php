@@ -99,11 +99,9 @@
                                             <tr>
                                                 <td><?= $a; ?></td>
                                                 <td><?= $in['nama_indikator'] ?></td>
-                                                <!-- <?php foreach ($in['nilai_indikator'] as $inni) : ?> -->
-                                                    <!-- <td><?= $inni ?></td> -->
-                                                    <!-- <?php endforeach; ?> -->
-                                                <?php echo json_encode($indikator[1]['nilai_indikator']);
-                                                die; ?>
+                                                <?php foreach ($in['nilai_indikator'] as $inni) : ?>
+                                                    <td><?= $inni ?></td>
+                                                <?php endforeach; ?>
                                             </tr>
                                             <?php $a++;
                                         endforeach; ?>

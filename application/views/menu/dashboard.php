@@ -48,25 +48,22 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col-md-12 mr-2">
                             <div class="text-gray-800 mt-1">
-                                <form action="">
+                                <form action="<?= base_url('admin'); ?>" method="get">
                                     <div class="form-row">
                                         <div class="form-group col-md-2">
-                                            <label for="dariTahun" class="text-xs">Dari Tahun</label>
-                                            <select type="email" class="form-control" id="dariTahun">
-                                                <option selected>Pilih tahun</option>
-                                                <option>...</option>
+                                            <label for="start-date" class="text-xs">Dari Tahun</label>
+                                            <select class="form-control start-date" id="start-date" name="start-date">
+                                                <option>Pilih tahun</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label for="sampaiTahun" class="text-xs">Sampai Tahun</label>
-                                            <select type="email" class="form-control" id="dariTahun">
-                                                <option selected>Pilih tahun</option>
-                                                <option>...</option>
+                                            <label for="end-date" class="text-xs">Sampai Tahun</label>
+                                            <select class="form-control end-date" id="end-date" name="end-date">
+                                                <option>Pilih tahun</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-2" style="padding-top: 1.9rem;">
-                                            <label for=""></label>
-                                            <button type="button" class="btn btn-primary">Cari</button>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
                                         </div>
                                     </div>
                                 </form>
@@ -79,19 +76,32 @@
                                         <tr style="background-color: #f8f8f8; color: #101010">
                                             <th class="py-5" rowspan="2">#</th>
                                             <th class="py-5" rowspan="2">Dimensi</th>
-                                            <th colspan="6">Skor</th>
+                                            <th colspan="<?= $col_span ?>">Skor</th>
                                         </tr>
                                         <tr style="background-color: #f8f8f8; color: #101010">
-                                            <th scope="col" class="pb-3">2012</th>
-                                            <th scope="col" class="pb-3">2013</th>
-                                            <th scope="col" class="pb-3">2014</th>
-                                            <th scope="col" class="pb-3">2015</th>
-                                            <th scope="col" class="pb-3">2016</th>
-                                            <th scope="col" class="pb-3">2017</th>
+                                            <?php foreach ($range_tahun as $rt) : ?>
+                                                <th scope="col"><?= $rt ?></th>
+                                            <?php endforeach; ?>
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        <tr>
+                                            <td colspan="2">Indeks Pembangunan Inklusif</td>
+                                            <?php foreach ($ipi['nilai_rescale'] as $inr) : ?>
+                                                <td><?= $inr ?></td>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                        <?php $a = 1;
+                                        foreach ($dimensi as $d) : ?>
+                                            <tr>
+                                                <td><?= $a; ?></td>
+                                                <td><?= $d['nama_dimensi'] ?></td>
+                                                <?php foreach ($d['nilai_dimensi'] as $nd) : ?>
+                                                    <td><?= $nd ?></td>
+                                                <?php endforeach; ?>
+                                            </tr>
+                                            <?php $a++;
+                                        endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>
