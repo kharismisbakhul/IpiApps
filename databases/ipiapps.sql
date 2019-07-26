@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 25, 2019 at 08:15 AM
+-- Generation Time: Jul 26, 2019 at 06:44 AM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -728,7 +728,7 @@ ALTER TABLE `dimensi`
 -- AUTO_INCREMENT for table `indikator`
 --
 ALTER TABLE `indikator`
-  MODIFY `kode_indikator` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `kode_indikator` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `ipi`
@@ -746,7 +746,7 @@ ALTER TABLE `nilaidimensi`
 -- AUTO_INCREMENT for table `nilaiindikator`
 --
 ALTER TABLE `nilaiindikator`
-  MODIFY `id_nilai_i` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=320;
+  MODIFY `id_nilai_i` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=319;
 
 --
 -- AUTO_INCREMENT for table `nilaisubdimensi`
