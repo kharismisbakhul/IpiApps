@@ -115,40 +115,160 @@ class Admin extends CI_Controller
         $this->login_check();
         $this->load->model('Admin_model', 'admin');
         $data = $this->initData();
-        $link = "";
-        if ($this->uri->segment(3)) {
-            $subDimensi = $this->uri->segment(3);
-            if ($subDimensi == "ii") {
-                $data['title2'] = 'Indeks Inflasi';
-                $data['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi(1);
-                $data['indikator'] = $this->admin->getIndikator(1);
-                $link = "sd_II";
-            } else if ($subDimensi == "iae") {
-                $data['title2'] = 'Indeks Aktivitas Ekonomi';
-                $data['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi(2);
-                $data['indikator'] = $this->admin->getIndikator(2);
-                $link = "sd_IAE";
-            } else if ($subDimensi == "ipsdm") {
-                $data['title2'] = 'Indeks Pembangunan Sumberdaya Manusia';
-                $data['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi(3);
-                $data['indikator'] = $this->admin->getIndikator(3);
-                $link = "sd_IPSDM";
-            }
-            for ($i = 0; $i < count($data['indikator']); $i++) {
-                $data['indikator'][$i]['nilai_indikator'] = $this->admin->getNilaiIndikator($data['indikator'][$i]['kode_indikator']);
-            }
-        } else {
-            $data['nilai_dimensi'] = $this->admin->getNilaiDimensi(1);
-            $data['subDimensi'] = $this->admin->getSubDimensi(1);
-            for ($i = 0; $i < count($data['subDimensi']); $i++) {
-                $data['subDimensi'][$i]['nilai_subDimensi'] = $this->admin->getNilaiSubDimensi($data['subDimensi'][$i]['kode_sd']);
-            }
-            $link = "pertumbuhanEkonomi";
-        }
         $data['title'] = 'Pertumbuhan Ekonomi';
+        $star_date = $this->input->get('star_date');
+        $end_date = $this->input->get('end_date');
+        $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
+        $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
+        $data['tahun_selc'] = $this->admin->getTahun();
+        $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
+        // $data['dimensi'] = $this->_getNilaiDimensi(1, $star_date, $end_date);
+        // $data['n_sb_dimensi'] = $this->db->select('nama_sub_dimensi,kode_sd')->get_where('subdimensi', ['kode_d' => 1])->result_array();
+        // $data['n_dimensi'] = $this->db->select('nama_dimensi,kode_d')->get_where('dimensi', ['kode_d' => 1])->result_array();
+        // $allsb = $this->db->select('kode_sd')->get_where('subdimensi', ['kode_d' => 1])->result_array();
+
+        // foreach ($allsb as $sb) {
+        //     $data['sub_dimensi'][$sb['kode_sd']] = $this->_getNilaiRescaleSubDimensi($sb['kode_sd'], $star_date, $end_date);
+        // }
+
         $this->loadTemplate($data);
-        $this->load->view('menu/pertumbuhanEkonomi/' . $link, $data);
+        $this->load->view('menu/pertumbuhanEkonomi/pertumbuhanEkonomi', $data);
         $this->load->view('templates/footer');
+    }
+
+    public function pertumbuhanEkonomiAPI()
+    {
+        $dimensi = 1;
+        $this->login_check();
+        $this->load->model('Admin_model', 'admin');
+        $star_date = $this->input->get('star_date');
+        $end_date = $this->input->get('end_date');
+        $dimensi = $this->input->get('d');
+        $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
+        $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
+        $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
+        $data['dimensi'] = $this->_getNilaiDimensi($dimensi, $star_date, $end_date);
+        $data['n_sb_dimensi'] = $this->db->select('nama_sub_dimensi,kode_sd')->get_where('subdimensi', ['kode_d' => $dimensi])->result_array();
+        $data['n_dimensi'] = $this->db->select('nama_dimensi,kode_d')->get_where('dimensi', ['kode_d' => $dimensi])->result_array();
+        $allsb = $this->db->select('kode_sd')->get_where('subdimensi', ['kode_d' => $dimensi])->result_array();
+
+        foreach ($allsb as $sb) {
+            $data['sub_dimensi'][$sb['kode_sd']] = $this->_getNilaiRescaleSubDimensi($sb['kode_sd'], $star_date, $end_date);
+        }
+
+        echo json_encode($data);
+    }
+
+
+
+    // Get Nilai IPI per periode
+    private function _getNilaiIpi($star_date = null, $end_date = null)
+    {
+        $dimensi = $this->db->select('kode_d')->get('dimensi')->result_array();
+        if ($dimensi == null) {
+            return 0;
+        }
+        $riscaleDimensi = [];
+        $tahun = $this->admin->getTahun($star_date, $end_date);
+        foreach ($dimensi as $d) {
+            $riscaleDimensi[$d['kode_d']] = $this->_getNilaiDimensi($d['kode_d'], $star_date, $end_date);
+        }
+        $nilairescale_ipi = [];
+        for ($i = 0; $i < count($tahun); $i++) {
+            $nilaiIpi = 0;
+            foreach ($riscaleDimensi as $in) { // 3
+                if ($in[$tahun[$i]['tahun']] != null || $in[$tahun[$i]['tahun']] == 0) {
+                    $nilaiIpi +=  $in[$tahun[$i]['tahun']];
+                }
+            }
+            $nilairescale_ipi[$tahun[$i]['tahun']] =  $nilaiIpi / (count($riscaleDimensi));
+        }
+        return $nilairescale_ipi;
+    }
+
+    // Get Nilai dimensi per periode
+    private function _getNilaiDimensi($dimensi, $star_date = null, $end_date = null)
+    {
+        $this->load->model('Admin_model', 'admin');
+        $allsb = $this->db->select('kode_sd')->get_where('subdimensi', ['kode_d' => $dimensi])->result_array();
+        if ($allsb == null) {
+            return 0;
+        }
+        $rescalesb = [];
+        $tahun = $this->admin->getTahun($star_date, $end_date);
+        foreach ($allsb as $sb) {
+            $rescalesb[$sb['kode_sd']] = $this->_getNilaiRescaleSubDimensi($sb['kode_sd'], $star_date, $end_date);
+        }
+        $nilairescale_dimensi = [];
+        for ($i = 0; $i < count($tahun); $i++) {
+            $nilaiTambah = 0;
+            foreach ($rescalesb as $in) { // 3
+                if ($in[$tahun[$i]['tahun']] != null || $in[$tahun[$i]['tahun']] == 0) {
+                    $nilaiTambah +=  $in[$tahun[$i]['tahun']];
+                }
+            }
+            $nilairescale_dimensi[$dimensi][$tahun[$i]['tahun']] = (1 / count($rescalesb)) * $nilaiTambah;
+        }
+        return $nilairescale_dimensi[$dimensi];
+    }
+
+    // Get Nilai Sub Dimensi per periode
+    private function _getNilaiRescaleSubDimensi($sbdimensi, $star_date = null, $end_date = null)
+    {
+        $this->load->model('Admin_model', 'admin');
+        $indikator = $this->admin->getIndikator($sbdimensi, $star_date, $end_date);
+        // Nilai Indikator
+        $tahun = $this->admin->getTahun($star_date, $end_date);
+        $nilairescale_indikator = [];
+        foreach ($tahun as $t) {
+            foreach ($indikator as $i) {
+                $nilairescale_indikator[$i['kode_indikator']][$t['tahun']] = $this->_getNilaiRescale($t['tahun'], $i['kode_indikator'], $star_date, $end_date);
+            }
+        }
+        if ($nilairescale_indikator == null) {
+            return 0;
+        }
+
+
+        // akhir nyari nilai per indikator
+        // Nilai Subdimensi
+        $nilairescale_subdimenasi = 0;
+        $nilai_sb = [];
+        for ($i = 0; $i < count($tahun); $i++) {
+            $nilairescale_subdimenasi = 0;
+            foreach ($nilairescale_indikator as $in) { // 6
+                if ($in[$tahun[$i]['tahun']] != null || $in[$tahun[$i]['tahun']] == 0) {
+                    $nilairescale_subdimenasi += ($in[$tahun[$i]['tahun']]) / count($nilairescale_indikator);
+                }
+            }
+            $nilai_sb[$sbdimensi][$tahun[$i]['tahun']] = $nilairescale_subdimenasi;
+        }
+        return $nilai_sb[$sbdimensi];
+    }
+
+    // Get Nilai indikator per tahun
+    private function _getNilaiRescale($tahun, $indikator, $star_date = null, $end_date = null)
+    {
+        $this->load->model('Admin_model', 'admin');
+        $status = $this->admin->getStatus($indikator);
+        $max = $this->admin->getMax($indikator, $star_date, $end_date);
+        $min = $this->admin->getMin($indikator, $star_date, $end_date);
+        if ($max['nilai'] == $min['nilai']) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data menghasilkan nilai NaN ! </div>');
+            redirect('admin/pertumbuhanEkonomi');
+        }
+
+        $nilai = $this->admin->getNilai($tahun, $indikator);
+        if (floatval($max['nilai']) > 0 && floatval($min['nilai']) > 0 && floatval($nilai['nilai']) > 0 && $max['nilai'] != $min['nilai']) {
+            if ($status['status'] == 1) {
+                $nilairescale = (floatval($max['nilai']) - floatval($nilai['nilai'])) / (floatval($max['nilai']) - floatval($min['nilai'])) * 10;
+            } elseif ($status['status'] == 0 || $status['status'] == 2) {
+                $nilairescale = (floatval($nilai['nilai']) - floatval($min['nilai'])) / (floatval($max['nilai']) - floatval($min['nilai'])) * 10;
+            }
+            return $nilairescale;
+        } else {
+            return $nilairescale = 'Non';
+        }
     }
 
     public function inklusifitas()

@@ -43,6 +43,7 @@
 <script src="<?= base_url('assets/vendor/chartjs/chartjs-plugin-annotation.js') ?>"></script>
 <!-- Script Modal -->
 <script src="<?= base_url('assets/'); ?>js/script.js"></script>
+<script src="<?= base_url('assets/'); ?>js/pertumbuhanEkonomi.js"></script>
 <script src="<?= base_url('assets/'); ?>js/demo/chart-bar-demo.js"></script>
 
 </body>

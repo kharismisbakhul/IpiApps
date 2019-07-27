@@ -34,24 +34,29 @@
                                 Untuk menampilkan data pada
                                 tabel dan chart, harap untuk
                                 mengisi <br> rentan tahun di bawah
-                                <form action="" class="mt-3">
-                                    <div class="form-row">
-                                        <div class="form-group col-md-12">
-                                            <label for="dariTahun" class="text-xs">Dari Tahun</label>
-                                            <select type="email" class="form-control" id="dariTahun">
-                                                <option selected>Pilih tahun</option>
-                                                <option>...</option>
+                                <form action="<?= base_url('admin/pertumbuhanEkonomi') ?>" method="get">
+                                    <div class="row ml-1 mr-1">
+                                        <div class="col-lg-12 mb-2">
+                                            <small>dari tahun</small>
+                                            <select class="custom-select" id="inputGroupSelect01" name="star_date">
+                                                <option value="<?= $min_tahun['tahun'] ?>" selected id="star_date">pilih tahun...</option>
+                                                <?php foreach ($tahun_selc as $t) : ?>
+                                                    <option value="<?= $t['tahun'] ?>" id="star_date"><?= $t['tahun'] ?></option>
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
-                                        <div class="form-group col-md-12">
-                                            <label for="sampaiTahun" class="text-xs">Sampai Tahun</label>
-                                            <select type="email" class="form-control" id="dariTahun">
-                                                <option selected>Pilih tahun</option>
-                                                <option>...</option>
+                                        <div class="col-lg-12 mb-2">
+                                            <small>sampai tahun</small>
+                                            <select class="custom-select" id="inputGroupSelect01" name="end_date">
+                                                <option value="<?= $max_tahun['tahun'] ?>" selected id="end_date">pilih tahun...</option>
+                                                <?php foreach ($tahun_selc as $t) : ?>
+                                                    <option value="<?= $t['tahun'] ?>" id="end_date"><?= $t['tahun'] ?></option>
+
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
-                                        <div class="form-group col-md-12 mt-3">
-                                            <button type="button" class="btn btn-primary" style="width: 100%;">Cari</button>
+                                        <div class="col-lg-12 mt-2">
+                                            <button type="submit" class="btn btn-primary submit" style="width: 100%" id="submit">Submit</button>
                                         </div>
                                     </div>
                                 </form>
@@ -83,34 +88,11 @@
                                             <th class="py-5" rowspan="2">Dimensi</th>
                                             <th colspan="6">Skor</th>
                                         </tr>
-                                        <tr style="background-color: #f8f8f8; color: #101010">
-                                            <th scope="col">2012</th>
-                                            <th scope="col">2013</th>
-                                            <th scope="col">2014</th>
-                                            <th scope="col">2015</th>
-                                            <th scope="col">2016</th>
-                                            <th scope="col">2017</th>
+                                        <tr style="background-color: #f8f8f8; color: #101010" class="tahun">
+
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="2">Indeks <?= $title; ?></td>
-                                            <?php foreach ($nilai_dimensi as $nd) : ?>
-                                                <td><?= round($nd['nilai_rescale'], 2) ?></td>
-                                            <?php endforeach; ?>
-                                        </tr>
-                                        <?php $a = 1;
-                                        foreach ($subDimensi as $sd) : ?>
-                                            <tr>
-                                                <td><?= $a; ?></td>
-                                                <td><?= $sd['nama_sub_dimensi'] ?></td>
-                                                <?php foreach ($sd['nilai_subDimensi'] as $snd) : ?>
-                                                    <td><?= round($snd['nilai_rescale'], 2) ?></td>
-                                                <?php endforeach; ?>
-                                            </tr>
-                                            <?php $a++;
-                                        endforeach; ?>
-                                        </tr>
+                                    <tbody class="iniData">
                                     </tbody>
                                 </table>
                             </div>
@@ -118,8 +100,8 @@
                     </div>
                     <hr>
                     <div class="row no-gutters align-items-center">
-                        <div class="chart-bar">
-                            <canvas id="pertumbuhan-ek" width="850" height="500"></canvas>
+                        <div class="chart-bar chart">
+                            <canvas id="pertumbuhan-ek" width="850" height="600"></canvas>
                         </div>
                         <div class="col-md-12 mr-2">
                             <div class="text-gray-800 mt-0">
