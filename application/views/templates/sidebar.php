@@ -95,7 +95,7 @@
                     </a>
 
                     <?php foreach ($subDimensi as $sd) :
-                        if ($sd['kode_d'] == 1) {
+                        if ($sd['kode_d'] == $d['kode_d']) {
                             $str = $sd['nama_sub_dimensi'];
                             $result = explode(" ", $str);
                             if (count($result) < 3) {

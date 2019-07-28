@@ -88,38 +88,10 @@
                                     <th class="py-5" rowspan="2">Dimensi</th>
                                     <th colspan="6">Skor</th>
                                 </tr>
-                                <tr style="background-color: #f8f8f8; color: #101010">
-                                    <?php foreach ($tahun as $t) : ?>
-                                        <th scope="col"><?= $t['tahun'] ?></th>
-                                    <?php endforeach; ?>
+                                <tr style="background-color: #f8f8f8; color: #101010" class="tahun-ipi">
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Indeks Pertumbuhan Inklusif</td>
-                                    <?php $j = 0;
-                                    foreach ($ipi_index as $i) : ?>
-                                        <?php if ($i['tahun'] == $tahun[$j]['tahun']) : ?>
-                                            <td><?= round($i['nilai_rescale'], 2) ?></td>
-                                        <?php endif;
-                                        $j++; ?>
-                                    <?php endforeach; ?>
-
-                                </tr>
-                                <?php $count = 2;
-                                foreach ($dimensi as $d) : ?>
-                                    <tr>
-                                        <td><?= $count++ ?></td>
-                                        <td><?= $d['nama_dimensi'] ?></td>
-                                        <?php foreach ($nilaiDimensi as $n) : ?>
-                                            <?php if ($n['kode_d'] == $d['kode_d']) : ?>
-                                                <td><?= $n['nilai_rescale'] ?></td>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
-                                    </tr>
-                                <?php endforeach; ?>
-
+                            <tbody class="iniDataIpi">
                             </tbody>
                         </table>
                     </div>

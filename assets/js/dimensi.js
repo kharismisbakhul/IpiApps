@@ -172,7 +172,7 @@ $(document).ready(function () {
 		},
 		error: function (data) {
 			$('.loader').remove();
-			$('#chart-dimensi').remove();
+			$('#chart-subdimensi').remove();
 			$('.chart').append('<img src="http://localhost:8080/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">')
 		}
 	});

@@ -3,6 +3,7 @@
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
             <span>Copyright © <?= date('Y') ?> AKD Web Development Team. All Rights Reserved. </span>
+            <?= count($this->uri->segment(2))  ?>
         </div>
     </div>
 </footer>
@@ -42,13 +43,17 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script src="<?= base_url('assets/vendor/chartjs/chartjs-plugin-annotation.js') ?>"></script>
 <!-- Script Modal -->
-<script src="<?= base_url('assets/'); ?>js/script.js"></script>
+
+
 <?php if ($this->input->get('d')) : ?>
     <script src="<?= base_url('assets/'); ?>js/dimensi.js"></script>
 <?php elseif ($this->input->get('sd')) : ?>
     <script src="<?= base_url('assets/'); ?>js/subdimensi.js"></script>
+<?php elseif ($this->uri->segment(2) == 'ipi') : ?>
+    <script src="<?= base_url('assets/'); ?>js/ipi.js"></script>
+<?php elseif (count($this->uri->segment(2)) == 0) : ?>
+    <script src="<?= base_url('assets/'); ?>js/script.js"></script>
 <?php endif; ?>
-<script src="<?= base_url('assets/'); ?>js/demo/chart-bar-demo.js"></script>
 
 </body>
 
