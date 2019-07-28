@@ -3,7 +3,7 @@ var segments = url.split('/');
 var action = segments[5];
 var data = action.split('?');
 
-let iniUrl = 'http://localhost:8080/IpiApps/Admin/pertumbuhanEkonomiAPI?' + data[1];
+let iniUrl = 'http://localhost:8080/IpiApps/Admin/dimensiApi?' + data[1];
 let nama_sb_dimensi = [];
 let nama_dimensi = [];
 let tahun = [];
@@ -19,14 +19,12 @@ $(document).ready(function () {
 		dataType: 'json',
 		startTime: performance.now(),
 		beforeSend: function (data) {
-			$('#pertumbuhan-ek').hide();
+			$('#chart-dimensi').hide();
 			$('.chart').append('<img src="http://localhost:8080/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">')
 		},
 		success: function (data) {
 			$('.loader').remove()
-			$('#pertumbuhan-ek').show();
-			console.log(data['sub_dimensi']);
-			console.log(data);
+			$('#chart-dimensi').show();
 			for (var i in data['tahun']) {
 				tahun.push(data['tahun'][i].tahun);
 			}
@@ -50,9 +48,6 @@ $(document).ready(function () {
 			for (var i in data['dimensi']) {
 				nilaiDimensi.push(data['dimensi'][i]);
 			}
-
-			console.log(data['sub_dimensi']);
-			console.log(nama_sb_dimensi, dataTampung);
 			let setDataDimensi = [];
 			setDataDimensi.push({
 				'label': nama_dimensi[0],
@@ -78,7 +73,7 @@ $(document).ready(function () {
 				});
 			}
 
-			const canvas = document.querySelector("#pertumbuhan-ek");
+			const canvas = document.querySelector("#chart-dimensi");
 			const ctx = canvas.getContext('2d');
 			new Chart(ctx, {
 				type: 'bar',
@@ -177,7 +172,7 @@ $(document).ready(function () {
 		},
 		error: function (data) {
 			$('.loader').remove();
-			$('#pertumbuhan-ek').remove();
+			$('#chart-dimensi').remove();
 			$('.chart').append('<img src="http://localhost:8080/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">')
 		}
 	});
@@ -190,32 +185,30 @@ function _getDataToTable(data, dataTampung) {
 		$('.tahun').append(`<th scope="col">` + p.tahun + `</th>`);
 	})
 
+	$('.iniData').append(`<tr class="dimensi"></tr>`)
+
 	data['n_dimensi'].forEach(function (p) {
-		$('.iniData').append(`
+		$('.dimensi').append(`
         <td colspan="2" scope="col">` + p.nama_dimensi + `</td>
         `)
 	})
 	for (var i in data['dimensi']) {
-		$('.iniData').append(`
+		$('.dimensi').append(`
         <td class="n-dimensi" scope="col">` + parseFloat(data['dimensi'][i]).toFixed(2) + `</td>
         `)
 	}
 
 	var tableTr = "";
-	console.log(nama_sb_dimensi);
-	console.log(tahun);
+	var count = 1;
 	for (var i in data['n_sb_dimensi']) {
 		tableTr += "<tr>";
-		tableTr += "<td>" + i + "</td>"
+		tableTr += "<td>" + (count++) + "</td>"
 		tableTr += "<td>" + data['n_sb_dimensi'][i].nama_sub_dimensi + "</td>"
 		for (var j in tahun) {
 			tableTr += "<td>" + parseFloat(dataTampung[data['n_sb_dimensi'][i].kode_sd][j]).toFixed(2) + "</td>"
 		}
 		tableTr += "</tr>";
 	}
-
-
 	$('.iniData').append(tableTr);
-
 }
 //akhir

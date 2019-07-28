@@ -110,35 +110,42 @@ class Admin extends CI_Controller
         echo json_encode($cek);
     }
 
-    public function pertumbuhanEkonomi()
+    public function dimensi()
     {
         $this->login_check();
         $this->load->model('Admin_model', 'admin');
         $data = $this->initData();
-        $data['title'] = 'Pertumbuhan Ekonomi';
+        $data['title'] = 'Dimensi';
         $star_date = $this->input->get('star_date');
         $end_date = $this->input->get('end_date');
         $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
         $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
         $data['tahun_selc'] = $this->admin->getTahun();
         $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
-        // $data['dimensi'] = $this->_getNilaiDimensi(1, $star_date, $end_date);
-        // $data['n_sb_dimensi'] = $this->db->select('nama_sub_dimensi,kode_sd')->get_where('subdimensi', ['kode_d' => 1])->result_array();
-        // $data['n_dimensi'] = $this->db->select('nama_dimensi,kode_d')->get_where('dimensi', ['kode_d' => 1])->result_array();
-        // $allsb = $this->db->select('kode_sd')->get_where('subdimensi', ['kode_d' => 1])->result_array();
-
-        // foreach ($allsb as $sb) {
-        //     $data['sub_dimensi'][$sb['kode_sd']] = $this->_getNilaiRescaleSubDimensi($sb['kode_sd'], $star_date, $end_date);
-        // }
-
         $this->loadTemplate($data);
-        $this->load->view('menu/pertumbuhanEkonomi/pertumbuhanEkonomi', $data);
+        $this->load->view('menu/dimensi', $data);
         $this->load->view('templates/footer');
     }
 
-    public function pertumbuhanEkonomiAPI()
+    public function subdimensi()
     {
-        $dimensi = 1;
+        $this->login_check();
+        $this->load->model('Admin_model', 'admin');
+        $data = $this->initData();
+        $data['title'] = 'Sub Dimensi';
+        $star_date = $this->input->get('star_date');
+        $end_date = $this->input->get('end_date');
+        $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
+        $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
+        $data['tahun_selc'] = $this->admin->getTahun();
+        $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
+        $this->loadTemplate($data);
+        $this->load->view('menu/subdimensi', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function dimensiApi()
+    {
         $this->login_check();
         $this->load->model('Admin_model', 'admin');
         $star_date = $this->input->get('star_date');
@@ -151,13 +158,31 @@ class Admin extends CI_Controller
         $data['n_sb_dimensi'] = $this->db->select('nama_sub_dimensi,kode_sd')->get_where('subdimensi', ['kode_d' => $dimensi])->result_array();
         $data['n_dimensi'] = $this->db->select('nama_dimensi,kode_d')->get_where('dimensi', ['kode_d' => $dimensi])->result_array();
         $allsb = $this->db->select('kode_sd')->get_where('subdimensi', ['kode_d' => $dimensi])->result_array();
-
         foreach ($allsb as $sb) {
             $data['sub_dimensi'][$sb['kode_sd']] = $this->_getNilaiRescaleSubDimensi($sb['kode_sd'], $star_date, $end_date);
         }
 
         echo json_encode($data);
     }
+
+    public function subdimensiApi()
+    {
+        $this->login_check();
+        $this->load->model('Admin_model', 'admin');
+        $star_date = $this->input->get('star_date');
+        $end_date = $this->input->get('end_date');
+        $subdimensi = $this->input->get('sd');
+        $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
+        $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
+        $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
+        $data['subdimensi'] = $this->_getNilaiRescaleSubDimensi($subdimensi, $star_date, $end_date);
+        $data['n_subdimensi'] = $this->db->select('nama_sub_dimensi,kode_sd')->get_where('subdimensi', ['kode_sd' => $subdimensi])->row_array();
+        $data['n_indikator'] = $this->db->select('nama_indikator,kode_indikator')->get_where('indikator', ['kode_sd' => $subdimensi])->result_array();;
+        $data['indikator'] = $this->_getNilaiIndikator($subdimensi, $star_date, $end_date);
+        echo json_encode($data);
+    }
+
+
 
 
 
@@ -228,9 +253,8 @@ class Admin extends CI_Controller
         if ($nilairescale_indikator == null) {
             return 0;
         }
-
-
         // akhir nyari nilai per indikator
+
         // Nilai Subdimensi
         $nilairescale_subdimenasi = 0;
         $nilai_sb = [];
@@ -246,6 +270,20 @@ class Admin extends CI_Controller
         return $nilai_sb[$sbdimensi];
     }
 
+    private function _getNilaiIndikator($sbdimensi, $star_date = null, $end_date = null)
+    {
+        $this->load->model('Admin_model', 'admin');
+        $indikator = $this->admin->getIndikator($sbdimensi, $star_date, $end_date);
+        $tahun = $this->admin->getTahun($star_date, $end_date);
+        $nilairescale_indikator = [];
+        foreach ($tahun as $t) {
+            foreach ($indikator as $i) {
+                $nilairescale_indikator[$i['kode_indikator']][$t['tahun']] = $this->_getNilaiRescale($t['tahun'], $i['kode_indikator'], $star_date, $end_date);
+            }
+        }
+        return $nilairescale_indikator;
+    }
+
     // Get Nilai indikator per tahun
     private function _getNilaiRescale($tahun, $indikator, $star_date = null, $end_date = null)
     {
@@ -254,7 +292,6 @@ class Admin extends CI_Controller
         $max = $this->admin->getMax($indikator, $star_date, $end_date);
         $min = $this->admin->getMin($indikator, $star_date, $end_date);
         if ($max['nilai'] == $min['nilai']) {
-            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data menghasilkan nilai NaN ! </div>');
             redirect('admin/pertumbuhanEkonomi');
         }
 
@@ -271,27 +308,6 @@ class Admin extends CI_Controller
         }
     }
 
-    public function inklusifitas()
-    {
-        $this->login_check();
-        $data = $this->initData();
-        $data['title'] = 'Inklusifitas';
-
-        $this->loadTemplate($data);
-        $this->load->view('menu/inklusifitas', $data);
-        $this->load->view('templates/footer');
-    }
-
-    public function sustainability()
-    {
-        $this->login_check();
-        $data = $this->initData();
-        $data['title'] = 'Sustainability';
-
-        $this->loadTemplate($data);
-        $this->load->view('menu/sustainability', $data);
-        $this->load->view('templates/footer');
-    }
 
     public function report()
     {

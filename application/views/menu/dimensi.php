@@ -11,13 +11,6 @@
         </div>
     </div>
 
-
-    <div class="row">
-        <div class="col-lg-12">
-            <?= $this->session->flashdata('message');  ?>
-        </div>
-    </div>
-
     <div class="row">
         <!-- Area Rentan Waktu -->
         <div class="col-xl-8 col-md-12 col-sm-12 mb-4">
@@ -34,7 +27,7 @@
                                 Untuk menampilkan data pada
                                 tabel dan chart, harap untuk
                                 mengisi <br> rentan tahun di bawah
-                                <form action="<?= base_url('admin/pertumbuhanEkonomi') ?>" method="get">
+                                <form action="<?= base_url('admin/dimensi'); ?>" method="get">
                                     <div class="row ml-1 mr-1">
                                         <div class="col-lg-12 mb-2">
                                             <small>dari tahun</small>
@@ -56,6 +49,7 @@
                                             </select>
                                         </div>
                                         <div class="col-lg-12 mt-2">
+                                            <input type="hidden" name="d" value="<?= $this->input->get('d');  ?>">
                                             <button type="submit" class="btn btn-primary submit" style="width: 100%" id="submit">Submit</button>
                                         </div>
                                     </div>
@@ -89,7 +83,6 @@
                                             <th colspan="6">Skor</th>
                                         </tr>
                                         <tr style="background-color: #f8f8f8; color: #101010" class="tahun">
-
                                         </tr>
                                     </thead>
                                     <tbody class="iniData">
@@ -100,41 +93,43 @@
                     </div>
                     <hr>
                     <div class="row no-gutters align-items-center">
-                        <div class="chart-bar chart">
-                            <canvas id="pertumbuhan-ek" width="850" height="600"></canvas>
-                        </div>
-                        <div class="col-md-12 mr-2">
-                            <div class="text-gray-800 mt-0">
-                                <div class="legenda card no-border" style="width: auto;">
-                                    <div class="card-body">
-                                        <div class="container">
-                                            <div class="row ml-1 mt-0">
-                                                <div class="col-md-6">
-                                                    <div class="label-1">
-                                                        <a href="#" role="button" class="btn square-legend bg-cream"></a>
-                                                        <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Inflasi</a>
+                        <div class="col-lg-12">
+                            <div class="chart">
+                                <canvas id="chart-dimensi" width="200" height="500"></canvas>
+                            </div>
+                            <div class="col-md-12 mr-2">
+                                <div class="text-gray-800 mt-0">
+                                    <div class="legenda card no-border" style="width: auto;">
+                                        <div class="card-body">
+                                            <div class="container">
+                                                <div class="row ml-1 mt-0">
+                                                    <div class="col-md-6">
+                                                        <div class="label-1">
+                                                            <a href="#" role="button" class="btn square-legend bg-cream"></a>
+                                                            <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Inflasi</a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="label-1">
-                                                        <a href="#" role="button" class="btn square-legend bg-yellow"></a>
-                                                        <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Aktivitas Ekonomi</a>
+                                                    <div class="col-md-6">
+                                                        <div class="label-1">
+                                                            <a href="#" role="button" class="btn square-legend bg-yellow"></a>
+                                                            <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Aktivitas Ekonomi</a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6 mt-3">
-                                                    <div class="label-1">
-                                                        <a href="#" role="button" class="btn square-legend bg-orange"></a>
-                                                        <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Pengembangan Sumberdaya Manusia</a>
+                                                    <div class="col-md-6 mt-3">
+                                                        <div class="label-1">
+                                                            <a href="#" role="button" class="btn square-legend bg-orange"></a>
+                                                            <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Pengembangan Sumberdaya Manusia</a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6 mt-3">
-                                                    <div class="label-1">
-                                                        <div class="row">
-                                                            <div class="col-2">
-                                                                <hr class="ml-1 line-legend bg-brown">
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <a href="#" class="text-sm text-decoration-none text-secondary">Indeks Pertumbuhan Ekonomi</a>
+                                                    <div class="col-md-6 mt-3">
+                                                        <div class="label-1">
+                                                            <div class="row">
+                                                                <div class="col-2">
+                                                                    <hr class="ml-1 line-legend bg-brown">
+                                                                </div>
+                                                                <div class="col-8">
+                                                                    <a href="#" class="text-sm text-decoration-none text-secondary">Indeks Pertumbuhan Ekonomi</a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

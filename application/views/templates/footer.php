@@ -43,7 +43,11 @@
 <script src="<?= base_url('assets/vendor/chartjs/chartjs-plugin-annotation.js') ?>"></script>
 <!-- Script Modal -->
 <script src="<?= base_url('assets/'); ?>js/script.js"></script>
-<script src="<?= base_url('assets/'); ?>js/pertumbuhanEkonomi.js"></script>
+<?php if ($this->input->get('d')) : ?>
+    <script src="<?= base_url('assets/'); ?>js/dimensi.js"></script>
+<?php elseif ($this->input->get('sd')) : ?>
+    <script src="<?= base_url('assets/'); ?>js/subdimensi.js"></script>
+<?php endif; ?>
 <script src="<?= base_url('assets/'); ?>js/demo/chart-bar-demo.js"></script>
 
 </body>
