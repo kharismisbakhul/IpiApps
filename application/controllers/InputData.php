@@ -112,13 +112,21 @@ class InputData extends CI_Controller
     public function hapusIndikator()
     {
         $nama_indikator = $this->input->post('modal-indikator-hapus');
+        $nama_subdimensi = $this->input->post('modal-subDimensi-hapus');
         $this->load->model('Admin_model', 'admin');
         $kode_indikator = $this->admin->getKodeIndikator($nama_indikator);
+        $kode_subDimensi = $this->admin->getKodeIndikator($nama_subdimensi);
         $this->db->where('kode_indikator', $kode_indikator);
         $this->db->delete('nilaiindikator');
 
         $this->db->where('kode_indikator', $kode_indikator);
         $this->db->delete('indikator');
+
+        $temp_indikator = $this->db->get_where('indikator', ['kode_sd' => $kode_subDimensi])->row_array();
+        $kode_temp_indikator = intval($temp_indikator['kode_indikator']);
+        $this->kalkulasi->setNilaiRescaleSubDimensi($kode_temp_indikator);
+        $this->kalkulasi->setNilaiRescaleDimensi($kode_temp_indikator);
+        $this->kalkulasi->setNilaiRescaleIPI();
 
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Variabel indikator berhasil dihapus</div>');
         redirect('report');
@@ -141,9 +149,7 @@ class InputData extends CI_Controller
         } else {
             $this->load->model('Admin_model', 'admin');
             $indikator = $this->input->post('indikator');
-            $subdimensi = $this->input->post('subDimensi');
             $kode_indikator = $this->admin->getKodeIndikator($indikator);
-            $kode_subDimensi = $this->admin->getKodeSubDimensi($subdimensi);
             $tahun = $this->input->post('tahun');
             $data = array(
                 'tahun' => $tahun,
@@ -152,14 +158,11 @@ class InputData extends CI_Controller
             $this->db->delete('nilaiindikator', $data);
 
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data berhasil Dihapus</div>');
-
-            $this->load->model('Kalkulasi_model', 'kalkulasi');
-            $temp_indikator = $this->db->get_where('indikator', ['kode_sd' => $kode_subDimensi])->row_array();
-            $kode_temp_indikator = intval($temp_indikator['kode_indikator']);
-            $this->kalkulasi->setNilaiRescaleSubDimensi($kode_temp_indikator);
-            $this->kalkulasi->setNilaiRescaleDimensi($kode_temp_indikator);
-            $this->kalkulasi->setNilaiRescaleIPI();
             redirect('report');
         }
+    }
+    public function hai()
+    {
+        echo $this->db->get_where('tahun', ['tahun' => 2030])->result_array();
     }
 }
