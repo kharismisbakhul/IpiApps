@@ -1,17 +1,9 @@
-//Updated
 var url = $(location).attr('href');
 var segments = url.split('/');
-var action = segments[4];
-var data;
-let iniUrl;
-if (segments[5]) {
-	data = segments[5].split('?');
-	iniUrl = 'http://localhost:8080/IpiApps/Admin/ipiApi?' + data[1]
-} else {
-	iniUrl = 'http://localhost:8080/IpiApps/Admin/ipiApi'
-}
+var action = segments[5];
+var data = action.split('?');
 
-
+let iniUrl = 'http://localhost:8080/IpiApps/Admin/ipiApi?' + data[1];
 let nama_dimensi = [];
 let nama_ipi = [];
 let tahun = [];
@@ -27,38 +19,59 @@ $(document).ready(function () {
 		dataType: 'json',
 		startTime: performance.now(),
 		beforeSend: function (data) {
-			$('#ipi-chart').hide();
+			$('#chart-dimensi').hide();
 			$('.chart').append('<img src="http://localhost:8080/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">')
 		},
 		success: function (data) {
-			console.log(data)
 			$('.loader').remove()
-			$('#ipi-chart').show();
+			$('#chart-dimensi').show();
 			for (var i in data['tahun']) {
 				tahun.push(data['tahun'][i].tahun);
 			}
+			for (var i in data['n_dimensi']) {
+				nama_dimensi.push(data['n_dimensi'][i].nama_dimensi);
+			}
 
-			_getDataToTable(data);
+			let dataTampung = [];
+			for (var i in data['dimensi']) {
+				nilaiDimensi = [];
+				for (var j in tahun) {
+					nilaiDimensi.push(data['dimensi'][i][tahun[j]]);
+				}
+				dataTampung[i] = nilaiDimensi;
+			}
+			_getDataToTable(data, dataTampung, tahun);
+
 
 			nama_ipi.push(data['n_ipi']);
 
 			for (var i in data['ipi']) {
 				nilaiIpi.push(data['ipi'][i]);
 			}
-
-			var dataTampung = []
-			dataTampung.push({
+			let setDataDimensi = [];
+			setDataDimensi.push({
 				'label': nama_ipi[0],
-				'type': "bar",
+				'type': "line",
 				'borderColor': '#FF0606',
 				'data': nilaiIpi,
 				'borderDashOffset': 1,
 				'fill': false,
-				'spanGaps': true,
-				'backgroundColor': "#e74c3c",
+				'spanGaps': true
 			})
-			console.log(nilaiIpi)
-			console.log(dataTampung)
+			let color = [
+				"rgb(132,60,12)",
+				"rgb(84,130,53)",
+				"rgb(191,144,0)",
+			];
+			let count = 1;
+			for (var i in data['n_dimensi']) {
+				setDataDimensi.push({
+					'label': nama_dimensi[i],
+					'type': "bar",
+					'backgroundColor': color[i],
+					'data': dataTampung[data['n_dimensi'][i].kode_d]
+				});
+			}
 
 			const canvas = document.querySelector("#ipi-chart");
 			const ctx = canvas.getContext('2d');
@@ -66,7 +79,7 @@ $(document).ready(function () {
 				type: 'bar',
 				data: {
 					labels: tahun,
-					datasets: dataTampung
+					datasets: setDataDimensi
 				},
 				options: {
 					maintainAspectRatio: false,
@@ -167,7 +180,7 @@ $(document).ready(function () {
 // Akhir Indeks Pembangunan Inklusif
 
 //untutk data table
-function _getDataToTable(data) {
+function _getDataToTable(data, dataTampung) {
 	data['tahun'].forEach(function (p) {
 		$('.tahun-ipi').append(`<th scope="col">` + p.tahun + `</th>`);
 	})
@@ -184,6 +197,18 @@ function _getDataToTable(data) {
         <td class="n_ipi" scope="col">` + parseFloat(data['ipi'][i]).toFixed(2) + `</td>
         `)
 	}
-	console.log('cek')
+
+	var tableTr = "";
+	var count = 1;
+	for (var i in data['n_dimensi']) {
+		tableTr += "<tr>";
+		tableTr += "<td>" + (count++) + "</td>"
+		tableTr += "<td>" + data['n_dimensi'][i].nama_dimensi + "</td>"
+		for (var j in tahun) {
+			tableTr += "<td>" + parseFloat(dataTampung[data['n_dimensi'][i].kode_d][j]).toFixed(2) + "</td>"
+		}
+		tableTr += "</tr>";
+	}
+	$('.iniDataIpi').append(tableTr);
 }
 //akhir
