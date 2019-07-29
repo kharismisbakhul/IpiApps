@@ -2,6 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 class Admin_model extends CI_Model
 {
+//Updated
     public function getTahunNilaiDimensi()
     {
         $this->db->select('tahun');
@@ -124,5 +125,14 @@ class Admin_model extends CI_Model
             $this->db->where('nilaisubdimensi.tahun <=', $end_date);
         }
         return $this->db->get()->result_array();
+    }
+    public function getNilaiIndikatorPerTahun($kode_indikator, $tahun, $status = 0)
+    {
+        $this->db->where('kode_indikator', $kode_indikator);
+        $this->db->where('tahun', $tahun);
+        $this->db->select('*');
+        $this->db->from('nilaiindikator');
+        $result = $this->db->get()->row_array();
+        return $result;
     }
 }

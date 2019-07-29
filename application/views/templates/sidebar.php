@@ -36,7 +36,7 @@
         <?php else : ?>
         <li class="nav-item">
         <?php endif; ?>
-        <a class="nav-link pb-0" href="<?= base_url('admin/inputData'); ?>">
+        <a class="nav-link pb-0" href="<?= base_url('inputData'); ?>">
             <i class="fas fa-fw fa-sign-in-alt"></i>
             <span>Input Data</span>
         </a>
@@ -48,7 +48,7 @@
         <?php else : ?>
         <li class="nav-item">
         <?php endif; ?>
-        <a class="nav-link pb-0" href="<?= base_url('admin/ipi'); ?>">
+        <a class="nav-link pb-0" href="<?= base_url('ipi'); ?>">
             <i class="fas fa-fw fa-chart-bar"></i>
             <span>Indeks Pembangunan<br><span class="ml-4"> Inklusif</span></span>
         </a>
@@ -57,8 +57,9 @@
     <?php $subDimensi = $this->db->get('subDimensi')->result_array(); ?>
     <?php $dimensi = $this->db->get('dimensi')->result_array(); ?>
     <!-- Nav Item - Pages Collapse Menu -->
-
-
+  
+--- Updated
+             
     <!-- Aktivitas Ekonomi -->
     <?php foreach ($dimensi as $d) : ?>
         <?php if ($title == $d['nama_dimensi']) : ?>
@@ -108,6 +109,7 @@
                         };
                     endforeach; ?>
                 </div>
+-- Updated
             </div>
         </li>
     <?php endforeach; ?>
@@ -118,7 +120,7 @@
         <?php else : ?>
         <li class="nav-item">
         <?php endif; ?>
-        <a class="nav-link pb-0" href="<?= base_url('admin/report'); ?>">
+        <a class="nav-link pb-0" href="<?= base_url('report'); ?>">
             <i class="fas fa-fw fa-file-alt"></i>
             <span>Report</span>
         </a>

@@ -7,6 +7,9 @@ class Admin extends CI_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
+        if (!$this->session->userdata('username')) {
+            redirect('auth');
+        }
     }
 
     public function loadTemplate($data)
@@ -16,22 +19,9 @@ class Admin extends CI_Controller
         $this->load->view('templates/topbar', $data);
     }
 
-    public function login_check()
-    {
-        if (!$this->session->userdata('username')) {
-            redirect('auth');
-        }
-    }
-
-    public function initData()
-    {
-        $data['username'] = $this->session->userdata('username');
-        return $data;
-    }
-
     public function index()
     {
-        $this->login_check();
+//Updated
         $data = $this->initData();
         $this->load->model('Admin_model', 'admin');
         $data['title'] = 'Dashboard';
@@ -41,24 +31,16 @@ class Admin extends CI_Controller
         $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
         $data['tahun_selc'] = $this->admin->getTahun();
         $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
+        
+        $data['title'] = 'Input Data';
         $this->loadTemplate($data);
         $this->load->view('menu/dashboard', $data);
         $this->load->view('templates/footer');
     }
 
-    public function inputData()
+    public function pertumbuhanEkonomi()
     {
-        $this->login_check();
-        $data = $this->initData();
-        $data['title'] = 'Input Data';
-        $this->loadTemplate($data);
-        $this->load->view('menu/inputData', $data);
-        $this->load->view('templates/footer');
-    }
-
-    public function ipi()
-    {
-        $this->login_check();
+//Updated
         $this->load->model('Admin_model', 'admin');
         $data = $this->initData();
         $data['title'] = 'Indeks Pembangunan Inklusif';
@@ -75,7 +57,6 @@ class Admin extends CI_Controller
 
     public function ipiApi()
     {
-        $this->login_check();
         $this->load->model('Admin_model', 'admin');
         $star_date = $this->input->get('star_date');
         $end_date = $this->input->get('end_date');
@@ -94,7 +75,7 @@ class Admin extends CI_Controller
 
     public function dimensi()
     {
-        $this->login_check();
+//Updated
         $this->load->model('Admin_model', 'admin');
         $data = $this->initData();
         $data['title'] = 'Dimensi';
@@ -106,12 +87,13 @@ class Admin extends CI_Controller
         $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
         $this->loadTemplate($data);
         $this->load->view('menu/dimensi', $data);
+
         $this->load->view('templates/footer');
     }
 
     public function subdimensi()
     {
-        $this->login_check();
+//Updated
         $this->load->model('Admin_model', 'admin');
         $data = $this->initData();
         $data['title'] = 'Sub Dimensi';
@@ -128,7 +110,6 @@ class Admin extends CI_Controller
 
     public function dimensiApi()
     {
-        $this->login_check();
         $this->load->model('Admin_model', 'admin');
         $star_date = $this->input->get('star_date');
         $end_date = $this->input->get('end_date');
@@ -149,7 +130,6 @@ class Admin extends CI_Controller
 
     public function subdimensiApi()
     {
-        $this->login_check();
         $this->load->model('Admin_model', 'admin');
         $star_date = $this->input->get('star_date');
         $end_date = $this->input->get('end_date');
@@ -284,14 +264,5 @@ class Admin extends CI_Controller
         } else {
             return $nilairescale = 'Non';
         }
-    }
-    public function report()
-    {
-        $this->login_check();
-        $data = $this->initData();
-        $data['title'] = 'Report';
-        $this->loadTemplate($data);
-        $this->load->view('menu/report', $data);
-        $this->load->view('templates/footer');
     }
 }

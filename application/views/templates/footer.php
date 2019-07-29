@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="sticky-footer bg-white">
+<footer class="sticky-footer bg-white" style="margin-top: 15rem">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
             <span>Copyright © <?= date('Y') ?> AKD Web Development Team. All Rights Reserved. </span>
@@ -29,7 +29,7 @@
 
 <!-- Custom scripts for all pages-->
 <script src="<?= base_url('assets/') ?>js/sb-admin-2.min.js"></script>
-<script src="<?= base_url(); ?>assets/js/sweetalert2.all.min.js"></script>
+<script src="<?= base_url('assets/'); ?>js/sweetalert2.all.min.js"></script>
 
 <!-- Page level plugins -->
 <script src="<?= base_url('assets/') ?>vendor/datatables/jquery.dataTables.min.js"></script>
@@ -42,8 +42,8 @@
 <script src="<?= base_url('assets/') ?>js/sweet-alert.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script src="<?= base_url('assets/vendor/chartjs/chartjs-plugin-annotation.js') ?>"></script>
+//Updated
 <!-- Script Modal -->
-
 
 <?php if ($this->input->get('d')) : ?>
     <script src="<?= base_url('assets/'); ?>js/dimensi.js"></script>
@@ -54,6 +54,9 @@
 <?php elseif (count($this->uri->segment(2)) == 0) : ?>
     <script src="<?= base_url('assets/'); ?>js/script.js"></script>
 <?php endif; ?>
+=======
+
+<script src="<?= base_url('assets/'); ?>js/filter.js"></script>
 
 </body>
 
