@@ -68,7 +68,7 @@ class InputData extends CI_Controller
             $this->kalkulasi->setNilaiRescaleSubDimensi($kode_indikator);
             $this->kalkulasi->setNilaiRescaleDimensi($kode_indikator);
             $this->kalkulasi->setNilaiRescaleIPI();
-            redirect('inputData');
+            redirect('report');
         }
     }
 
@@ -81,7 +81,14 @@ class InputData extends CI_Controller
         $nama_indikator = $this->input->post('modal-indikator');
         $status = $this->input->post('modal-status');
         $status_kode = 0;
-        ($status === "Merah") ? $status_kode = 1 : $status_kode = 0;
+        if ($status === "Merah") {
+            $status_kode = 1;
+        } else if ($status == "Putih") {
+            $status_kode = 0;
+        } else {
+            $status_kode = 2;
+        }
+
         $data = array(
             'nama_indikator' => $nama_indikator,
             'status' => $status_kode,
@@ -100,7 +107,7 @@ class InputData extends CI_Controller
                 $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Variabel indikator berhasil ditambahkan</div>');
             }
         }
-        redirect('inputData');
+        redirect('report');
     }
     public function hapusIndikator()
     {
@@ -114,6 +121,45 @@ class InputData extends CI_Controller
         $this->db->delete('indikator');
 
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Variabel indikator berhasil dihapus</div>');
-        redirect('inputData');
+        redirect('report');
+    }
+    public function hapusData()
+    {
+        $data = $this->initData();
+        $data['title'] = 'Hapus Data';
+        $this->form_validation->set_rules('dimensi', 'Dimensi', 'required|trim');
+        $this->form_validation->set_rules('subDimensi', 'Sub Dimensi', 'required|trim');
+        $this->form_validation->set_rules('indikator', 'Indikator', 'required|trim');
+        $this->form_validation->set_rules('tahun', 'Tahun', 'required|trim');
+        $this->form_validation->set_rules('nilai', 'Nilai', 'required|trim', [
+            'required' => 'Nilai tidak boleh kosong!!'
+        ]);
+        if ($this->form_validation->run() == false) {
+            $this->loadTemplate($data);
+            $this->load->view('menu/deleteData', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $this->load->model('Admin_model', 'admin');
+            $indikator = $this->input->post('indikator');
+            $subdimensi = $this->input->post('subDimensi');
+            $kode_indikator = $this->admin->getKodeIndikator($indikator);
+            $kode_subDimensi = $this->admin->getKodeSubDimensi($subdimensi);
+            $tahun = $this->input->post('tahun');
+            $data = array(
+                'tahun' => $tahun,
+                'kode_indikator' => $kode_indikator
+            );
+            $this->db->delete('nilaiindikator', $data);
+
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data berhasil Dihapus</div>');
+
+            $this->load->model('Kalkulasi_model', 'kalkulasi');
+            $temp_indikator = $this->db->get_where('indikator', ['kode_sd' => $kode_subDimensi])->row_array();
+            $kode_temp_indikator = intval($temp_indikator['kode_indikator']);
+            $this->kalkulasi->setNilaiRescaleSubDimensi($kode_temp_indikator);
+            $this->kalkulasi->setNilaiRescaleDimensi($kode_temp_indikator);
+            $this->kalkulasi->setNilaiRescaleIPI();
+            redirect('report');
+        }
     }
 }

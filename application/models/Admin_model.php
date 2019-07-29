@@ -132,6 +132,12 @@ class Admin_model extends CI_Model
         for ($i = 0; $i < count($indikator_sd); $i++) {
             $kode_indikator = $indikator_sd[$i]['kode_indikator'];
             $indikator_sd[$i]['nilai_indikator'] = $this->getIndikatorRangeNilai($kode_indikator, $start, $end);
+            $indikator_sd[$i]['nilai_rescale'] = [];
+            $indikator_sd[$i]['nilai_eksisting'] = [];
+            for ($j = 0; $j < count($indikator_sd[$i]['nilai_indikator']); $j++) {
+                array_push($indikator_sd[$i]['nilai_rescale'], round($indikator_sd[$i]['nilai_indikator'][$j]['nilai_rescale'], 2));
+                array_push($indikator_sd[$i]['nilai_eksisting'], round($indikator_sd[$i]['nilai_indikator'][$j]['nilai'], 2));
+            }
         }
         // echo json_encode($indikator_sd);
         return $indikator_sd;
@@ -152,6 +158,10 @@ class Admin_model extends CI_Model
             $kode_sd = $subDimensi[$i]['kode_sd'];
             $subDimensi[$i]['nilai'] = $this->getSubDimensiRangeNilai($kode_sd, $start, $end);
             $subDimensi[$i]['indikator'] = $this->getIndikatorRange($kode_sd, $start, $end);
+            $subDimensi[$i]['nilai_rescale'] = [];
+            for ($j = 0; $j < count($subDimensi[$i]['nilai']); $j++) {
+                array_push($subDimensi[$i]['nilai_rescale'], round($subDimensi[$i]['nilai'][$j]['nilai_rescale'], 2));
+            }
         }
         // header('Content-Type: application/json');
         // echo json_encode($subDimensi);
@@ -185,6 +195,10 @@ class Admin_model extends CI_Model
             $kode_d = $Dimensi[$i]['kode_d'];
             $Dimensi[$i]['nilai'] = $this->getDimensiRangeNilai($kode_d, $start, $end);
             $Dimensi[$i]['subDimensi'] = $this->getSubDimensiRange($kode_d, $start, $end);
+            $Dimensi[$i]['nilai_rescale'] = [];
+            for ($j = 0; $j < count($Dimensi[$i]['nilai']); $j++) {
+                array_push($Dimensi[$i]['nilai_rescale'], round($Dimensi[$i]['nilai'][$j]['nilai_rescale'], 2));
+            }
         }
         // header('Content-Type: application/json');
         // echo json_encode($Dimensi);

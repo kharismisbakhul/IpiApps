@@ -85,6 +85,11 @@
                                         <i class="fas fa-fw fa-times"></i>Kembali
                                     </a>
                                 </button>
+                                <button class="btn btn-danger">
+                                    <a href="<?= base_url('inputData/hapusData'); ?>" style="text-decoration: none; color: white;">
+                                        <i class="fas fa-fw fa-trash"></i>Hapus Data
+                                    </a>
+                                </button>
                                 <button type="submit" class="btn btn-primary tambah-user">
                                     <i class="fas fa-fw fa-plus"></i>Tambah Data
                                 </button>
@@ -139,8 +144,9 @@
                         <label for="modal-status" class="col-sm-4 col-form-label">Status</label>
                         <div class="col-sm-8">
                             <select class="form-control modal-status" name="modal-status" id="modal-status">
-                                <option>Merah</option>
                                 <option>Putih</option>
+                                <option>Merah</option>
+                                <option>Kuning</option>
                             </select>
                             <?= form_error('modal-status', '<small class="text-danger pl-3">', '</small>'); ?>
                         </div>

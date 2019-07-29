@@ -84,32 +84,32 @@
                                                 <th class="py-5" rowspan="2">Dimensi</th>
                                                 <th colspan="<?= $col_span ?>">Skor</th>
                                             </tr>
-                                            <tr style="background-color: #f8f8f8; color: #101010" id="range-tahun" class="range-tahun">
+                                            <!-- <tr style="background-color: #f8f8f8; color: #101010" id="range-tahun" class="range-tahun">
                                                 <?php foreach ($range_tahun as $rt) : ?>
-                                                    <th scope="col"><?= $rt ?></th>
+                                                        <th scope="col"><?= $rt ?></th>
                                                 <?php endforeach; ?>
-                                            </tr>
-                                            <!-- <tr style="background-color: #f8f8f8; color: #101010" class="tahun-ipi">
                                             </tr> -->
+                                            <tr style="background-color: #f8f8f8; color: #101010" class="tahun-ipi">
+                                            </tr>
                                         </thead>
                                         <tbody class="iniDataIpi">
-                                            <tr id="ipi-value" class="ipi-value">
+                                            <!-- <tr id="ipi-value" class="ipi-value">
                                                 <td colspan="2"><?= $title2 ?></td>
                                                 <?php foreach ($ipi['nilai_rescale'] as $inr) : ?>
-                                                    <td><?= $inr ?></td>
+                                                        <td><?= $inr ?></td>
                                                 <?php endforeach; ?>
                                             </tr>
                                             <?php $a = 1;
                                             foreach ($dimensi as $d) : ?>
-                                                <tr>
-                                                    <td><?= $a; ?></td>
-                                                    <td><?= $d['nama_dimensi'] ?></td>
-                                                    <?php foreach ($d['nilai_dimensi'] as $nd) : ?>
-                                                        <td><?= $nd ?></td>
-                                                    <?php endforeach; ?>
-                                                </tr>
-                                                <?php $a++;
-                                            endforeach; ?>
+                                                    <tr>
+                                                        <td><?= $a; ?></td>
+                                                        <td><?= $d['nama_dimensi'] ?></td>
+                                                        <?php foreach ($d['nilai_dimensi'] as $nd) : ?>
+                                                                <td><?= $nd ?></td>
+                                                        <?php endforeach; ?>
+                                                    </tr>
+                                                    <?php $a++;
+                                                endforeach; ?> -->
                                         </tbody>
                                     </table>
                                 </div>

@@ -14,6 +14,16 @@
                 Download Excel File
             </a>
         </button>
+        <button class="btn btn-primary">
+            <a href="<?= base_url('inputData'); ?>" class="export-to-excel" style="text-decoration: none; color: white;">
+                Tambah Data
+            </a>
+        </button>
+        <button class="btn btn-danger">
+            <a href="<?= base_url('inputData/hapusData'); ?>" class="export-to-excel" style="text-decoration: none; color: white;">
+                Hapus Data
+            </a>
+        </button>
         <div class="tanggal">
             <div class="text-s mb-0 font-weight-bold text-gray-400">
                 <span><i class="fas fa-calendar-day text-gray-400"></i></span> <?= date('d M Y') ?>
@@ -84,7 +94,7 @@
                                                 <td><?= ($d + 1); ?></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td><?= $dimensi[$d]['data']['nama_dimensi'] ?></td>
+                                                <td><?= $dimensi[$d]['nama_dimensi'] ?></td>
                                                 <?php foreach ($range_tahun as $rt) : ?>
                                                     <td scope="col"></td>
                                                 <?php endforeach; ?>
@@ -101,13 +111,13 @@
                                                     <td></td>
                                                     <td><?= ($sd + 1); ?></td>
                                                     <td></td>
-                                                    <td><?= $subDimensi[$sd]['data']['nama_sub_dimensi'] ?></td>
+                                                    <td><?= $dimensi[$d]['subDimensi'][$sd]['nama_sub_dimensi'] ?></td>
                                                     <?php foreach ($range_tahun as $rt) : ?>
                                                         <td scope="col"></td>
                                                     <?php endforeach; ?>
                                                     <td></td>
                                                     <td></td>
-                                                    <?php foreach ($subDimensi[$sd]['nilai_rescale'] as $snr) : ?>
+                                                    <?php foreach ($dimensi[$d]['subDimensi'][$sd]['nilai_rescale'] as $snr) : ?>
                                                         <td class="text-center"><?= $snr ?></td>
                                                     <?php endforeach; ?>
                                                 </tr>
@@ -116,22 +126,23 @@
                                                     <!-- Indikator -->
                                                     <tr class="indikator">
                                                         <?php $class = "";
-                                                        if ($indikator_sd[$sd][$ind]['status'] == 1) {
+                                                        $indikator = $dimensi[$d]['subDimensi'][$sd]['indikator'];
+                                                        if ($indikator[$ind]['status'] == 1) {
                                                             $class = "bg-red text-white";
-                                                        } elseif ($indikator_sd[$sd][$ind]['status'] == 2) {
+                                                        } elseif ($indikator[$ind]['status'] == 2) {
                                                             $class = "bg-yellow text-white";
                                                         }
                                                         ?>
                                                         <td class="<?= $class ?>"></td>
                                                         <td class="<?= $class ?>"></td>
                                                         <td class="<?= $class ?>"><?= $ind + 1; ?></td>
-                                                        <td class="<?= $class ?>"><?= $indikator_sd[$sd][$ind]['nama_indikator'] ?></td>
-                                                        <?php foreach ($indikator_sd[$sd][$ind]['nilai_eksisting'] as $ine) : ?>
+                                                        <td class="<?= $class ?>"><?= $indikator[$ind]['nama_indikator'] ?></td>
+                                                        <?php foreach ($indikator[$ind]['nilai_eksisting'] as $ine) : ?>
                                                             <td class="text-center"><?= $ine ?></td>
                                                         <?php endforeach; ?>
-                                                        <td class="text-center"><?= round($indikator_sd[$sd][$ind]['max_nilai'], 2); ?></td>
-                                                        <td class="text-center"><?= round($indikator_sd[$sd][$ind]['min_nilai'], 2); ?></td>
-                                                        <?php foreach ($indikator_sd[$sd][$ind]['nilai_rescale'] as $inr) : ?>
+                                                        <td class="text-center"><?= round($indikator[$ind]['max_nilai'], 2); ?></td>
+                                                        <td class="text-center"><?= round($indikator[$ind]['min_nilai'], 2); ?></td>
+                                                        <?php foreach ($indikator[$ind]['nilai_rescale'] as $inr) : ?>
                                                             <td class="text-center"><?= $inr ?></td>
                                                         <?php endforeach; ?>
                                                     </tr>
