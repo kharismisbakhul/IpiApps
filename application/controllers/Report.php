@@ -107,9 +107,6 @@ class Report extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    // $limit = init_get('memory_limit');
-    // ini_set('memory_limit', -1);
-    // ini_set('memory_limit', $limit);
     public function export()
     {
         $data = $this->initData();

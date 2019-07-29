@@ -25,7 +25,7 @@
 
         table thead tr th,
         table tbody tr td {
-            font-family: 'Times New Roman', Times, serif;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
             color: black;
             font-size: 12px;
             border: 1px solid black;
@@ -64,7 +64,7 @@
 
     <?php
     header("Content-type: application/vnd-ms-excel");
-    header("Content-Disposition: attachment; filename=Report.xls");
+    header("Content-Disposition: attachment; filename=Report.xlsx");
     ?>
 
     <table class="table table-bordered table-report">
