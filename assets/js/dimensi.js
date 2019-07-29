@@ -111,7 +111,7 @@ $(document).ready(function () {
 							ticks: {
 								min: 0,
 								max: 10,
-								maxTicksLimit: 30,
+								maxTicksLimit: 20,
 								padding: 30,
 								// Include a dollar sign in the ticks
 							},

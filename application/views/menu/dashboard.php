@@ -107,48 +107,51 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        <div class="progress">
+                            <div class="progress-bar" id="myBar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
+
+                            </div>
+                        </div>
                         <div class="row no-gutters align-items-center">
                             <div class="chart-bar chart">
                                 <canvas id="ipi-chart" width="850" height="500"></canvas>
                             </div>
-                            <div class="col-md-12 mr-2">
+                            <div class="col-sm-12 mr-2">
                                 <div class="text-gray-800 mt-0">
-                                    <div class="legenda card no-border" style="width: auto;">
+                                    <div class="legenda card" style="width: auto;">
                                         <div class="card-body">
-                                            <div class="container">
-                                                <div class="row ml-1 mt-0">
-                                                    <div class="col-md-6">
-                                                        <div class="label-1">
-                                                            <a href="#" role="button" class="btn square-legend bg-brown"></a>
-                                                            <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Pertumbuhan Ekonomi</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="label-1">
-                                                            <a href="#" role="button" class="btn square-legend bg-carrot"></a>
-                                                            <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Keberlanjutan</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 mt-3">
-                                                        <div class="label-1">
-                                                            <a href="#" role="button" class="btn square-legend bg-green"></a>
-                                                            <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Inklusifitas</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 mt-3">
-                                                        <div class="label-1">
-                                                            <div class="row">
-                                                                <div class="col-2">
-                                                                    <hr class="ml-1 line-legend">
-                                                                </div>
-                                                                <div class="col-8">
-                                                                    <a href="#" class="text-sm text-decoration-none text-secondary">Indeks Pembangunan Inklusifitas</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+
+                                            <div class="row">
+                                                <div class="col-xs-2">
+                                                    <a href="#" role="button" class="btn square-legend bg-yellow"></a>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <small>
+                                                        <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Aktivitas Ekonomi</a>
+                                                    </small>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-xs-2">
+                                                    <a href="#" role="button" class="btn square-legend bg-orange"></a>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <small>
+                                                        <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Pertumbuhan Ekonomi</a>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-2">
+                                                    <a href="#" role="button" class="btn square-legend bg-cream"></a>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <small>
+                                                        <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Inflasi</a>
+                                                    </small>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>

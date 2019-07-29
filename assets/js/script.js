@@ -26,11 +26,29 @@ $(document).ready(function () {
 		dataType: 'json',
 		startTime: performance.now(),
 		beforeSend: function (data) {
+			console.log(data.loaded)
 			$('#ipi-chart').hide();
+			var elem = document.getElementById("myBar");
+			var width = 1;
+			var id = setInterval(frame, 115);
+
+			function frame() {
+				if (width >= 100) {
+
+					clearInterval(id);
+				} else {
+					width++;
+					elem.style.width = width + '%';
+				}
+			}
 			$('.chart').append('<img src="http://localhost:8080/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">')
+
+		},
+		progress: function (data) {
+
+
 		},
 		success: function (data) {
-			console.log(data)
 			$('.loader').remove()
 			$('#ipi-chart').show();
 			for (var i in data['tahun']) {
@@ -48,7 +66,7 @@ $(document).ready(function () {
 			var dataTampung = []
 			dataTampung.push({
 				'label': nama_ipi[0],
-				'type': "bar",
+				'type': "line",
 				'borderColor': '#FF0606',
 				'data': nilaiIpi,
 				'borderDashOffset': 1,
@@ -56,13 +74,10 @@ $(document).ready(function () {
 				'spanGaps': true,
 				'backgroundColor': "#e74c3c",
 			})
-			console.log(nilaiIpi)
-			console.log(dataTampung)
-
 			const canvas = document.querySelector("#ipi-chart");
 			const ctx = canvas.getContext('2d');
 			new Chart(ctx, {
-				type: 'bar',
+				type: 'line',
 				data: {
 					labels: tahun,
 					datasets: dataTampung
@@ -183,6 +198,5 @@ function _getDataToTable(data) {
         <td class="n_ipi" scope="col">` + parseFloat(data['ipi'][i]).toFixed(2) + `</td>
         `)
 	}
-	console.log('cek')
 }
 //akhir

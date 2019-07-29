@@ -7,6 +7,10 @@
 	/* linear-gradient(180deg, #224abe 10%, #36b9cc 100%); */
 }
 
+.cek {
+	width: 10%;
+}
+
 .carrot {
 	border-left: 0.25rem solid #e58e26 !important;
 }

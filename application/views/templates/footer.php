@@ -44,6 +44,8 @@
 <script src="<?= base_url('assets/vendor/chartjs/chartjs-plugin-annotation.js') ?>"></script>
 <!-- Script Modal -->
 
+<script src="https://cdn.rawgit.com/ilopX/jquery-ajax-progress/master/dist/jquery.ajax-progress.js"></script>
+
 
 <?php if ($this->input->get('d')) : ?>
     <script src="<?= base_url('assets/'); ?>js/dimensi.js"></script>

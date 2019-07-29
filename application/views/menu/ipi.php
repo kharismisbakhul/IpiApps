@@ -101,6 +101,7 @@
         </div>
     </div>
 
+    <?php $dimensi = $this->db->get('dimensi')->result_array(); ?>
     <div class="row mt-4 mb-4">
         <!-- Area Rentan Wakti -->
         <div class="col-lg-11 box">
@@ -118,42 +119,18 @@
                         <div class="text-gray-800 mt-0">
                             <div class="legenda card no-border" style="width: auto;">
                                 <div class="card-body">
-                                    <div class="container">
-                                        <div class="row ml-1 mt-0">
-                                            <div class="col-md-6">
-                                                <div class="label-1">
-                                                    <a href="#" role="button" class="btn square-legend bg-brown"></a>
-                                                    <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Pertumbuhan Ekonomi</a>
-                                                </div>
+                                    <?php foreach ($dimensi as $d) : ?>
+                                        <div class="row">
+                                            <div class="col-xs-2">
+                                                <a href="#" role="button" class="btn square-legend bg-cream"></a>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="label-1">
-                                                    <a href="#" role="button" class="btn square-legend bg-carrot"></a>
-                                                    <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Keberlanjutan</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-3">
-                                                <div class="label-1">
-                                                    <a href="#" role="button" class="btn square-legend bg-green"></a>
-                                                    <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Inklusifitas</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-3">
-                                                <div class="label-1">
-                                                    <div class="row">
-                                                        <div class="col-2">
-                                                            <a href="">
-                                                                <hr class="ml-1 line-legend">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-8">
-                                                            <a href="#" class="text-sm text-decoration-none text-secondary">Indeks Pembangunan Inklusifitas</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="col-xs-6">
+                                                <small>
+                                                    <a href="#" class="text-sm text-decoration-none text-secondary ml-4"><?= $d['nama_dimensi'] ?></a>
+                                                </small>
                                             </div>
                                         </div>
-                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
                         </div>
