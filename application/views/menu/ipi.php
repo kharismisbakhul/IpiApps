@@ -20,21 +20,20 @@
 
     <div class="row">
         <!-- Area Rentan Wakti -->
-        <div class="col-lg-4 box">
-            <div class="card shadow">
+        <div class="col-lg-3 box">
+            <div class="card shadow border-bottom-success">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header text-uppercase bg-midnight-blue text-white  py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold">Pilih Rentan Waktu</h6>
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Pilih Rentan Waktu</h6>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body bClip">
                     <div class="row">
-                        <div class="col-lg-12 mb-2 text-justify">
+                        <div class="col-lg-12 mb-2">
                             Untuk menampilkan data pada
                             tabel dan chart, harap untuk
                             mengisi rentan tahun di bawah
                         </div>
-//Updated
                         <form action="<?= base_url('admin/ipi') ?>" method="get">
                             <div class="row ml-1 mr-1">
                                 <div class="col-lg-12 mb-2">
@@ -74,14 +73,13 @@
 
         <!-- Table Data Pembangunan Inklusif -->
         <div class="col-lg-8 box">
-            <div class="card shadow">
+            <div class="card shadow border-bottom-success">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header bg-midnight-blue text-white text-uppercase py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold">Table Data <?= $title ?></h6>
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Table Data Pembangunan Inklusif</h6>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body bClip">
-//Updated
                     <div class="table-responsive">
                         <table class="table table-bordered text-center tClip">
                             <thead>
@@ -98,8 +96,21 @@
                         </table>
                     </div>
 
-               
-//Updated
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php $dimensi = $this->db->get('dimensi')->result_array(); ?>
+    <div class="row mt-4 mb-4">
+        <!-- Area Rentan Wakti -->
+        <div class="col-lg-11 box">
+            <div class="card shadow border-bottom-success">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Chart Data Indeks Pembangunan Inklusif</h6>
+                </div>
+                <!-- Card Body -->
                 <div class="table-responsive" style="height: 700px;">
                     <div class="card-body chart">
                         <canvas id="ipi-chart" width="200" height="500"></canvas>
@@ -108,44 +119,28 @@
                         <div class="text-gray-800 mt-0">
                             <div class="legenda card no-border" style="width: auto;">
                                 <div class="card-body">
-                                    <div class="container">
-                                        <div class="row ml-1 mt-0">
-                                            <div class="col-md-6">
-                                                <div class="label-1">
-                                                    <a href="#" role="button" class="btn square-legend bg-brown"></a>
-                                                    <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Pertumbuhan Ekonomi</a>
-                                                </div>
+                                    <?php foreach ($dimensi as $d) : ?>
+                                        <div class="row">
+                                            <div class="col-xs-2">
+                                                <a href="#" role="button" class="btn square-legend bg-cream"></a>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="label-1">
-                                                    <a href="#" role="button" class="btn square-legend bg-carrot"></a>
-                                                    <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Keberlanjutan</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-3">
-                                                <div class="label-1">
-                                                    <a href="#" role="button" class="btn square-legend bg-green"></a>
-                                                    <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Inklusifitas</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-3">
-                                                <div class="label-1">
-                                                    <div class="row">
-                                                        <div class="col-2">
-                                                            <a href="">
-                                                                <hr class="ml-1 line-legend">
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-8">
-                                                            <a href="#" class="text-sm text-decoration-none text-secondary">Indeks Pembangunan Inklusifitas</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="col-xs-6">
+                                                <small>
+                                                    <a href="#" class="text-sm text-decoration-none text-secondary ml-4"><?= $d['nama_dimensi'] ?></a>
+                                                </small>
                                             </div>
                                         </div>
-                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
 
-                
+</div>
+<!-- End of Main Content -->

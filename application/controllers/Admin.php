@@ -12,6 +12,14 @@ class Admin extends CI_Controller
         }
     }
 
+    public function initData()
+    {
+        $data['username'] = $this->session->userdata('username');
+        $data['range_tahun'] = [];
+        $data['col_span'] = 0;
+        return $data;
+    }
+
     public function loadTemplate($data)
     {
         $this->load->view('templates/header', $data);
@@ -21,7 +29,6 @@ class Admin extends CI_Controller
 
     public function index()
     {
-//Updated
         $data = $this->initData();
         $this->load->model('Admin_model', 'admin');
         $data['title'] = 'Dashboard';
@@ -31,16 +38,15 @@ class Admin extends CI_Controller
         $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
         $data['tahun_selc'] = $this->admin->getTahun();
         $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
-        
-        $data['title'] = 'Input Data';
+
         $this->loadTemplate($data);
         $this->load->view('menu/dashboard', $data);
         $this->load->view('templates/footer');
     }
 
-    public function pertumbuhanEkonomi()
+    public function ipi()
     {
-//Updated
+        //Updated
         $this->load->model('Admin_model', 'admin');
         $data = $this->initData();
         $data['title'] = 'Indeks Pembangunan Inklusif';
@@ -75,7 +81,7 @@ class Admin extends CI_Controller
 
     public function dimensi()
     {
-//Updated
+        //Updated
         $this->load->model('Admin_model', 'admin');
         $data = $this->initData();
         $data['title'] = 'Dimensi';
@@ -93,7 +99,7 @@ class Admin extends CI_Controller
 
     public function subdimensi()
     {
-//Updated
+        //Updated
         $this->load->model('Admin_model', 'admin');
         $data = $this->initData();
         $data['title'] = 'Sub Dimensi';

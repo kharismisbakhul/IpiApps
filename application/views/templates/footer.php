@@ -3,7 +3,6 @@
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
             <span>Copyright © <?= date('Y') ?> AKD Web Development Team. All Rights Reserved. </span>
-            <?= count($this->uri->segment(2))  ?>
         </div>
     </div>
 </footer>
@@ -42,7 +41,11 @@
 <script src="<?= base_url('assets/') ?>js/sweet-alert.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script src="<?= base_url('assets/vendor/chartjs/chartjs-plugin-annotation.js') ?>"></script>
-//Updated
+<!-- //Updated -->
+
+<script src="<?= base_url('assets/'); ?>js/inputData.js"></script>
+<script src="<?= base_url('assets/'); ?>js/inputIndikator.js"></script>
+<script src="<?= base_url('assets/'); ?>js/hapusIndikator.js"></script>
 <!-- Script Modal -->
 
 <?php if ($this->input->get('d')) : ?>
@@ -51,10 +54,9 @@
     <script src="<?= base_url('assets/'); ?>js/subdimensi.js"></script>
 <?php elseif ($this->uri->segment(2) == 'ipi') : ?>
     <script src="<?= base_url('assets/'); ?>js/ipi.js"></script>
-<?php elseif (count($this->uri->segment(2)) == 0) : ?>
+<?php elseif ($this->uri->segment(2) == null && $this->uri->segment(1) == "admin") : ?>
     <script src="<?= base_url('assets/'); ?>js/script.js"></script>
 <?php endif; ?>
-=======
 
 <script src="<?= base_url('assets/'); ?>js/filter.js"></script>
 

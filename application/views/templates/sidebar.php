@@ -48,7 +48,7 @@
         <?php else : ?>
         <li class="nav-item">
         <?php endif; ?>
-        <a class="nav-link pb-0" href="<?= base_url('ipi'); ?>">
+        <a class="nav-link pb-0" href="<?= base_url('admin/ipi'); ?>">
             <i class="fas fa-fw fa-chart-bar"></i>
             <span>Indeks Pembangunan<br><span class="ml-4"> Inklusif</span></span>
         </a>
@@ -57,9 +57,9 @@
     <?php $subDimensi = $this->db->get('subDimensi')->result_array(); ?>
     <?php $dimensi = $this->db->get('dimensi')->result_array(); ?>
     <!-- Nav Item - Pages Collapse Menu -->
-  
---- Updated
-             
+
+    <!-- Updated -->
+
     <!-- Aktivitas Ekonomi -->
     <?php foreach ($dimensi as $d) : ?>
         <?php if ($title == $d['nama_dimensi']) : ?>
@@ -109,7 +109,7 @@
                         };
                     endforeach; ?>
                 </div>
--- Updated
+                <!-- -- Updated -->
             </div>
         </li>
     <?php endforeach; ?>

@@ -108,7 +108,7 @@ $(window).on('load', function () {
                                                                 dataType: 'json',
                                                                 success: function (nilai_indikator) {
                                                                     // var nilai = (nilai_indikator['nilai']).toFixed(2);
-                                                                    $("#nilai").val(nilai_indikator['nilai']);
+                                                                    $("#nilai").val(parseFloat(nilai_indikator['nilai']).toFixed(2));
                                                                 }
                                                             });
                                                         }

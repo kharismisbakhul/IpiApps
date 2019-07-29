@@ -40,7 +40,7 @@
                             <div class="table-responsive mx-auto my-auto">
                                 <table class="table table-bordered table-report" style="border-color: black;">
                                     <thead class="text-center">
-                                        <tr style="background-color: #485460; color: #ecf0f1; border: none;">
+                                        <tr style="background-color: #485460; color: #ecf0f1;">
                                             <th class="align-middle" rowspan="2" colspan="3">Kode</th>
                                             <th class="align-middle" rowspan="2">Dimensi</th>
                                             <th colspan="<?= $col_span ?>" class="align-middle">Nilai Indikator Eksisting</th>
