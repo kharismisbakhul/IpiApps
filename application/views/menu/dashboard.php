@@ -64,13 +64,12 @@
                                                     <option value="<?= $max_tahun['tahun'] ?>" selected id="end_date">pilih tahun...</option>
                                                     <?php foreach ($tahun_selc as $t) : ?>
                                                         <option value="<?= $t['tahun'] ?>" id="end_date"><?= $t['tahun'] ?></option>
-
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-2" style="padding-top: 1.9rem;">
                                                 <label for=""></label>
-                                                <button type="submit" class="btn btn-primary">Cari</button>
+                                                <button type="submit" class="btn btn-primary" id="Search-Button">Cari</button>
                                             </div>
                                         </div>
                                     </form>
@@ -83,13 +82,34 @@
                                             <tr style="background-color: #f8f8f8; color: #101010">
                                                 <th class="py-5" rowspan="2">#</th>
                                                 <th class="py-5" rowspan="2">Dimensi</th>
-                                                <th colspan="6">Skor</th>
+                                                <th colspan="<?= $col_span ?>">Skor</th>
                                             </tr>
-                                            <tr style="background-color: #f8f8f8; color: #101010" class="tahun-ipi">
+                                            <tr style="background-color: #f8f8f8; color: #101010" id="range-tahun" class="range-tahun">
+                                                <?php foreach ($range_tahun as $rt) : ?>
+                                                    <th scope="col"><?= $rt ?></th>
+                                                <?php endforeach; ?>
                                             </tr>
+                                            <!-- <tr style="background-color: #f8f8f8; color: #101010" class="tahun-ipi">
+                                            </tr> -->
                                         </thead>
                                         <tbody class="iniDataIpi">
-
+                                            <tr id="ipi-value" class="ipi-value">
+                                                <td colspan="2"><?= $title2 ?></td>
+                                                <?php foreach ($ipi['nilai_rescale'] as $inr) : ?>
+                                                    <td><?= $inr ?></td>
+                                                <?php endforeach; ?>
+                                            </tr>
+                                            <?php $a = 1;
+                                            foreach ($dimensi as $d) : ?>
+                                                <tr>
+                                                    <td><?= $a; ?></td>
+                                                    <td><?= $d['nama_dimensi'] ?></td>
+                                                    <?php foreach ($d['nilai_dimensi'] as $nd) : ?>
+                                                        <td><?= $nd ?></td>
+                                                    <?php endforeach; ?>
+                                                </tr>
+                                                <?php $a++;
+                                            endforeach; ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -112,53 +132,10 @@
                             <div class="chart-bar chart">
                                 <canvas id="ipi-chart" width="850" height="500"></canvas>
                             </div>
-                            <div class="col-md-12 mr-2">
-                                <div class="text-gray-800 mt-0">
-                                    <div class="legenda card no-border" style="width: auto;">
-                                        <div class="card-body">
-                                            <div class="container">
-                                                <div class="row ml-1 mt-0">
-                                                    <div class="col-md-6">
-                                                        <div class="label-1">
-                                                            <a href="#" role="button" class="btn square-legend bg-brown"></a>
-                                                            <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Pertumbuhan Ekonomi</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="label-1">
-                                                            <a href="#" role="button" class="btn square-legend bg-carrot"></a>
-                                                            <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Keberlanjutan</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 mt-3">
-                                                        <div class="label-1">
-                                                            <a href="#" role="button" class="btn square-legend bg-green"></a>
-                                                            <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Inklusifitas</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 mt-3">
-                                                        <div class="label-1">
-                                                            <div class="row">
-                                                                <div class="col-2">
-                                                                    <hr class="ml-1 line-legend">
-                                                                </div>
-                                                                <div class="col-8">
-                                                                    <a href="#" class="text-sm text-decoration-none text-secondary">Indeks Pembangunan Inklusifitas</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>

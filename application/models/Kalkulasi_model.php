@@ -58,8 +58,11 @@ class Kalkulasi_model extends CI_Model
                 $min = $result[$i + 1];
             }
         }
-
-        $finalMin = doubleval($min['nilai']);
+        if (count($result) == 1 && $min['tahun'] != 2012) {
+            $finalMin = 0;
+        } else {
+            $finalMin = doubleval($min['nilai']);
+        }
         //Update Nilai Min
         $data = array('min_nilai' => $finalMin);
         $this->db->set($data);
@@ -127,16 +130,20 @@ class Kalkulasi_model extends CI_Model
             } else {
                 $nilai_eksisting_perTahun = $nilai_data_indikator['nilai'];
             }
-            $nilai_rescale = 0;
-            if ($status == 0) {
-                //Rumus (putih) --> ((eksisting sesuai tahun - min)/(max-min))*10 
-                $nilai_rescale = (($nilai_eksisting_perTahun - $min) / ($max - $min)) * 10;
-            } else if ($status == 1 && $kode_sd == 4) {
-                //Rumus (merah - IPK) --> (((eksisting sesuai tahun - min)/(max-min))*-10)+10 
-                $nilai_rescale = ((($nilai_eksisting_perTahun - $min) / ($max - $min)) * (-10)) + 10;
+            // $nilai_rescale = 0;
+            if (($max - $min) == 0) {
+                $nilai_rescale = 0;
             } else {
-                //Rumus (merah) --> ((max - eksisting sesuai tahun - min)/(max-min))*10 
-                $nilai_rescale = (($max - $nilai_eksisting_perTahun) / ($max - $min)) * 10;
+                if ($status == 0) {
+                    //Rumus (putih) --> ((eksisting sesuai tahun - min)/(max-min))*10 
+                    $nilai_rescale = (($nilai_eksisting_perTahun - $min) / ($max - $min)) * 10;
+                } else if ($status == 1 && $kode_sd == 4) {
+                    //Rumus (merah - IPK) --> (((eksisting sesuai tahun - min)/(max-min))*-10)+10 
+                    $nilai_rescale = ((($nilai_eksisting_perTahun - $min) / ($max - $min)) * (-10)) + 10;
+                } else {
+                    //Rumus (merah) --> ((max - eksisting sesuai tahun - min)/(max-min))*10 
+                    $nilai_rescale = (($max - $nilai_eksisting_perTahun) / ($max - $min)) * 10;
+                }
             }
             if ($nilai_data_indikator == null) {
                 // Insert Nilai ReScale indikator

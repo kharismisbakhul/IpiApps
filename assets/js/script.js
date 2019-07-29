@@ -18,6 +18,9 @@ let nilaiIpi = [];
 let nilaiDimensi = [];
 let max_tahun;
 let min_tahun;
+// $("#Search-Button").on("click", function() {
+// 	$(".iniDataIpi").html("");
+// });
 
 $(document).ready(function() {
 	$.ajax({
@@ -183,6 +186,7 @@ function _getDataToTable(data) {
 		$(".tahun-ipi").append(`<th scope="col">` + p.tahun + `</th>`);
 	});
 
+	$(".iniDataIpi").html("");
 	$(".iniDataIpi").append(`<tr class="ipi"></tr>`);
 
 	$(".ipi").append(

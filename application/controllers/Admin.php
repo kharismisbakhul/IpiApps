@@ -31,6 +31,7 @@ class Admin extends CI_Controller
     {
         $data = $this->initData();
         $this->load->model('Admin_model', 'admin');
+        $this->load->model('Kalkulasi_model', 'kalkulasi');
         $data['title'] = 'Dashboard';
         $star_date = $this->input->get('star_date');
         $end_date = $this->input->get('end_date');
@@ -39,6 +40,39 @@ class Admin extends CI_Controller
         $data['tahun_selc'] = $this->admin->getTahun();
         $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
 
+        if ($this->input->get('star_date') && $this->input->get('end_date')) { } else {
+            $data['title2'] = 'Indeks Pembangunan Inklusif';
+            //Start - Tambahan Data buat load awal (Semua data)
+            $data['ipi'] = $this->admin->getIPI();
+            $data['dimensi'] = $this->admin->getDimensi();
+            $data['ipi']['nilai_rescale'] = [];
+            for ($i = 0; $i < count($data['dimensi']); $i++) {
+                $data['dimensi'][$i]['nilai_dimensi'] = [];
+            }
+            $start_date = 2012;
+            $tahun_terakhir = $this->kalkulasi->tahunTerakhirDataSemuaIndikator();
+            $data['col_span'] = ($tahun_terakhir - $start_date) + 1;
+            $data['range_tahun'] = $this->admin->getSemuaTahun();
+
+            //Loop Data
+            for ($j = 0; $j < $data['col_span']; $j++) {
+                $tahunSelect = $start_date++;
+                $data_IPI_sesuai_tahun = $this->admin->getIPIPerTahun($tahunSelect);
+                $rescale_IPI = doubleval($data_IPI_sesuai_tahun['nilai_rescale']);
+                array_push($data['ipi']['nilai_rescale'], round($rescale_IPI, 2));
+                for ($i = 0; $i < count($data['dimensi']); $i++) {
+                    $kode_d = $data['dimensi'][$i]['kode_d'];
+                    $data_Dimensi_sesuai_tahun = $this->admin->getNilaiDimensiPerTahun($kode_d, $tahunSelect);
+                    $rescale_dimensi = doubleval($data_Dimensi_sesuai_tahun['nilai_rescale']);
+                    array_push($data['dimensi'][$i]['nilai_dimensi'], round($rescale_dimensi, 2));
+                }
+            }
+        }
+        // header('Content-Type: application/json');
+        // echo json_encode($data['col_span']);
+        // die;
+
+        // End 
         $this->loadTemplate($data);
         $this->load->view('menu/dashboard', $data);
         $this->load->view('templates/footer');
