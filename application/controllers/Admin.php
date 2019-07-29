@@ -7,6 +7,9 @@ class Admin extends CI_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
+        if (!$this->session->userdata('username')) {
+            redirect('auth');
+        }
     }
 
     public function loadTemplate($data)
@@ -16,19 +19,12 @@ class Admin extends CI_Controller
         $this->load->view('templates/topbar', $data);
     }
 
-    public function login_check()
-    {
-        if (!$this->session->userdata('username')) {
-            redirect('auth');
-        }
-    }
-
     public function index()
     {
-        $this->login_check();
         $this->load->model('Data_model', 'data');
         $data = $this->data->initData();
         $data['title'] = 'Dashboard';
+        $data['title2'] = 'Indeks Pembangunan Inklusif';
 
         //Inisialisasi Data
         $this->load->model('Admin_model', 'admin');
@@ -74,22 +70,8 @@ class Admin extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    //Next To Do
-    public function cekLoop()
-    {
-        $this->load->model('Admin_model', 'admin');
-        $Dimensi = 1;
-        $subDimensi = 1;
-        $indikator = 1;
-        $end = 2013;
-        // $this->admin->getIndikatorRange($subDimensi, $start, $end);
-        // $this->admin->getsubDimensiRange($Dimensi, $start, $end);
-        $this->admin->getDimensiRange(2012, 2013);
-    }
-
     public function pertumbuhanEkonomi()
     {
-        $this->login_check();
         $this->load->model('Admin_model', 'admin');
         $this->load->model('Data_model', 'data');
         // $data = $this->initData();
@@ -133,8 +115,12 @@ class Admin extends CI_Controller
             $data_dimensi = $data['dimensi'];
             $data_subDimensi = $data['subDimensi'];
             $data = $this->data->detailSubDimensi($data_dimensi, $data_subDimensi, $dimensi, 1);
+            $data['data_dimensi'] = $this->admin->getDimensi();
         }
         $data['title'] = 'Pertumbuhan Ekonomi';
+        // header('Content-Type: application/json');
+        // echo json_encode($data);
+        // die;
         $this->loadTemplate($data);
         $this->load->view('menu/' . $dimensi . '/' . $link, $data);
         $this->load->view('templates/footer');
@@ -142,7 +128,6 @@ class Admin extends CI_Controller
 
     public function inklusifitas()
     {
-        $this->login_check();
         $this->load->model('Admin_model', 'admin');
         $this->load->model('Data_model', 'data');
         $dimensi = "inklusifitas";
@@ -187,7 +172,6 @@ class Admin extends CI_Controller
 
     public function sustainability()
     {
-        $this->login_check();
         $this->load->model('Admin_model', 'admin');
         $this->load->model('Data_model', 'data');
         $dimensi = "sustainability";

@@ -6,12 +6,12 @@ class Auth extends CI_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
-    }
-    public function index()
-    {
         if ($this->session->userdata('username')) {
             redirect('admin');
         }
+    }
+    public function index()
+    {
 
         $this->form_validation->set_rules('username', 'Username', 'required|trim');
         $this->form_validation->set_rules('password', 'Password', 'required|trim');

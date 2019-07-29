@@ -6,7 +6,9 @@ class Report extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->library('form_validation');
+        if (!$this->session->userdata('username')) {
+            redirect('auth');
+        }
     }
 
     public function loadTemplate($data)
@@ -16,27 +18,15 @@ class Report extends CI_Controller
         $this->load->view('templates/topbar', $data);
     }
 
-    public function login_check()
-    {
-        if (!$this->session->userdata('username')) {
-            redirect('auth');
-        }
-    }
-
     public function initData()
     {
         $data['username'] = $this->session->userdata('username');
-        return $data;
-    }
-    public function index()
-    {
-        $this->login_check();
-        $data = $this->initData();
         $data['title'] = 'Report';
 
         //Data
         $this->load->model('Admin_model', 'admin');
         $this->load->model('Kalkulasi_model', 'kalkulasi');
+        $this->load->model('Jumlah_model', 'jumlah');
         $tahun_terakhir = $this->kalkulasi->tahunTerakhirDataSemuaIndikator();
         $data['col_span'] = $tahun_terakhir - 2012 + 1;
         $data['range_tahun'] = $this->admin->getSemuaTahun();
@@ -106,21 +96,23 @@ class Report extends CI_Controller
             }
         }
 
-        // echo json_encode($data['dimensi']);
-        // die;
-
+        $data['jumlahData'] = $this->jumlah->getJumlahDimensi();
+        return $data;
+    }
+    public function index()
+    {
+        $data = $this->initData();
         $this->loadTemplate($data);
         $this->load->view('menu/report', $data);
         $this->load->view('templates/footer');
     }
-    public function getSemuaData()
-    {
-        $this->load->model('Admin_model', 'admin');
-        $this->load->model('Kalkulasi_model', 'kalkulasi');
-        $tahun = $this->kalkulasi->tahunTerakhirDataSemuaIndikator();
-        $data['col_span'] = $tahun - 2012 + 1;
-        $data['range_tahun'] = $this->admin->getSemuaTahun();
 
-        $this->admin->getDimensiRange(2012, $tahun);
+    // $limit = init_get('memory_limit');
+    // ini_set('memory_limit', -1);
+    // ini_set('memory_limit', $limit);
+    public function export()
+    {
+        $data = $this->initData();
+        $this->load->view('export', $data);
     }
 }

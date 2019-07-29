@@ -6,7 +6,9 @@ class Ipi extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->library('form_validation');
+        if (!$this->session->userdata('username')) {
+            redirect('auth');
+        }
     }
 
     public function loadTemplate($data)
@@ -16,13 +18,6 @@ class Ipi extends CI_Controller
         $this->load->view('templates/topbar', $data);
     }
 
-    public function login_check()
-    {
-        if (!$this->session->userdata('username')) {
-            redirect('auth');
-        }
-    }
-
     public function initData()
     {
         $data['username'] = $this->session->userdata('username');
@@ -30,7 +25,6 @@ class Ipi extends CI_Controller
     }
     public function index()
     {
-        $this->login_check();
         $data = $this->initData();
         $this->load->model('Admin_model', 'admin');
         $data['title'] = 'Indeks Pembangunan Inklusif';

@@ -6,7 +6,9 @@ class InputData extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->library('form_validation');
+        if (!$this->session->userdata('username')) {
+            redirect('auth');
+        }
     }
 
     public function loadTemplate($data)
@@ -14,13 +16,6 @@ class InputData extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
-    }
-
-    public function login_check()
-    {
-        if (!$this->session->userdata('username')) {
-            redirect('auth');
-        }
     }
 
     public function initData()
@@ -31,7 +26,6 @@ class InputData extends CI_Controller
 
     public function index()
     {
-        $this->login_check();
         $data = $this->initData();
         $data['title'] = 'Input Data';
         $this->form_validation->set_rules('dimensi', 'Dimensi', 'required|trim');

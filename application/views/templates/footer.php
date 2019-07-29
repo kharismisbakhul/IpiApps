@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="sticky-footer bg-white">
+<footer class="sticky-footer bg-white" style="margin-top: 15rem">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
             <span>Copyright © <?= date('Y') ?> AKD Web Development Team. All Rights Reserved. </span>
@@ -44,12 +44,24 @@
 
 <!-- Custom js -->
 <!-- <script src="<?= base_url('assets/'); ?>js/script.js"></script> -->
-<script src="<?= base_url('assets/'); ?>js/demo/chart-bar-demo.js"></script>
+<!-- <script src="<?= base_url('assets/'); ?>js/demo/chart-bar-demo.js"></script> -->
 <script src="<?= base_url('assets/'); ?>js/inputData.js"></script>
 <script src="<?= base_url('assets/'); ?>js/inputIndikator.js"></script>
 <script src="<?= base_url('assets/'); ?>js/hapusIndikator.js"></script>
-<script src="<?= base_url('assets/'); ?>js/chart.js"></script>
-<script src="<?= base_url('assets/'); ?>js/mixed-chart.js"></script>
+
+<!-- Chart -->
+<?php $page = $_SERVER['REQUEST_URI'];
+if ($page == "/IpiApps/admin/pertumbuhanEkonomi") {
+    //     echo "<script src='" . base_url('assets/js/chart_dimensi_pertumbuhanEkonomi.js') . "></script>";
+    echo "WAHAHAHA";
+};
+?>
+
+<script src="<?= base_url('assets/'); ?>js/chart_ipi.js"></script>
+<!-- <script src="<?= base_url('assets/'); ?>js/chart_subdimensi_ii.js"></script> -->
+<!-- <script src="<?= base_url('assets/'); ?>js/chart_subdimensi_iae.js"></script> -->
+<!-- <script src="<?= base_url('assets/'); ?>js/chart_subdimensi_ipsdm.js"></script> -->
+<!-- <script src="<?= base_url('assets/'); ?>js/mixed-chart.js"></script> -->
 <script src="<?= base_url('assets/'); ?>js/filter.js"></script>
 
 </body>

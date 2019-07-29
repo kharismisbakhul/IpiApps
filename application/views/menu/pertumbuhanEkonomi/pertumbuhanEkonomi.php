@@ -34,25 +34,23 @@
                                 Untuk menampilkan data pada
                                 tabel dan chart, harap untuk
                                 mengisi <br> rentan tahun di bawah
-                                <form action="<?= base_url('admin/pertumbuhanEkonomi'); ?>" method="get" class="mt-3">
-                                    <div class="form-row">
-                                        <div class="form-group col-md-12">
-                                            <label for="start-date" class="text-xs">Dari Tahun</label>
-                                            <select class="form-control start-date" id="start-date" name="start-date">
-                                                <option>Pilih tahun</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-12">
-                                            <label for="end-date" class="text-xs">Sampai Tahun</label>
-                                            <select class="form-control end-date" id="end-date" name="end-date">
-                                                <option>Pilih tahun</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-12 mt-3">
-                                            <button type="submit" class="btn btn-primary" style="width: 100%;">Cari</button>
-                                        </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label for="start-date" class="text-xs">Dari Tahun</label>
+                                        <select class="form-control start-date" id="start-date" name="start-date">
+                                            <option>Pilih tahun</option>
+                                        </select>
                                     </div>
-                                </form>
+                                    <div class="form-group col-md-12">
+                                        <label for="end-date" class="text-xs">Sampai Tahun</label>
+                                        <select class="form-control end-date" id="end-date" name="end-date">
+                                            <option>Pilih tahun</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-12 mt-3">
+                                        <button type="button" id="submit-search" class="btn btn-primary submit-search" style="width: 100%;">Submit</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -79,16 +77,16 @@
                                         <tr style="background-color: #f8f8f8; color: #101010">
                                             <th class="py-5" rowspan="2">#</th>
                                             <th class="py-5" rowspan="2">Dimensi</th>
-                                            <th colspan="<?= $col_span ?>">Skor</th>
+                                            <th id="span-table" class="span-table" colspan="<?= $col_span ?>">Skor</th>
                                         </tr>
-                                        <tr style="background-color: #f8f8f8; color: #101010">
+                                        <tr style="background-color: #f8f8f8; color: #101010" id="range-tahun" class="range-tahun">
                                             <?php foreach ($range_tahun as $rt) : ?>
                                                 <th scope="col"><?= $rt ?></th>
                                             <?php endforeach; ?>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
+                                    <tbody id="dimensi-table">
+                                        <tr id="dimensi-value" class="dimensi-value">
                                             <td colspan="2">Indeks <?= $title; ?></td>
                                             <?php foreach ($dimensi['nilai_rescale'] as $nd) : ?>
                                                 <td><?= $nd ?></td>
@@ -112,8 +110,8 @@
                     </div>
                     <hr>
                     <div class="row no-gutters align-items-center">
-                        <div class="chart-bar">
-                            <canvas id="pertumbuhan-ek" width="850" height="500"></canvas>
+                        <div class="chart-bar chart-bar-dimensi-ipe">
+                            <canvas id="dimensi-pertumbuhanEkonomi" width="850" height="500"></canvas>
                         </div>
                         <div class="col-md-12 mr-2">
                             <div class="text-gray-800 mt-0">
@@ -124,19 +122,19 @@
                                                 <div class="col-md-6">
                                                     <div class="label-1">
                                                         <a href="#" role="button" class="btn square-legend bg-cream"></a>
-                                                        <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Inflasi</a>
+                                                        <a href="#" class="text-sm text-decoration-none text-secondary ml-4"><?= $data_dimensi[0]['nama_dimensi'] ?></a>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="label-1">
                                                         <a href="#" role="button" class="btn square-legend bg-yellow"></a>
-                                                        <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Aktivitas Ekonomi</a>
+                                                        <a href="#" class="text-sm text-decoration-none text-secondary ml-4"><?= $subDimensi[0]['nama_sub_dimensi'] ?></a>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 mt-3">
                                                     <div class="label-1">
                                                         <a href="#" role="button" class="btn square-legend bg-orange"></a>
-                                                        <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Pengembangan Sumberdaya Manusia</a>
+                                                        <a href="#" class="text-sm text-decoration-none text-secondary ml-4"><?= $subDimensi[1]['nama_sub_dimensi'] ?></a>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 mt-3">
@@ -146,7 +144,7 @@
                                                                 <hr class="ml-1 line-legend bg-brown">
                                                             </div>
                                                             <div class="col-8">
-                                                                <a href="#" class="text-sm text-decoration-none text-secondary">Indeks Pertumbuhan Ekonomi</a>
+                                                                <a href="#" class="text-sm text-decoration-none text-secondary"><?= $subDimensi[2]['nama_sub_dimensi'] ?></a>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -36,17 +36,17 @@ class Admin_model extends CI_Model
     }
     public function getIndikatorRange($kode_sd, $start, $end)
     {
-        $indikator = $this->db->get_where('indikator', ['kode_sd' => $kode_sd])->result_array();
-        for ($i = 0; $i < count($indikator); $i++) {
-            $kode_indikator = $indikator[$i]['kode_indikator'];
-            $indikator[$i]['nilai_indikator'] = $this->getIndikatorRangeNilai($kode_indikator, $start, $end);
+        $indikator_sd = $this->db->get_where('indikator', ['kode_sd' => $kode_sd])->result_array();
+        for ($i = 0; $i < count($indikator_sd); $i++) {
+            $kode_indikator = $indikator_sd[$i]['kode_indikator'];
+            $indikator_sd[$i]['nilai_indikator'] = $this->getIndikatorRangeNilai($kode_indikator, $start, $end);
         }
-        // echo json_encode($indikator);
-        return $indikator;
+        // echo json_encode($indikator_sd);
+        return $indikator_sd;
     }
     public function getIndikatorRangeNilai($kode_indikator, $start, $end)
     {
-        $this->db->where('nilaiindikator.kode_indikator', $kode_indikator);
+        $this->db->where('kode_indikator', $kode_indikator);
         $this->db->where('tahun >=', $start);
         $this->db->where('tahun <=', $end);
         $this->db->select('*');
@@ -61,12 +61,25 @@ class Admin_model extends CI_Model
             $subDimensi[$i]['nilai'] = $this->getSubDimensiRangeNilai($kode_sd, $start, $end);
             $subDimensi[$i]['indikator'] = $this->getIndikatorRange($kode_sd, $start, $end);
         }
+        // header('Content-Type: application/json');
         // echo json_encode($subDimensi);
         return $subDimensi;
     }
+    public function getSubDimensiSajaRange($kode_d, $start, $end)
+    {
+        $subDimensi = $this->db->get_where('subdimensi', ['kode_d' => $kode_d])->result_array();
+        for ($i = 0; $i < count($subDimensi); $i++) {
+            $kode_sd = $subDimensi[$i]['kode_sd'];
+            $subDimensi[$i]['nilai'] = $this->getSubDimensiRangeNilai($kode_sd, $start, $end);
+        }
+        // header('Content-Type: application/json');
+        // echo json_encode($subDimensi);
+        return $subDimensi;
+    }
+
     public function getSubDimensiRangeNilai($kode_sd, $start, $end)
     {
-        $this->db->where('nilaisubdimensi.kode_sd', $kode_sd);
+        $this->db->where('kode_sd', $kode_sd);
         $this->db->where('tahun >=', $start);
         $this->db->where('tahun <=', $end);
         $this->db->select('*');
@@ -81,11 +94,13 @@ class Admin_model extends CI_Model
             $Dimensi[$i]['nilai'] = $this->getDimensiRangeNilai($kode_d, $start, $end);
             $Dimensi[$i]['subDimensi'] = $this->getSubDimensiRange($kode_d, $start, $end);
         }
+        // header('Content-Type: application/json');
+        // echo json_encode($Dimensi);
         return $Dimensi;
     }
     public function getDimensiRangeNilai($kode_d, $start, $end)
     {
-        $this->db->where('nilaidimensi.kode_d', $kode_d);
+        $this->db->where('kode_d', $kode_d);
         $this->db->where('tahun >=', $start);
         $this->db->where('tahun <=', $end);
         $this->db->select('*');
@@ -143,8 +158,8 @@ class Admin_model extends CI_Model
     }
     public function getNilaiIndikatorJson($kode_i, $tahun)
     {
-        $this->db->where('nilaiindikator.kode_indikator', $kode_i);
-        $this->db->where('nilaiindikator.tahun', $tahun);
+        $this->db->where('kode_indikator', $kode_i);
+        $this->db->where('tahun', $tahun);
         $this->db->select('*');
         $this->db->from('nilaiindikator');
         $result = $this->db->get()->row_array();
@@ -156,15 +171,15 @@ class Admin_model extends CI_Model
     }
     public function getNilaiDimensi($kode_d)
     {
-        $this->db->where('nilaidimensi.kode_d', $kode_d);
+        $this->db->where('kode_d', $kode_d);
         $this->db->select('*');
         $this->db->from('nilaidimensi');
         return $this->db->get()->result_array();
     }
     public function getNilaiDimensiPerTahun($kode_d, $tahun)
     {
-        $this->db->where('nilaidimensi.kode_d', $kode_d);
-        $this->db->where('nilaidimensi.tahun', $tahun);
+        $this->db->where('kode_d', $kode_d);
+        $this->db->where('tahun', $tahun);
         $this->db->select('*');
         $this->db->from('nilaidimensi');
         return $this->db->get()->row_array();
@@ -175,15 +190,15 @@ class Admin_model extends CI_Model
     }
     public function getNilaiSubDimensi($kode_sd)
     {
-        $this->db->where('nilaisubdimensi.kode_sd', $kode_sd);
+        $this->db->where('kode_sd', $kode_sd);
         $this->db->select('*');
         $this->db->from('nilaisubdimensi');
         return $this->db->get()->result_array();
     }
     public function getNilaiSubDimensiPerTahun($kode_sd, $tahun)
     {
-        $this->db->where('nilaisubdimensi.kode_sd', $kode_sd);
-        $this->db->where('nilaisubdimensi.tahun', $tahun);
+        $this->db->where('kode_sd', $kode_sd);
+        $this->db->where('tahun', $tahun);
         $this->db->select('*');
         $this->db->from('nilaisubdimensi');
         return $this->db->get()->row_array();
@@ -194,15 +209,15 @@ class Admin_model extends CI_Model
     }
     public function getNilaiIndikator($kode_indikator)
     {
-        $this->db->where('nilaiindikator.kode_indikator', $kode_indikator);
+        $this->db->where('kode_indikator', $kode_indikator);
         $this->db->select('*');
         $this->db->from('nilaiindikator');
         return $this->db->get()->result_array();
     }
-    public function getNilaiIndikatorPerTahun($kode_indikator, $tahun)
+    public function getNilaiIndikatorPerTahun($kode_indikator, $tahun, $status = 0)
     {
-        $this->db->where('nilaiindikator.kode_indikator', $kode_indikator);
-        $this->db->where('nilaiindikator.tahun', $tahun);
+        $this->db->where('kode_indikator', $kode_indikator);
+        $this->db->where('tahun', $tahun);
         $this->db->select('*');
         $this->db->from('nilaiindikator');
         $result = $this->db->get()->row_array();
