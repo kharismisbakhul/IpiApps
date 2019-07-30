@@ -1,7 +1,9 @@
-//Detail Input Data
+//Input Data
 $(window).on('load', function () {
+
+    //Pilihan Dimensi
     $.ajax({
-        url: 'http://localhost/IpiApps/admin/getDimensi',
+        url: 'http://localhost/IpiApps/data/getDimensi',
         method: 'get',
         dataType: 'json',
 
@@ -10,130 +12,152 @@ $(window).on('load', function () {
             for (i = 0; i < data.length; i++) {
                 d.push(data[i]['nama_dimensi']);
             }
-            document.getElementById("dimensi").innerHTML += `<option></option>`
+            $('#dimensi').append(`<option>Pilih Dimensi</option>`);
+            $('#subDimensi').append(`<option>Pilih Sub Dimensi</option>`);
+            $('#indikator').append(`<option>Pilih Indikator</option>`);
+            $('.tahun').empty();
+            $('#tahun').append(`<option>Pilih Tahun</option>`);
             d.forEach(function (item) {
-                document.getElementById("dimensi").innerHTML += `<option>` + item + `</option>`
+                $('#dimensi').append(`<option>` + item + `</option>`);
             });
 
+            //Milih Dimensi
             $('.dimensi').on('change', function () {
-                // console.log($('.dimensi').val());
-                var a = $('.dimensi').val();
-                var b = a.replace(" ", "+");
-                console.log(b);
-                // $.ajax({
-                //     url: 'http://localhost/IpiApps/admin/getSubDimensi/' + a,
-                //     method: 'get',
-                //     dataType: 'json',
-                //     success: function (data) { }
-                // })
-            });
+                reset(0);
+                var a = $('#dimensi').val();
+                console.log(a);
+                if (a != "Pilih Dimensi") {
+                    var regex = / /gi;
+                    var b = a.replace(regex, '_');
+
+                    // Pilihan Sub Dimensi
+                    $.ajax({
+                        url: 'http://localhost/IpiApps/data/getSubDimensi/' + b,
+                        method: 'get',
+                        dataType: 'json',
+                        success: function (dataSD) {
+                            var sd = [];
+                            for (i = 0; i < dataSD.length; i++) {
+                                sd.push(dataSD[i]['nama_sub_dimensi']);
+                            }
+                            sd.forEach(function (itemsd) {
+                                $('#subDimensi').append(`<option>` + itemsd + `</option>`);
+                            });
+
+                            //Milih Sub Dimensi
+                            $('.subDimensi').on('change', function () {
+                                reset(1);
+                                //bug disini keatas
+                                var c = $('#subDimensi').val();
+                                console.log(c);
+                                if (c != "Pilih Sub Dimensi") {
+                                    var regex = / /gi;
+                                    var d = c.replace(regex, '_');
+                                    // window.location = window.location.origin + "/IpiApps/data/getIndikator/" + d;
+
+                                    // Pilihan Indikator
+                                    $.ajax({
+                                        url: 'http://localhost/IpiApps/data/getIndikator/' + d,
+                                        method: 'get',
+                                        dataType: 'json',
+                                        success: function (dataI) {
+                                            var indikator = [];
+                                            for (i = 0; i < dataI.length; i++) {
+                                                indikator.push(dataI[i]['nama_indikator']);
+                                            }
+                                            indikator.forEach(function (itemI) {
+                                                $('#indikator').append(`<option>` + itemI + `</option>`);
+                                            });
+
+                                            //Milih Indikator
+                                            //Normal
+                                            $('.indikator').on('change', function () {
+                                                reset(2);
+                                                var ind = $('#indikator').val();
+                                                console.log(ind);
+                                                //Pilihan Tahun
+                                                if (ind != "Pilih Indikator") {
+                                                    //Append Tahun
+                                                    $.ajax({
+                                                        url: 'http://localhost/IpiApps/data/getTahun',
+                                                        method: 'get',
+                                                        dataType: 'json',
+                                                        success: function (dataTahun) {
+                                                            $('.tahun').empty();
+                                                            $('.tahun').append(`<option>Pilih Tahun</option>`);
+                                                            dataTahun.forEach(function (dataT) {
+                                                                $('#tahun').append(`<option>` + dataT + `</option>`);
+                                                            });
+                                                        }
+                                                    });
+
+                                                    //Milih Tahun
+                                                    $('.tahun').on('change', function () {
+                                                        reset(3);
+                                                        var tahun = $('#tahun').val();
+                                                        console.log(tahun);
+                                                        if (tahun != "Pilih Tahun") {
+                                                            var regex = / /gi;
+                                                            var ind_nama = ind.replace(regex, '_');
+                                                            // window.location = window.location.origin + "/IpiApps/data/getNilaiIndikator/" + ind_nama + "/" + tahun;
+
+                                                            //Ambil nilai indikator sesuai tahun
+                                                            $.ajax({
+                                                                url: 'http://localhost/IpiApps/data/getNilaiIndikator/' + ind_nama + '/' + tahun,
+                                                                method: 'get',
+                                                                dataType: 'json',
+                                                                success: function (nilai_indikator) {
+                                                                    // var nilai = (nilai_indikator['nilai']).toFixed(2);
+                                                                    $("#nilai").val(parseFloat(nilai_indikator['nilai']).toFixed(2));
+                                                                }
+                                                            });
+                                                        }
+                                                        else {
+                                                            reset(3);
+                                                        }
+                                                    });
+                                                }
+                                                else {
+                                                    reset(2);
+                                                }
+                                            });
+                                        }
+                                    })
+                                }
+                                else {
+                                    reset(1);
+                                }
+                            });
+
+                        }
+                    });
+                }
+                else {
+                    reset(0);
+                }
+            })
         }
     });
 })
 
-// function dimensi(item) {
-//     ;
-// }
-
-// $('.privileges').on('change', function () {
-//     // alert("<?php echo $aa; ?>");
-//     $.ajax({
-//         url: 'http://localhost/SiUjian/admin/getListProdi',
-//         method: 'get',
-//         dataType: 'json',
-
-//         success: function (data) {
-//             var d = [];
-//             for (i = 0; i < data.length; i++) {
-//                 d.push(data[i]['nama_prodi']);
-//             }
-//             if ($('.privileges').val() === "Mahasiswa") {
-//                 clear();
-//                 $('.a').addClass('form-group row');
-//                 $('.a').append(`
-//           <label for= "jenjang" class= "col-sm-4 col-form-label" >Jenjang</label >
-//           <div class="col-sm-8">
-//           <select class="form-control jenjang" name="jenjang" id="jenjang">
-//           <option>S2</option>
-//           <option>S3</option>
-//           </select>
-//           </div>
-//           `);
-//                 $('.b').addClass('form-group row');
-//                 $('.b').append(`
-//                   <label for= "prodi" class= "col-sm-4 col-form-label">Prodi</label>
-//                       <div class="col-sm-8">
-//                           <select class="form-control listProdi" name="prodi" id="prodi" placeholder="prodi">
-//                           </select>
-//                           </div>`);
-//                 d.forEach(myFunction);
-//             }
-//             else if ($('.privileges').val() === "Dosen") {
-//                 clear();
-//                 $('.a').addClass('form-group row');
-//                 $('.a').append(`
-//           <label for= "jenjang" class= "col-sm-4 col-form-label" >Jenjang</label >
-//           <div class="col-sm-8">
-//           <select class="form-control jenjang" name="jenjang" id="jenjang">
-//           <option>S2</option>
-//           <option>S3</option>
-//           </select>
-//           </div>
-//           `);
-//                 $('.b').addClass('form-group row');
-//                 $('.b').append(`
-//                   <label for= "prodi" class= "col-sm-4 col-form-label">Prodi</label>
-//                       <div class="col-sm-8">
-//                           <select class="form-control listProdi" name="prodi" id="prodi" placeholder="prodi">
-//                           </select>
-//                           </div>`);
-//                 d.forEach(myFunction);
-//             }
-//             else if ($('.privileges').val() === "Pimpinan") {
-//                 clear();
-//                 $('.a').addClass('form-group row');
-//                 $('.a').append(`
-//           <label for= "jenjang" class= "col-sm-4 col-form-label" >Jenjang</label >
-//           <div class="col-sm-8">
-//           <select class="form-control jenjang" name="jenjang" id="jenjang">
-//           <option>S2</option>
-//           <option>S3</option>
-//           </select>
-//           </div>
-//           `);
-//                 $('.b').addClass('form-group row');
-//                 $('.b').append(`
-//                   <label for= "prodi" class= "col-sm-4 col-form-label">Prodi</label>
-//                       <div class="col-sm-8">
-//                           <select class="form-control listProdi" name="prodi" id="prodi" placeholder="prodi">
-//                           </select>
-//                           </div>`);
-//                 d.forEach(myFunction);
-//                 $('.c').addClass('form-group row');
-//                 $('.c').append(`
-//           <label for= "posisi" class= "col-sm-4 col-form-label" >Posisi</label >
-//           <div class="col-sm-8">
-//           <textarea class="form-control posisi" name="posisi" id="posisi"></textarea>
-//           </div>
-//           `);
-//             }
-//             else {
-//                 clear();
-//             }
-//         }
-//     })
-// });
-
-// function clear() {
-//     $('.a').removeClass('form-group row');
-//     $('.b').removeClass('form-group row');
-//     $('.c').removeClass('form-group row');
-//     $('.a').html(``);
-//     $('.b').html(``);
-//     $('.c').html(``);
-// }
-
-// function myFunction(item) {
-//     document.getElementById("prodi").innerHTML += `<option>` + item + `</option>`;
-// }
-
+//reset field
+function reset(type) {
+    if (type == 0) {
+        $('.subDimensi').html(``);
+        $('.subDimensi').append(`<option>Pilih Sub Dimensi</option>`);
+        reset(1);
+    }
+    else if (type == 1) {
+        $('.indikator').html(``);
+        $('.indikator').append(`<option>Pilih Indikator</option`);
+        reset(2);
+    }
+    else if (type == 2) {
+        $('.tahun').empty();
+        $('.tahun').append(`<option>Pilih Tahun</option>`);
+        reset(3);
+    }
+    else if (type == 3) {
+        $("#nilai").val(``);
+    }
+}

@@ -1,0 +1,6 @@
+Tambah: 
+- DELETE DATA SPESIFIK SESUAI TAHUN
+- Data Awal tampil semua
+- Tambah Tahun
+- Hapus Data Spesifik
+- Detail Sub Dimensi Report

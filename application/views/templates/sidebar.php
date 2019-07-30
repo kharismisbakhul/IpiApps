@@ -36,7 +36,7 @@
         <?php else : ?>
         <li class="nav-item">
         <?php endif; ?>
-        <a class="nav-link pb-0" href="<?= base_url('admin/inputData'); ?>">
+        <a class="nav-link pb-0" href="<?= base_url('inputData'); ?>">
             <i class="fas fa-fw fa-sign-in-alt"></i>
             <span>Input Data</span>
         </a>
@@ -55,99 +55,64 @@
     </li>
 
     <?php $subDimensi = $this->db->get('subDimensi')->result_array(); ?>
+    <?php $dimensi = $this->db->get('dimensi')->result_array(); ?>
     <!-- Nav Item - Pages Collapse Menu -->
+
+    <!-- Updated -->
+
     <!-- Aktivitas Ekonomi -->
-    <?php if ($title == "Aktivitas Ekonomi") : ?>
-        <li class="nav-item active">
-        <?php else : ?>
-        <li class="nav-item">
-        <?php endif; ?>
-        <a class="nav-link collapsed pb-0" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            <i class="fas fa-fw fa-chart-bar"></i>
-            <span>Pertumbuhan Ekonomi</span>
-        </a>
-        <!-- Menu Dropdown -->
-        <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="collapse-inner rounded mb-0" style="color:white">
-                <a class="collapse-item subDimensi text-white" href="<?= base_url('admin/pertumbuhanEkonomi'); ?>"><span>Indeks Pertumbuhan<br><span class="ml-0"> Ekonomi</span></span></a>
-                <?php foreach ($subDimensi as $sd) :
-                    if ($sd['kode_d'] == 1) {
-                        $str = $sd['nama_sub_dimensi'];
-                        $result = explode(" ", $str);
-                        if (count($result) < 3) {
-                            ?>
-                            <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"> <?= $str ?></a>
-                        <?php } else {
-                            ?>
-                            <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"><span><?= $result[0] . " " . $result[1] . " " ?><br><span class="ml-0"><?= $result[2] ?></span></span></a>
-                        <?php }
-                    };
-                endforeach; ?>
-            </div>
-        </div>
-    </li>
+    <?php foreach ($dimensi as $d) : ?>
+        <?php if ($title == $d['nama_dimensi']) : ?>
+            <li class="nav-item active">
+            <?php else : ?>
+            <li class="nav-item">
+            <?php endif; ?>
+            <a class="nav-link collapsed pb-0" href="#" data-toggle="collapse" data-target="#coleps<?= $d['kode_d'] ?>" aria-expanded="true" aria-controls="collapseOne">
+                <i class="fas fa-fw fa-chart-bar"></i>
+                <?php $n_dimensi = explode(" ", $d['nama_dimensi']); ?>
+                <span>
+                    <?php for ($i = 0; $i < count($n_dimensi); $i++) : ?>
+                        <?php if ($i != 2) : ?>
+                            <?= $n_dimensi[$i] . ' ' ?>
+                        <?php else : ?>
+                            <br><span class="ml-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $n_dimensi[$i] ?> </span>
+                        <?php endif; ?>
+                    <?php endfor; ?>
+                </span>
+            </a>
+            <!-- Menu Dropdown -->
+            <div id="coleps<?= $d['kode_d'] ?>" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="<?= base_url('admin/dimensi?d=') . $d['kode_d'] ?>">
+                        <span>
+                            <?php for ($i = 0; $i < count($n_dimensi); $i++) : ?>
+                                <?php if ($i != 2) : ?>
+                                    <?= $n_dimensi[$i] . ' ' ?>
+                                <?php else : ?>
+                                    <br><span class="ml-0"><?= $n_dimensi[$i] ?> </span>
+                                <?php endif; ?>
+                            <?php endfor; ?>
+                        </span>
+                    </a>
 
-    <!-- Inklusifitas -->
-    <?php if ($title == "Inklusifitas") : ?>
-        <li class="nav-item active">
-        <?php else : ?>
-        <li class="nav-item">
-        <?php endif; ?>
-        <a class="nav-link collapsed pb-0" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-chart-bar"></i>
-            <span>Inklusifitas</span>
-        </a>
-        <!-- Menu Dropdown -->
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="collapse-inner rounded mb-0" style="color:white">
-                <a class="collapse-item text-white" href="<?= base_url('admin/inklusifitas') ?>">Indeks Inklusifitas</a>
-                <?php foreach ($subDimensi as $sd) :
-                    if ($sd['kode_d'] == 2) {
-                        $str = $sd['nama_sub_dimensi'];
-                        $result = explode(" ", $str);
-                        if (count($result) < 3) {
-                            ?>
-                            <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"> <?= $str ?></a>
-                        <?php } else {
-                            ?>
-                            <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"><span><?= $result[0] . " " . $result[1] . " " ?><br><span class="ml-0"><?= $result[2] ?></span></span></a>
-                        <?php }
-                    };
-                endforeach; ?>
+                    <?php foreach ($subDimensi as $sd) :
+                        if ($sd['kode_d'] == $d['kode_d']) {
+                            $str = $sd['nama_sub_dimensi'];
+                            $result = explode(" ", $str);
+                            if (count($result) < 3) {
+                                ?>
+                                <a class="collapse-item" href="<?= base_url('admin/subdimensi?sd=') . $sd['kode_sd'] ?>"> <?= $str ?></a>
+                            <?php } else {
+                                ?>
+                                <a class="collapse-item" href="<?= base_url('admin/subdimensi?sd=') . $sd['kode_sd'] ?>"><span><?= $result[0] . " " . $result[1] . " " ?><br><span class="ml-0"><?= $result[2] ?></span></span></a>
+                            <?php }
+                        };
+                    endforeach; ?>
+                </div>
+                <!-- -- Updated -->
             </div>
-        </div>
-    </li>
-
-    <!-- Sustainability -->
-    <?php if ($title == "Sustainability") : ?>
-        <li class="nav-item active">
-        <?php else : ?>
-        <li class="nav-item">
-        <?php endif; ?>
-        <a class="nav-link collapsed pb-0" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-            <i class="fas fa-fw fa-chart-bar"></i>
-            <span>Sustainability</span>
-        </a>
-        <!-- Menu Dropdown -->
-        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
-            <div class="collapse-inner rounded mb-0" style="color:white">
-                <a class="collapse-item text-white" href="<?= base_url('admin/sustainability'); ?>">Indeks Keberlanjutan</a>
-                <?php foreach ($subDimensi as $sd) :
-                    if ($sd['kode_d'] == 3) {
-                        $str = $sd['nama_sub_dimensi'];
-                        $result = explode(" ", $str);
-                        if (count($result) < 3) {
-                            ?>
-                            <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"> <?= $str ?></a>
-                        <?php } else {
-                            ?>
-                            <a class="collapse-item text-white" href="<?= base_url($sd['link']) ?>"><span><?= $result[0] . " " . $result[1] . " " ?><br><span class="ml-0"><?= $result[2] ?></span></span></a>
-                        <?php }
-                    };
-                endforeach; ?>
-            </div>
-        </div>
-    </li>
+        </li>
+    <?php endforeach; ?>
 
     <!-- Report -->
     <?php if ($title == "Report") : ?>
@@ -155,7 +120,7 @@
         <?php else : ?>
         <li class="nav-item">
         <?php endif; ?>
-        <a class="nav-link pb-0" href="<?= base_url('admin/report'); ?>">
+        <a class="nav-link pb-0" href="<?= base_url('report'); ?>">
             <i class="fas fa-fw fa-file-alt"></i>
             <span>Report</span>
         </a>

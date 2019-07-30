@@ -25,7 +25,7 @@ body{
 }
 
 div.alert p{
-    margin-top: -.7rem;
+    margin-top: -.5rem;
 }
 
 @media (min-width: 991px){

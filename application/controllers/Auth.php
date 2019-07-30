@@ -14,6 +14,7 @@ class Auth extends CI_Controller
         }
         $this->form_validation->set_rules('username', 'Username', 'required|trim');
         $this->form_validation->set_rules('password', 'Password', 'required|trim');
+
         if ($this->form_validation->run() == false) {
             $data['title'] = 'IPI APPS Login';
             $this->load->view('auth/login', $data);
@@ -25,7 +26,9 @@ class Auth extends CI_Controller
     {
         $username = $this->input->post('username');
         $password = $this->input->post('password');
+
         $user = $this->db->get_where('user', ['username' => $username])->row_array();
+
         // Cek ketersediaan user
         if ($user) {
             // cek password
@@ -33,18 +36,19 @@ class Auth extends CI_Controller
                 $this->session->set_userdata('username', $username);
                 redirect('admin');
             } else {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger text-center align-middle mb-3" role="alert"> <p>Password salah !</p></div>');
+                $this->session->set_flashdata('message', '<div class="alert alert-danger text-center align-middle mb-3" role="alert"><p>Password salah !</p></div>');
                 redirect('auth');
             }
         } else {
-            $this->session->set_flashdata('message', '<div class="alert alert-danger text-center align-middle mb-3" role="alert"> <p>Username tidak terdaftar !</p> </div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-danger text-center align-middle mb-3" role="alert"><p>Username tidak terdaftar !</p></div>');
             redirect('auth');
         }
     }
     public function logout()
     {
         $this->session->unset_userdata('username');
-        $this->session->set_flashdata('message', '<div class="alert alert-success text-center align-middle mb-3" role="alert"> <p>Logout berhasil</p> </div>');
+
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center align-middle mb-3" role="alert"><p>Logout berhasil</p></div>');
         redirect('auth');
     }
     public function blocked()
