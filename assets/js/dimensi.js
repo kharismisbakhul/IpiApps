@@ -3,7 +3,7 @@ var segments = url.split("/");
 var action = segments[5];
 var data = action.split("?");
 
-let iniUrl = "http://localhost/IpiApps/Admin/dimensiApi?" + data[1];
+let iniUrl = "http://localhost:8080/IpiApps/Admin/dimensiApi?" + data[1];
 let nama_sb_dimensi = [];
 let nama_dimensi = [];
 let tahun = [];
@@ -12,19 +12,19 @@ let nilaiSubDimensi = [];
 let max_tahun;
 let min_tahun;
 
-$(document).ready(function() {
+$(document).ready(function () {
 	$.ajax({
 		url: iniUrl,
 		method: "get",
 		dataType: "json",
 		startTime: performance.now(),
-		beforeSend: function(data) {
+		beforeSend: function (data) {
 			$("#chart-dimensi").hide();
 			$(".chart").append(
-				'<img src="http://localhost/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">'
+				'<img src="http://localhost:8080/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">'
 			);
 		},
-		success: function(data) {
+		success: function (data) {
 			$(".loader").remove();
 			$("#chart-dimensi").show();
 			for (var i in data["tahun"]) {
@@ -90,45 +90,40 @@ $(document).ready(function() {
 						}
 					},
 					scales: {
-						xAxes: [
-							{
-								time: {
-									unit: "year"
-								},
-								gridLines: {
-									display: true,
-									drawBorder: false
-								},
-								ticks: {
-									min: 2,
-									max: 0,
-									maxTicksLimit: 7
-								},
-								maxBarThickness: 70
+						xAxes: [{
+							time: {
+								unit: "year"
+							},
+							gridLines: {
+								display: true,
+								drawBorder: false
+							},
+							ticks: {
+								min: 2,
+								max: 0,
+								maxTicksLimit: 7
+							},
+							maxBarThickness: 70
+						}],
+						yAxes: [{
+							ticks: {
+								min: 0,
+								max: 10,
+								maxTicksLimit: 30,
+								padding: 30
+								// Include a dollar sign in the ticks
+							},
+							gridLines: {
+								color: "rgb(220, 221, 225)",
+								zeroLineColor: "rgb(234, 236, 244)",
+								drawBorder: false,
+								borderDash: [5, 5],
+								zeroLineBorderDash: [2]
 							}
-						],
-						yAxes: [
-							{
-								ticks: {
-									min: 0,
-									max: 10,
-									maxTicksLimit: 30,
-									padding: 30
-									// Include a dollar sign in the ticks
-								},
-								gridLines: {
-									color: "rgb(220, 221, 225)",
-									zeroLineColor: "rgb(234, 236, 244)",
-									drawBorder: false,
-									borderDash: [5, 5],
-									zeroLineBorderDash: [2]
-								}
-							}
-						]
+						}]
 					},
 					annotation: {
-						annotations: [
-							{
+						annotations: [{
 								type: "box",
 								yScaleID: "y-axis-0",
 								yMin: 0,
@@ -176,11 +171,11 @@ $(document).ready(function() {
 				}
 			});
 		},
-		error: function(data) {
+		error: function (data) {
 			$(".loader").remove();
 			$("#chart-subdimensi").remove();
 			$(".chart").append(
-				'<img src="http://localhost/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">'
+				'<img src="http://localhost:8080/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">'
 			);
 		}
 	});
@@ -189,18 +184,18 @@ $(document).ready(function() {
 
 //untutk data table
 function _getDataToTable(data, dataTampung) {
-	data["tahun"].forEach(function(p) {
+	data["tahun"].forEach(function (p) {
 		$(".tahun").append(`<th scope="col">` + p.tahun + `</th>`);
 	});
 
 	$(".iniData").append(`<tr class="dimensi"></tr>`);
 
-	data["n_dimensi"].forEach(function(p) {
+	data["n_dimensi"].forEach(function (p) {
 		$(".dimensi").append(
 			`
         <td colspan="2" scope="col">` +
-				p.nama_dimensi +
-				`</td>
+			p.nama_dimensi +
+			`</td>
         `
 		);
 	});
@@ -208,8 +203,8 @@ function _getDataToTable(data, dataTampung) {
 		$(".dimensi").append(
 			`
         <td class="n-dimensi" scope="col">` +
-				parseFloat(data["dimensi"][i]).toFixed(2) +
-				`</td>
+			parseFloat(data["dimensi"][i]).toFixed(2) +
+			`</td>
         `
 		);
 	}

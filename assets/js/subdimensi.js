@@ -3,7 +3,7 @@ var segments2 = url2.split("/");
 var action2 = segments2[5];
 var data2 = action2.split("?");
 
-let iniUrl2 = "http://localhost/IpiApps/Admin/subdimensiApi?" + data2[1];
+let iniUrl2 = "http://localhost:8080/IpiApps/Admin/subdimensiApi?" + data2[1];
 let nama_indikator = [];
 let nama_subdimensi = [];
 let tahun = [];
@@ -11,21 +11,21 @@ let nilaiSubdimensi = [];
 let nilaiIndikator = [];
 let max_tahun;
 let min_tahun;
-$(document).ready(function() {
+$(document).ready(function () {
 	$.ajax({
 		url: iniUrl2,
 		method: "get",
 		dataType: "json",
 		startTime: performance.now(),
-		beforeSend: function(data) {
+		beforeSend: function (data) {
 			$("#chart-subdimensi").hide();
 			$(".chart-sub").append(
-				'<img src="http://localhost/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">'
+				'<img src="http://localhost:8080/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">'
 			);
 			$(".temp-tahun").remove();
 			$(".temp-table").remove();
 		},
-		success: function(data) {
+		success: function (data) {
 			$(".loader").remove();
 			$("#chart-subdimensi").show();
 			for (var i in data["tahun"]) {
@@ -116,45 +116,40 @@ $(document).ready(function() {
 						}
 					},
 					scales: {
-						xAxes: [
-							{
-								time: {
-									unit: "year"
-								},
-								gridLines: {
-									display: true,
-									drawBorder: false
-								},
-								ticks: {
-									min: 2,
-									max: 0,
-									maxTicksLimit: 7
-								},
-								maxBarThickness: 70
+						xAxes: [{
+							time: {
+								unit: "year"
+							},
+							gridLines: {
+								display: true,
+								drawBorder: false
+							},
+							ticks: {
+								min: 2,
+								max: 0,
+								maxTicksLimit: 7
+							},
+							maxBarThickness: 70
+						}],
+						yAxes: [{
+							ticks: {
+								min: 0,
+								max: 10,
+								maxTicksLimit: 20,
+								padding: 30
+								// Include a dollar sign in the ticks
+							},
+							gridLines: {
+								color: "rgb(220, 221, 225)",
+								zeroLineColor: "rgb(234, 236, 244)",
+								drawBorder: false,
+								borderDash: [5, 5],
+								zeroLineBorderDash: [2]
 							}
-						],
-						yAxes: [
-							{
-								ticks: {
-									min: 0,
-									max: 10,
-									maxTicksLimit: 20,
-									padding: 30
-									// Include a dollar sign in the ticks
-								},
-								gridLines: {
-									color: "rgb(220, 221, 225)",
-									zeroLineColor: "rgb(234, 236, 244)",
-									drawBorder: false,
-									borderDash: [5, 5],
-									zeroLineBorderDash: [2]
-								}
-							}
-						]
+						}]
 					},
 					annotation: {
-						annotations: [
-							{
+						annotations: [{
 								type: "box",
 								yScaleID: "y-axis-0",
 								yMin: 0,
@@ -205,11 +200,11 @@ $(document).ready(function() {
 			});
 			console.log(x);
 		},
-		error: function(data) {
+		error: function (data) {
 			$(".loader").remove();
 			$("#chart-subdimensi").remove();
 			$(".chart-sub").append(
-				'<img src="http://localhost/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block img-data" width="30%" alt="no data">'
+				'<img src="http://localhost:8080/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block img-data" width="30%" alt="no data">'
 			);
 		}
 	});
@@ -218,7 +213,7 @@ $(document).ready(function() {
 
 //untutk data table
 function _getDataToTableSub(data, dataTampungSub) {
-	data["tahun"].forEach(function(p) {
+	data["tahun"].forEach(function (p) {
 		$(".tahun-sub").append(
 			`<th scope="col" class="temp-tahun">` + p.tahun + `</th>`
 		);
@@ -229,8 +224,8 @@ function _getDataToTableSub(data, dataTampungSub) {
 	$(".subdimensi").append(
 		`
         <td colspan="2" scope="col">` +
-			data["n_subdimensi"].nama_sub_dimensi +
-			`</td>
+		data["n_subdimensi"].nama_sub_dimensi +
+		`</td>
         `
 	);
 
@@ -238,8 +233,8 @@ function _getDataToTableSub(data, dataTampungSub) {
 		$(".subdimensi").append(
 			`
         <td class="n-sub-dimensi" scope="col">` +
-				parseFloat(data["subdimensi"][i]).toFixed(2) +
-				`</td>
+			parseFloat(data["subdimensi"][i]).toFixed(2) +
+			`</td>
         `
 		);
 	}

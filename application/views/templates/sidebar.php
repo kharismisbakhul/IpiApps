@@ -120,7 +120,7 @@
         <?php else : ?>
         <li class="nav-item">
         <?php endif; ?>
-        <a class="nav-link pb-0" href="<?= base_url('report'); ?>">
+        <a class="nav-link pb-0" href="<?= base_url('admin/report'); ?>">
             <i class="fas fa-fw fa-file-alt"></i>
             <span>Report</span>
         </a>
