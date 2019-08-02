@@ -174,7 +174,7 @@ class Admin extends CI_Controller
         } else if ($kode_sd == 4 || $kode_sd == 5) {
             $data['background'] = "bg-green";
         } else {
-            $data['background'] = "bg-yellow";
+            $data['background'] = "bg-orange2";
         }
         $data['title'] = $nama_sub_dimensi[$kode_sd - 1];
         $this->loadTemplate($data);
@@ -437,10 +437,6 @@ class Admin extends CI_Controller
         } else {
             $nilairescale = 'Non';
         }
-        // $this->db->where('kode_indikator', $indikator);
-        // $this->db->where('tahun', $tahun);
-        // $this->db->set('nilai_rescale', $nilairescale);
-        // $this->db->update('nilaiindikator');
         return $nilairescale;
     }
 }

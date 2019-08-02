@@ -19,7 +19,7 @@ $(document).ready(function () {
 		dataType: "json",
 		startTime: performance.now(),
 		beforeSend: function (data) {
-			$("#chart-dimensi").hide();
+			$("#ipi-chart").hide();
 			$(".header-table").hide();
 			$(".chart").append(
 				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
@@ -31,7 +31,7 @@ $(document).ready(function () {
 		success: function (data) {
 			$(".loader").remove();
 			$(".header-table").show();
-			$("#chart-dimensi").show();
+			$("#ipi-chart").show();
 			for (var i in data["tahun"]) {
 				tahun.push(data["tahun"][i].tahun);
 			}
@@ -64,7 +64,7 @@ $(document).ready(function () {
 				fill: false,
 				spanGaps: true
 			});
-			let color = ["rgb(132,60,12)", "rgb(84,130,53)", "rgb(191,144,0)"];
+			let color = ["#eb4d4b", "#6ab04c", "#f0932b"];
 			let count = 1;
 			for (var i in data["n_dimensi"]) {
 				setDataDimensi.push({
@@ -85,6 +85,7 @@ $(document).ready(function () {
 					datasets: setDataDimensi
 				},
 				options: {
+					responsive: false,
 					maintainAspectRatio: false,
 					layout: {
 						padding: {
@@ -178,7 +179,7 @@ $(document).ready(function () {
 		},
 		error: function (data) {
 			$(".loader").remove();
-			$("#chart-subdimensi").remove();
+			$("#ipi-chart").remove();
 			$(".chart").append(
 				`<img src="` + segments[0] + `/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">`
 			);
@@ -221,7 +222,7 @@ function _getDataToTable(data, dataTampung) {
 	for (var i in data["n_dimensi"]) {
 		tableTr += "<tr>";
 		tableTr += "<td>" + count++ + "</td>";
-		tableTr += "<td>" + data["n_dimensi"][i].nama_dimensi + "</td>";
+		tableTr += "<td class='text-left'>" + data["n_dimensi"][i].nama_dimensi + "</td>";
 		for (var j in tahun) {
 			tableTr +=
 				"<td>" +

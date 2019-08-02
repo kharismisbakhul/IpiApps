@@ -256,7 +256,7 @@ function _getDataToTableSub(data, dataTampungSub) {
 	for (var i in data["n_indikator"]) {
 		tableTr += "<tr class='temp-table'>";
 		tableTr += "<td>" + count++ + "</td>";
-		tableTr += "<td>" + data["n_indikator"][i].nama_indikator + "</td>";
+		tableTr += "<td class='text-left'>" + data["n_indikator"][i].nama_indikator + "</td>";
 		for (var j in tahun) {
 			tableTr +=
 				"<td>" +

@@ -30,12 +30,8 @@
 <script src="<?= base_url('assets/') ?>js/sb-admin-2.min.js"></script>
 
 <!-- Page level plugins -->
-<script src="<?= base_url('assets/') ?>vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="<?= base_url('assets/') ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
 <script src="<?= base_url('assets/vendor/jquery/jquery.progresstimers.js') ?>"></script>
 
-<!-- Page level custom scripts -->
-<script src="<?= base_url('assets/') ?>js/demo/datatables-demo.js"></script>
 
 <!-- Sweet alert custom -->
 <script src="<?= base_url('assets/') ?>js/sweet-alert.js"></script>
@@ -52,7 +48,9 @@
 <script src="<?= base_url('assets/'); ?>js/xlsx.core.min.js"></script>
 <script src="<?= base_url('assets/'); ?>js/Blob.js"></script>
 <script src="<?= base_url('assets/'); ?>js/FileSaver.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/3.3.13/js/tableexport.min.js"></script>
+<script src="<?= base_url('assets/'); ?>js/tableExport.js"></script>
+<script src="<?= base_url('assets/'); ?>js/progressbar.min.js"></script>
+
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
 
@@ -73,7 +71,6 @@
 <?php endif; ?>
 
 <script src="<?= base_url('assets/'); ?>js/filter.js"></script>
-<script src="<?= base_url('assets/'); ?>js/export.js"></script>
 
 </body>
 

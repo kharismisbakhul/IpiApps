@@ -13,7 +13,7 @@
 
     <div class="row">
         <!-- Area Rentan Waktu -->
-        <div class="col-xl-8 col-md-12 col-sm-12 mb-4">
+        <div class="col-xl-6 col-md-12 col-sm-12 mb-4">
             <div class="card shadow h-100">
                 <div class="card-header <?= $background ?>">
                     <div class="text-sm font-weight-bold text-uppercase mb-1 text-white">
@@ -22,32 +22,33 @@
                 </div>
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                        <div class="col-md-12 mr-2">
-                            <div class="text-gray-800 mt-1">
-                                Untuk menampilkan data pada
-                                tabel dan chart, harap untuk
-                                mengisi <br> rentan tahun di bawah
-                                <form action="<?= base_url('admin/dimensi'); ?>" method="get">
-                                    <div class="row ml-1 mr-1">
-                                        <div class="col-lg-12 mb-2">
-                                            <small>dari tahun</small>
-                                            <select class="custom-select" id="start-date" name="star_date">
-
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-12 mb-2">
-                                            <small>sampai tahun</small>
-                                            <select class="custom-select" id="end-date" name="end_date">
-
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-12 mt-2">
-                                            <input type="hidden" name="d" value="<?= $this->input->get('d');  ?>">
-                                            <button type="submit" class="btn btn-primary submit" style="width: 100%" id="submit">Submit</button>
-                                        </div>
+                        <div class="col-md-12">
+                            <form action="<?= base_url('admin/dimensi'); ?>" method="get">
+                                <div class="row ml-1 mr-1">
+                                    <div class="col-lg-12 mb-2 text-gray-800">
+                                        Untuk menampilkan data pada
+                                        tabel dan chart, harap untuk
+                                        mengisi <br> rentan tahun di bawah
                                     </div>
-                                </form>
-                            </div>
+                                    <div class="col-lg-12 mb-2">
+                                        <small>dari tahun</small>
+                                        <select class="custom-select" id="start-date" name="star_date">
+
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-12 mb-2">
+                                        <small>sampai tahun</small>
+                                        <select class="custom-select" id="end-date" name="end_date">
+
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-12 mt-2">
+                                        <input type="hidden" name="d" value="<?= $this->input->get('d');  ?>">
+                                        <button type="submit" class="btn btn-primary submit" style="width: 100%" id="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+
                         </div>
                     </div>
                 </div>
@@ -70,9 +71,9 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center tClip">
                                     <thead class="header-table-root">
-                                        <tr style="background-color: #f8f8f8; color: #101010" class="header-table">
+                                        <tr style="background-color:#0097e6;color: #ffffff" class="header-table">
                                         </tr>
-                                        <tr style="background-color: #f8f8f8; color: #101010" class="tahun-dimensi">
+                                        <tr style="background-color:#0097e6; color: #ffffff" class="tahun-dimensi">
                                         </tr>
                                     </thead>
                                     <tbody class="iniData">

@@ -16,39 +16,22 @@ $(document).ready(function () {
 		url: iniUrl,
 		method: "get",
 		dataType: "json",
-		startTime: parseInt(parseInt(performance.now()) / 100),
+		startTime: parseInt(performance.now()) / 64,
 		beforeSend: function (data) {
-			var x = this.startTime;
+			var x = parseInt(performance.now()) * 35;
+			console.log(x)
 			$(".loading-progress").append(
 				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
 			);
+			move(x)
 		},
 		success: function (data) {
 			$('.loader').remove();
-			// console.log(data);
+			$('.report').remove();
 			$(".table-global").show();
 			_getDataToTable(data);
-			// $('.export-to-excel').on('click', function () {
-			// 	$('.btn-export').html('');
-			// 	var tables = $("table").tableExport({
-			// 		headings: true, // (Boolean), display table headings (th/td elements) in the <thead>
-			// 		footers: true, // (Boolean), display table footers (th/td elements) in the <tfoot>
-			// 		formats: ["xlsx"], // (String[]), filetypes for the export
-			// 		fileName: "Report", // (id, String), filename for the downloaded file
-			// 		bootstrap: true, // (Boolean), style buttons using bootstrap
-			// 		position: "bottom", // (top, bottom), position of the caption element relative to table
-			// 		ignoreRows: null, // (Number, Number[]), row indices to exclude from the exported file(s)
-			// 		ignoreCols: null, // (Number, Number[]), column indices to exclude from the exported file(s)
-			// 		ignoreCSS: false, // (selector, selector[]), selector(s) to exclude from the exported file(s)
-			// 		emptyCSS: false, // (selector, selector[]), selector(s) to replace cells with an empty string in the exported file(s)
-			// 		trimWhitespace: false // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s)
-			// 	});
 
-			// 	$(".btn-toolbar").clone(true).appendTo(".btn-export");
-			// 	$('.bottom').style.display = "none";
-			// 	$('.btn-toolbar').html('');
-			// 	tables.tableExport.remove();
-			// });
+
 		},
 		done: function () {
 			progress.progressTimer('complete');
@@ -63,16 +46,53 @@ $(document).ready(function () {
 	})
 });
 
-var progress = $(".loading-progress").progressTimer({
-	timeLimit: 10,
-	onFinish: function () {
-		alert('completed!');
-	}
-});
 
 // Akhir Indeks Pembangunan Inklusif
 
 //untutk data table
+
+function move(x) {
+	var bar = new ProgressBar.Line(progressTimer, {
+		strokeWidth: 4,
+		easing: 'easeInOut',
+		duration: x,
+		color: '#3867d6',
+		trailColor: '#eee',
+		trailWidth: 1,
+		svgStyle: {
+			width: '100%',
+			height: '100%'
+		},
+		text: {
+			style: {
+				// Text color.
+				// Default: same as stroke color (options.color)
+				color: '#999',
+				position: 'absolute',
+				right: '0',
+				top: '30px',
+				padding: 0,
+				margin: 0,
+				transform: null
+			},
+			autoStyleContainer: false
+		},
+		from: {
+			color: '#FFEA82'
+		},
+		to: {
+			color: '#ED6A5A'
+		},
+		step: (state, bar) => {
+			bar.setText(Math.round(bar.value() * 100) + ' %');
+		}
+	});
+	bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+	bar.text.style.fontSize = '2rem';
+
+	bar.animate(1.0);
+}
+
 function _getDataToTable(data) {
 	$(".iniDataIpi").append(`<tr class="ipi"></tr>`);
 	for (var i in data["ipi"]) {
@@ -107,8 +127,6 @@ function _getDataToTable(data) {
 				`</td>
             `
 			)
-			console.log(data["sub_dimensi"][2][2018])
-
 		}
 	}
 

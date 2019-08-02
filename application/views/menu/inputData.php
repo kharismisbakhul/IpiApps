@@ -53,8 +53,11 @@
                                 <select class="form-control indikator" name="indikator" id="indikator">
                                 </select>
                             </div>
-                            <button type="button" class="btn btn-primary tambah-indikator col-sm-2" data-toggle="modal" data-target="#ModalTambahIndikator">
-                                <i class="fas fa-fw fa-plus"></i>Indikator
+                            <button type="button" class="btn btn-primary tambah-indikator col-sm-2 btn-icon-split" data-toggle="modal" data-target="#ModalTambahIndikator">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-fw fa-plus"></i>
+                                </span>
+                                <span class="text">Indikator</span>
                             </button>
 
                         </div>
@@ -65,8 +68,11 @@
                                 </select>
                                 <?= form_error('tahun', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
-                            <button type="button" class="btn btn-primary tambah-indikator col-sm-2" data-toggle="modal" data-target="#ModalTambahDataTahun">
-                                <i class="fas fa-fw fa-plus"></i>Tahun
+                            <button type="button" class="btn btn-primary tambah-indikator btn-icon-split" data-toggle="modal" data-target="#ModalTambahDataTahun">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-fw fa-plus"></i>
+                                </span>
+                                <span class="text">Tahun</span>
                             </button>
                         </div>
                         <div class="form-group row">
@@ -79,8 +85,12 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-lg action text-right mt-2 mb-0">
-                                <button type="submit" class="btn btn-primary tambah-user">
-                                    <i class="fas fa-fw fa-plus"></i>Tambah Data
+                                <button type="submit" class="btn btn-primary tambah-user btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-fw fa-plus"></i>
+                                    </span>
+                                    <span class="text">Perbaharui Data</span>
+
                                 </button>
                             </div>
                         </div>
@@ -100,11 +110,17 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <button type="button" class="btn btn-danger hapus-indikator col-lg" data-toggle="modal" data-target="#ModalHapusIndikator">
-                        <i class="fas fa-fw fa-trash"></i>Hapus Indikator
+                    <button type="button" class="btn btn-danger btn-icon-split hapus-indikator" data-toggle="modal" data-target="#ModalHapusIndikator">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-fw fa-trash"></i>
+                        </span>
+                        <span class="text">Hapus Indikator</span>
                     </button>
-                    <button type="button" class="btn btn-danger hapus-data-tahun mt-2 col-lg" data-toggle="modal" data-target="#ModalHapusDataTahun">
-                        <i class="fas fa-fw fa-trash"></i>Hapus Tahun
+                    <button type="button" class="btn btn-danger btn-icon-split hapus-data-tahun mt-2 " data-toggle="modal" data-target="#ModalHapusDataTahun">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-fw fa-trash"></i>
+                        </span>
+                        <span class="text">Hapus Tahun</span>
                     </button>
                 </div>
             </div>

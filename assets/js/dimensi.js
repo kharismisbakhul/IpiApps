@@ -66,7 +66,7 @@ $(document).ready(function () {
 				fill: false,
 				spanGaps: true
 			});
-			let color = ["rgb(132,60,12)", "rgb(84,130,53)", "rgb(191,144,0)"];
+			let color = ["#eb4d4b", "#6ab04c", "#4834d4"];
 			let count = 1;
 			for (var i in data["n_sb_dimensi"]) {
 				setDataDimensi.push({
@@ -226,7 +226,7 @@ function _getDataToTable(data, dataTampung) {
 	for (var i in data["n_sb_dimensi"]) {
 		tableTr += "<tr>";
 		tableTr += "<td>" + count++ + "</td>";
-		tableTr += "<td>" + data["n_sb_dimensi"][i].nama_sub_dimensi + "</td>";
+		tableTr += "<td class='text-left'>" + data["n_sb_dimensi"][i].nama_sub_dimensi + "</td>";
 		for (var j in tahun) {
 			tableTr +=
 				"<td>" +

@@ -29,13 +29,14 @@
                 <!-- Card Body -->
                 <div class="card-body bClip">
                     <div class="row">
-                        <div class="col-lg-12 mb-2">
-                            Untuk menampilkan data pada
-                            tabel dan chart, harap untuk
-                            mengisi rentan tahun di bawah
-                        </div>
+
                         <form action="<?= base_url('admin/ipi') ?>" method="get">
                             <div class="row ml-1 mr-1">
+                                <div class="col-lg-12 mb-2 text-justify">
+                                    Untuk menampilkan data pada
+                                    tabel dan chart, harap untuk
+                                    mengisi rentan tahun di bawah
+                                </div>
                                 <div class="col-lg-12 mb-2">
                                     <small>dari tahun</small>
                                     <select class="custom-select" id="start-date" name="star_date">
@@ -96,9 +97,9 @@
                     <h6 class="m-0 font-weight-bold">Chart Data Indeks Pembangunan Inklusif</h6>
                 </div>
                 <!-- Card Body -->
-                <div class="table-responsive" style="height: 700px;">
+                <div class="table-responsive">
                     <div class="card-body chart">
-                        <canvas id="ipi-chart" width="200" height="500"></canvas>
+                        <canvas id="ipi-chart" style="width: 100%; height: 500px;"></canvas>
                     </div>
                     <div class="col-md-12 mr-2">
                         <div class="text-gray-800 mt-0">

@@ -9,7 +9,7 @@
     table tbody tr td {
         font-family: 'Calibri', sans-serif;
         color: black;
-        font-size: 12px;
+        font-size: 14px;
         border: 1px solid black;
     }
 
@@ -34,12 +34,12 @@
     }
 
     #status1 {
-        background-color: red;
+        background-color: #e74c3c;
         color: white;
     }
 
     #status2 {
-        background-color: yellow;
+        background-color: #f9ca24;
         color: black;
     }
 </style>
@@ -74,22 +74,15 @@
                                 </span>
                                 <span class="text">Tambah Data</span>
                             </a>
-
-                            <a href="<?= base_url('inputData/hapusData'); ?>" class=" btn btn-danger btn-icon-splihapus data ml-2">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-fw fa-trash"></i>
-                                </span>
-                                <span class="text">Hapus Data</span>
-                            </a>
                         </div>
                     </div>
                     <div class="row mt-3 col-lg export-excel">
-                        <button class="btn btn-success btn-icon-split export-to-excel" onclick="tableToExcel('tableReport', 'Indeks Pembangunan Inklusif Report')" style="text-decoration: none; color: white;">
+                        <a href="#" class="btn btn-success btn-icon-split export-to-excel" id="test" onclick="fnExcelReport();">
                             <span class="icon text-white-50">
                                 <i class="fas fa-fw fa-file-excel"></i>
                             </span>
                             <span class="text">Download Excel File</span>
-                        </button>
+                        </a>
                         </a>
                     </div>
                 </div>
@@ -97,22 +90,26 @@
         </div>
 
     </div>
-
     <div class="row mt-4">
         <div class="col-xl-12 col-md-12 col-sm-12">
             <div class="card shadow h-100">
                 <div class="card-header text-white" style="background-color:#3867d6;">
                     <div class="text-sm font-weight-bold text-uppercase">
-                        Table Data dan Chart <?= $title;  ?>
+                        Table Data <?= $title;  ?>
                     </div>
                 </div>
                 <div class="card-body global">
+                    <div class="text-center report">
+                        <p>Kalkulasi Data Indeks Pembangunan Inklusif...</p>
+                        <div id="progressTimer"></div>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive mx-auto my-auto">
                                 <div style="height: 510px">
                                     <div class="loading-progress"></div>
-                                    <table class="table table-bordered table-report table-global text-nowrap" style="border-color: black;" id="tableReport">
+                                    <table class="table table-bordered table-report table-global text-nowrap" id="myTable">
                                         <thead class="text-center">
                                             <tr>
                                                 <th class="align-middle" rowspan="2" colspan="3">Kode</th>
@@ -220,66 +217,3 @@
     </div>
 </div>
 <!-- End of Main Content -->
-
-<script type="text/javascript">
-    var tableToExcel = (function() {
-        var uri = 'data:application/vnd.ms-excel;base64,',
-            template =
-            `<html xmlns:o="urn:schemas-microsoft-com:office:office" 
-                xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-                <head>
-                <!--[if gte mso 9]>
-                    <xml>
-                        <x:ExcelWorkbook>
-                            <x:ExcelWorksheets>
-                                <x:ExcelWorksheet>
-                                    <x:Name>{worksheet}</x:Name>
-                                    <x:WorksheetOptions>
-                                        <x:DisplayGridlines/>
-                                    </x:WorksheetOptions>
-                                </x:ExcelWorksheet>
-                            </x:ExcelWorksheets>
-                        </x:ExcelWorkbook>
-                    </xml>
-                <![endif]-->
-                </head>
-                <body>
-                    <table>{table}</table>
-                </body>
-            </html>`,
-            base64 = function(s) {
-                return window.btoa(unescape(encodeURIComponent(s)))
-            },
-            format = function(s, c) {
-                return s.replace(/{(\w+)}/g, function(m, p) {
-                    return c[p];
-                })
-            }
-        return function(table, name) {
-            if (!table.nodeType) table = document.querySelector('#tableReport')
-            var ctx = {
-                worksheet: name || 'Worksheet',
-                table: table.innerHTML
-            }
-            var blob = new Blob([format(template, ctx)]);
-            var blobURL = window.URL.createObjectURL(blob);
-
-            if (ifIE()) {
-                csvData = table.innerHTML;
-                if (window.navigator.msSaveBlob) {
-                    var blob = new Blob([format(template, ctx)], {
-                        type: "text/html"
-                    });
-                    navigator.msSaveBlob(blob, 'Report.xls');
-                }
-            } else
-                window.location.href = uri + base64(format(template, ctx))
-        }
-    })()
-
-    function ifIE() {
-        var isIE11 = navigator.userAgent.indexOf(".NET CLR") > -1;
-        var isIE11orLess = isIE11 || navigator.appVersion.indexOf("MSIE") != -1;
-        return isIE11orLess;
-    }
-</script>
