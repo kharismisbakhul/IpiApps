@@ -3,7 +3,7 @@ $(window).on('load', function () {
 
     //Pilihan Dimensi
     $.ajax({
-        url: 'http://localhost/IpiApps/data/getDimensi',
+        url: segments[0]+'/IpiApps/data/getDimensi',
         method: 'get',
         dataType: 'json',
 
@@ -32,7 +32,7 @@ $(window).on('load', function () {
 
                     // Pilihan Sub Dimensi
                     $.ajax({
-                        url: 'http://localhost/IpiApps/data/getSubDimensi/' + b,
+                        url: segments[0]+'/IpiApps/data/getSubDimensi/' + b,
                         method: 'get',
                         dataType: 'json',
                         success: function (dataSD) {
@@ -57,7 +57,7 @@ $(window).on('load', function () {
 
                                     // Pilihan Indikator
                                     $.ajax({
-                                        url: 'http://localhost/IpiApps/data/getIndikator/' + d,
+                                        url: segments[0]+'/IpiApps/data/getIndikator/' + d,
                                         method: 'get',
                                         dataType: 'json',
                                         success: function (dataI) {
@@ -79,7 +79,7 @@ $(window).on('load', function () {
                                                 if (ind != "Pilih Indikator") {
                                                     //Append Tahun
                                                     $.ajax({
-                                                        url: 'http://localhost/IpiApps/data/getTahun',
+                                                        url: segments[0]+'/IpiApps/data/getTahun',
                                                         method: 'get',
                                                         dataType: 'json',
                                                         success: function (dataTahun) {
@@ -103,7 +103,7 @@ $(window).on('load', function () {
 
                                                             //Ambil nilai indikator sesuai tahun
                                                             $.ajax({
-                                                                url: 'http://localhost/IpiApps/data/getNilaiIndikator/' + ind_nama + '/' + tahun,
+                                                                url: segments[0]+'/IpiApps/data/getNilaiIndikator/' + ind_nama + '/' + tahun,
                                                                 method: 'get',
                                                                 dataType: 'json',
                                                                 success: function (nilai_indikator) {

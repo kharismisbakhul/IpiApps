@@ -12,6 +12,11 @@ class Admin extends CI_Controller
         }
     }
 
+    public function cek()
+    {
+        $this->load->view('export_2');
+    }
+
     public function initData()
     {
         $data['username'] = $this->session->userdata('username');
@@ -118,13 +123,29 @@ class Admin extends CI_Controller
         //Updated
         $this->load->model('Admin_model', 'admin');
         $data = $this->initData();
-        $data['title'] = 'Dimensi';
         $star_date = $this->input->get('star_date');
         $end_date = $this->input->get('end_date');
         $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
         $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
         $data['tahun_selc'] = $this->admin->getTahun();
         $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
+        $kode_dimensi = intval($this->input->get('d'));
+        $dimensi = $this->db->select("nama_dimensi")->get('dimensi')->result_array();
+        $nama_dimensi = [];
+        foreach ($dimensi as $d) {
+            array_push($nama_dimensi, $d['nama_dimensi']);
+        }
+        if ($kode_dimensi == 1) {
+            $data['background'] = "bg-red";
+        } else if ($kode_dimensi == 2) {
+            $data['background'] = "bg-green";
+        } else {
+            $data['background'] = "bg-orange2";
+        }
+        $data['title'] = $nama_dimensi[$kode_dimensi - 1];
+
+        // echo json_encode($data['background']);
+        // die;
         $this->loadTemplate($data);
         $this->load->view('menu/dimensi', $data);
 
@@ -136,13 +157,26 @@ class Admin extends CI_Controller
         //Updated
         $this->load->model('Admin_model', 'admin');
         $data = $this->initData();
-        $data['title'] = 'Sub Dimensi';
         $star_date = $this->input->get('star_date');
         $end_date = $this->input->get('end_date');
         $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
         $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
         $data['tahun_selc'] = $this->admin->getTahun();
         $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
+        $kode_sd = intval($this->input->get('sd'));
+        $subdimensi = $this->db->select("nama_sub_dimensi")->get('subdimensi')->result_array();
+        $nama_sub_dimensi = [];
+        foreach ($subdimensi as $sd) {
+            array_push($nama_sub_dimensi, $sd['nama_sub_dimensi']);
+        }
+        if ($kode_sd == 1 || $kode_sd == 2 || $kode_sd == 3) {
+            $data['background'] = "bg-red";
+        } else if ($kode_sd == 4 || $kode_sd == 5) {
+            $data['background'] = "bg-green";
+        } else {
+            $data['background'] = "bg-yellow";
+        }
+        $data['title'] = $nama_sub_dimensi[$kode_sd - 1];
         $this->loadTemplate($data);
         $this->load->view('menu/subdimensi', $data);
         $this->load->view('templates/footer');
@@ -152,11 +186,13 @@ class Admin extends CI_Controller
     {
         $this->load->model('Admin_model', 'admin');
         $data = $this->initData();
-        $data['title'] = 'Sub Dimensi';
+        $data['title'] = 'Report';
         $star_date = $this->input->get('star_date');
         $end_date = $this->input->get('end_date');
         $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
         $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
+
+
         $data['tahun_selc'] = $this->admin->getTahun();
         $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
         $data['dimensi'] = $this->db->select('kode_d,nama_dimensi')->get('dimensi')->result_array();
@@ -164,7 +200,7 @@ class Admin extends CI_Controller
         $data['indikator'] = $this->db->select('kode_indikator,nama_indikator,kode_sd,status,max_nilai,min_nilai,status')->get('indikator')->result_array();
         $data['nilai_indikator'] = $this->admin->getNilaiIndikator($star_date, $end_date);
         $this->loadTemplate($data);
-        $this->load->view('menu/report', $data);
+        $this->load->view('menu/report_2', $data);
         $this->load->view('templates/footer');
     }
 
@@ -180,7 +216,7 @@ class Admin extends CI_Controller
         $data['n_dimensi'] = $this->db->select('nama_dimensi,kode_d')->get_where('dimensi')->result_array();
         $data['n_ipi'] = 'Indeks Pembangunan Inklusif';
         foreach ($data['n_dimensi'] as $d) {
-            $data['dimensi'][$d['kode_d']] = $this->_getNilaiRescaleSubDimensi($d['kode_d'], $star_date, $end_date);
+            $data['dimensi'][$d['kode_d']] = $this->_getNilaiDimensi($d['kode_d'], $star_date, $end_date);
         }
         $data['n_sb_dimensi'] = $this->db->select('nama_sub_dimensi,kode_sd')->get('subdimensi')->result_array();
         $allsb = $this->db->select('kode_sd')->get('subdimensi')->result_array();
@@ -190,6 +226,53 @@ class Admin extends CI_Controller
         foreach ($allsb as $sb) {
             $data['indikator'][$sb['kode_sd']] = $this->_getNilaiIndikator($sb['kode_sd'], $star_date, $end_date);
         }
+        header('Content-type: application/json');
+        echo json_encode($data);
+    }
+    public function Export()
+    {
+        $this->load->model('Admin_model', 'admin');
+        $data = $this->initData();
+        $data['title'] = 'Report';
+        $star_date = $this->input->get('star_date');
+        $end_date = $this->input->get('end_date');
+        $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
+        $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
+
+        $data['tahun_selc'] = $this->admin->getTahun();
+        $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
+        $data['dimensi'] = $this->db->select('kode_d,nama_dimensi')->get('dimensi')->result_array();
+        $data['subdimensi'] = $this->db->select('kode_sd,kode_d,nama_sub_dimensi')->get('subdimensi')->result_array();
+        $data['indikator'] = $this->db->select('kode_indikator,nama_indikator,kode_sd,status,max_nilai,min_nilai,status')->get('indikator')->result_array();
+        $data['nilai_indikator'] = $this->admin->getNilaiIndikator($star_date, $end_date);
+        $this->loadTemplate($data);
+        $this->load->view('export_2', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function exportApi()
+    {
+        $this->load->model('Admin_model', 'admin');
+        $star_date = $this->input->get('star_date');
+        $end_date = $this->input->get('end_date');
+        $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
+        $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
+        $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
+        $data['ipi'] = $this->_getNilaiIpi($star_date, $end_date);
+        $data['n_dimensi'] = $this->db->select('nama_dimensi,kode_d')->get_where('dimensi')->result_array();
+        $data['n_ipi'] = 'Indeks Pembangunan Inklusif';
+        foreach ($data['n_dimensi'] as $d) {
+            $data['dimensi'][$d['kode_d']] = $this->_getNilaiDimensi($d['kode_d'], $star_date, $end_date);
+        }
+        $data['n_sb_dimensi'] = $this->db->select('nama_sub_dimensi,kode_sd')->get('subdimensi')->result_array();
+        $allsb = $this->db->select('kode_sd')->get('subdimensi')->result_array();
+        foreach ($allsb as $sb) {
+            $data['sub_dimensi'][$sb['kode_sd']] = $this->_getNilaiRescaleSubDimensi($sb['kode_sd'], $star_date, $end_date);
+        }
+        foreach ($allsb as $sb) {
+            $data['indikator'][$sb['kode_sd']] = $this->_getNilaiIndikator($sb['kode_sd'], $star_date, $end_date);
+        }
+        header('Content-type: application/json');
         echo json_encode($data);
     }
 
@@ -209,6 +292,7 @@ class Admin extends CI_Controller
         foreach ($allsb as $sb) {
             $data['sub_dimensi'][$sb['kode_sd']] = $this->_getNilaiRescaleSubDimensi($sb['kode_sd'], $star_date, $end_date);
         }
+
         echo json_encode($data);
     }
 
@@ -227,6 +311,7 @@ class Admin extends CI_Controller
         $data['indikator'] = $this->_getNilaiIndikator($subdimensi, $star_date, $end_date);
         echo json_encode($data);
     }
+
     // Get Nilai IPI per periode
     private function _getNilaiIpi($star_date = null, $end_date = null)
     {
@@ -248,6 +333,10 @@ class Admin extends CI_Controller
                 }
             }
             $nilairescale_ipi[$tahun[$i]['tahun']] =  $nilaiIpi / (count($riscaleDimensi));
+            // $this->db->where('kode_indikator', $indikator);
+            // $this->db->where('tahun', $tahun);
+            // $this->db->set('nilai_rescale', $nilairescale);
+            // $this->db->update('nilaiindikator');
         }
         return $nilairescale_ipi;
     }
@@ -294,6 +383,7 @@ class Admin extends CI_Controller
         if ($nilairescale_indikator == null) {
             return 0;
         }
+
         // akhir nyari nilai per indikator
 
         // Nilai Subdimensi
@@ -332,20 +422,25 @@ class Admin extends CI_Controller
         $status = $this->admin->getStatus($indikator);
         $max = $this->admin->getMax($indikator, $star_date, $end_date);
         $min = $this->admin->getMin($indikator, $star_date, $end_date);
-        if ($max['nilai'] == $min['nilai']) {
-            redirect('admin/pertumbuhanEkonomi');
+        if ($max['nilai'] == $min['nilai'] || ($max['nilai'] == 0)) {
+            $nilairescale = 0;
         }
 
         $nilai = $this->admin->getNilai($tahun, $indikator);
-        if (floatval($max['nilai']) > 0 && floatval($min['nilai']) > 0 && floatval($nilai['nilai']) > 0 && $max['nilai'] != $min['nilai']) {
+        if (floatval($nilai['nilai']) >= 0 && $max['nilai'] != $min['nilai']) {
             if ($status['status'] == 1) {
                 $nilairescale = (floatval($max['nilai']) - floatval($nilai['nilai'])) / (floatval($max['nilai']) - floatval($min['nilai'])) * 10;
             } elseif ($status['status'] == 0 || $status['status'] == 2) {
                 $nilairescale = (floatval($nilai['nilai']) - floatval($min['nilai'])) / (floatval($max['nilai']) - floatval($min['nilai'])) * 10;
             }
-            return $nilairescale;
+            $nilairescale;
         } else {
-            return $nilairescale = 'Non';
+            $nilairescale = 'Non';
         }
+        // $this->db->where('kode_indikator', $indikator);
+        // $this->db->where('tahun', $tahun);
+        // $this->db->set('nilai_rescale', $nilairescale);
+        // $this->db->update('nilaiindikator');
+        return $nilairescale;
     }
 }

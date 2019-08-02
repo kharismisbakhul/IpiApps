@@ -3,7 +3,7 @@ var segments = url.split("/");
 var action = segments[5];
 var data = action.split("?");
 
-let iniUrl = "http://localhost:8080/IpiApps/Admin/dimensiApi?" + data[1];
+let iniUrl = segments[0] + "/IpiApps/Admin/dimensiApi?" + data[1];
 let nama_sb_dimensi = [];
 let nama_dimensi = [];
 let tahun = [];
@@ -20,12 +20,18 @@ $(document).ready(function () {
 		startTime: performance.now(),
 		beforeSend: function (data) {
 			$("#chart-dimensi").hide();
+			$(".header-table").hide();
 			$(".chart").append(
-				'<img src="http://localhost:8080/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">'
+				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
+			);
+			$(".header-table-root").append(
+				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
 			);
 		},
 		success: function (data) {
+			console.log(data);
 			$(".loader").remove();
+			$(".header-table").show();
 			$("#chart-dimensi").show();
 			for (var i in data["tahun"]) {
 				tahun.push(data["tahun"][i].tahun);
@@ -42,7 +48,7 @@ $(document).ready(function () {
 				}
 				dataTampung[i] = nilaiSubDimensi;
 			}
-			_getDataToTable(data, dataTampung, tahun);
+			_getDataToTable(data, dataTampung);
 
 			for (var i in data["n_dimensi"]) {
 				nama_dimensi.push(data["n_dimensi"][i].nama_dimensi);
@@ -68,7 +74,8 @@ $(document).ready(function () {
 					type: "bar",
 					backgroundColor: color[i],
 					data: dataTampung[data["n_sb_dimensi"][i].kode_sd]
-				});
+				})
+				$('#subdimensi' + data["n_sb_dimensi"][i].kode_sd).css('background-color', color[i]);;
 			}
 
 			const canvas = document.querySelector("#chart-dimensi");
@@ -80,6 +87,7 @@ $(document).ready(function () {
 					datasets: setDataDimensi
 				},
 				options: {
+					responsive: false,
 					maintainAspectRatio: false,
 					layout: {
 						padding: {
@@ -109,7 +117,7 @@ $(document).ready(function () {
 							ticks: {
 								min: 0,
 								max: 10,
-								maxTicksLimit: 30,
+								maxTicksLimit: 20,
 								padding: 30
 								// Include a dollar sign in the ticks
 							},
@@ -175,7 +183,7 @@ $(document).ready(function () {
 			$(".loader").remove();
 			$("#chart-subdimensi").remove();
 			$(".chart").append(
-				'<img src="http://localhost:8080/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">'
+				`<img src="` + segments[0] + `/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">`
 			);
 		}
 	});
@@ -184,8 +192,12 @@ $(document).ready(function () {
 
 //untutk data table
 function _getDataToTable(data, dataTampung) {
+	$('.header-table').append(`
+    <th class="py-5" rowspan="2" colspan="2">Sub-Dimensi</th>
+    <th colspan="` + data['tahun'].length + `">Skor</th>`)
 	data["tahun"].forEach(function (p) {
-		$(".tahun").append(`<th scope="col">` + p.tahun + `</th>`);
+		$(".tahun-dimensi").append(`<th scope="col">` + p.tahun + `</th>`);
+		// console.log(p.tahun);
 	});
 
 	$(".iniData").append(`<tr class="dimensi"></tr>`);

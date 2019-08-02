@@ -17,6 +17,7 @@
 
     <!-- Custom styles for this template-->
     <link href="<?= base_url('assets/')  ?>css/sb-admin-2.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/TableExport/3.3.13/css/tableexport.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="<?= base_url('assets/') ?>css/custom/dashboard.css" rel="stylesheet">

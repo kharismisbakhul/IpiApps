@@ -6,9 +6,9 @@ var data;
 let iniUrl;
 if (segments[5]) {
 	data = segments[5].split("?");
-	iniUrl = "http://localhost:8080/IpiApps/Admin/ipiApi?" + data[1];
+	iniUrl = segments[0] + "/IpiApps/Admin/ipiApi?" + data[1];
 } else {
-	iniUrl = "http://localhost:8080/IpiApps/Admin/ipiApi";
+	iniUrl = segments[0] + "/IpiApps/Admin/ipiApi";
 }
 
 let nama_dimensi = [];
@@ -31,13 +31,22 @@ $(document).ready(function () {
 		beforeSend: function (data) {
 			$("#ipi-chart").hide();
 			$(".chart").append(
-				'<img src="http://localhost:8080/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">'
+				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
+			);
+			$(".header-table").hide();
+			$(".tahun-ipi").hide();
+			$(".filter-tahun").hide();
+			$(".header-table-root").append(
+				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
 			);
 		},
 		success: function (data) {
-			console.log(data);
+			// console.log(data);
 			$(".loader").remove();
 			$("#ipi-chart").show();
+			$(".filter-tahun").show();
+			$(".header-table").show();
+			$(".tahun-ipi").show();
 			for (var i in data["tahun"]) {
 				tahun.push(data["tahun"][i].tahun);
 			}
@@ -61,8 +70,8 @@ $(document).ready(function () {
 				spanGaps: true,
 				backgroundColor: "#e74c3c"
 			});
-			console.log(nilaiIpi);
-			console.log(dataTampung);
+			// console.log(nilaiIpi);
+			// console.log(dataTampung);
 
 			const canvas = document.querySelector("#ipi-chart");
 			const ctx = canvas.getContext("2d");
@@ -165,10 +174,13 @@ $(document).ready(function () {
 			});
 		},
 		error: function (data) {
+			// alert("ERROR");
+			// console.log(data);
 			$(".loader").remove();
+			$(".filter-tahun").show();
 			$("#chart-subdimensi").remove();
 			$(".chart").append(
-				'<img src="http://localhost:8080/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">'
+				`<img src="` + segments[0] + `/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">`
 			);
 		}
 	});
@@ -177,6 +189,9 @@ $(document).ready(function () {
 
 //untutk data table
 function _getDataToTable(data) {
+	$('.header-table').append(`
+    <th class="py-5" rowspan="2" colspan="2">Dimensi</th>
+    <th colspan="` + data['tahun'].length + `">Skor</th>`)
 	data["tahun"].forEach(function (p) {
 		$(".tahun-ipi").append(`<th scope="col">` + p.tahun + `</th>`);
 	});

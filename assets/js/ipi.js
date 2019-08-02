@@ -3,7 +3,7 @@ var segments = url.split("/");
 var action = segments[5];
 var data = action.split("?");
 
-let iniUrl = "http://localhost/IpiApps/Admin/ipiApi?" + data[1];
+let iniUrl = segments[0] + "/IpiApps/Admin/ipiApi?" + data[1];
 let nama_dimensi = [];
 let nama_ipi = [];
 let tahun = [];
@@ -12,20 +12,25 @@ let nilaiDimensi = [];
 let max_tahun;
 let min_tahun;
 
-$(document).ready(function() {
+$(document).ready(function () {
 	$.ajax({
 		url: iniUrl,
 		method: "get",
 		dataType: "json",
 		startTime: performance.now(),
-		beforeSend: function(data) {
+		beforeSend: function (data) {
 			$("#chart-dimensi").hide();
+			$(".header-table").hide();
 			$(".chart").append(
-				'<img src="http://localhost/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">'
+				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
+			);
+			$(".header-table-root").append(
+				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
 			);
 		},
-		success: function(data) {
+		success: function (data) {
 			$(".loader").remove();
+			$(".header-table").show();
 			$("#chart-dimensi").show();
 			for (var i in data["tahun"]) {
 				tahun.push(data["tahun"][i].tahun);
@@ -67,7 +72,8 @@ $(document).ready(function() {
 					type: "bar",
 					backgroundColor: color[i],
 					data: dataTampung[data["n_dimensi"][i].kode_d]
-				});
+				})
+				$('#dimensi' + data["n_dimensi"][i].kode_d).css('background-color', color[i]);
 			}
 
 			const canvas = document.querySelector("#ipi-chart");
@@ -89,45 +95,40 @@ $(document).ready(function() {
 						}
 					},
 					scales: {
-						xAxes: [
-							{
-								time: {
-									unit: "year"
-								},
-								gridLines: {
-									display: true,
-									drawBorder: false
-								},
-								ticks: {
-									min: 2,
-									max: 0,
-									maxTicksLimit: 7
-								},
-								maxBarThickness: 70
+						xAxes: [{
+							time: {
+								unit: "year"
+							},
+							gridLines: {
+								display: true,
+								drawBorder: false
+							},
+							ticks: {
+								min: 2,
+								max: 0,
+								maxTicksLimit: 7
+							},
+							maxBarThickness: 70
+						}],
+						yAxes: [{
+							ticks: {
+								min: 0,
+								max: 10,
+								maxTicksLimit: 20,
+								padding: 30
+								// Include a dollar sign in the ticks
+							},
+							gridLines: {
+								color: "rgb(220, 221, 225)",
+								zeroLineColor: "rgb(234, 236, 244)",
+								drawBorder: false,
+								borderDash: [5, 5],
+								zeroLineBorderDash: [2]
 							}
-						],
-						yAxes: [
-							{
-								ticks: {
-									min: 0,
-									max: 10,
-									maxTicksLimit: 20,
-									padding: 30
-									// Include a dollar sign in the ticks
-								},
-								gridLines: {
-									color: "rgb(220, 221, 225)",
-									zeroLineColor: "rgb(234, 236, 244)",
-									drawBorder: false,
-									borderDash: [5, 5],
-									zeroLineBorderDash: [2]
-								}
-							}
-						]
+						}]
 					},
 					annotation: {
-						annotations: [
-							{
+						annotations: [{
 								type: "box",
 								yScaleID: "y-axis-0",
 								yMin: 0,
@@ -175,11 +176,11 @@ $(document).ready(function() {
 				}
 			});
 		},
-		error: function(data) {
+		error: function (data) {
 			$(".loader").remove();
 			$("#chart-subdimensi").remove();
 			$(".chart").append(
-				'<img src="http://localhost/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">'
+				`<img src="` + segments[0] + `/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">`
 			);
 		}
 	});
@@ -188,7 +189,10 @@ $(document).ready(function() {
 
 //untutk data table
 function _getDataToTable(data, dataTampung) {
-	data["tahun"].forEach(function(p) {
+	$('.header-table').append(`
+    <th class="py-5" rowspan="2" colspan="2">Dimensi</th>
+    <th colspan="` + data['tahun'].length + `">Skor</th>`)
+	data["tahun"].forEach(function (p) {
 		$(".tahun-ipi").append(`<th scope="col">` + p.tahun + `</th>`);
 	});
 
@@ -197,8 +201,8 @@ function _getDataToTable(data, dataTampung) {
 	$(".ipi").append(
 		`
         <td colspan="2" scope="col">` +
-			data["n_ipi"] +
-			`</td>
+		data["n_ipi"] +
+		`</td>
         `
 	);
 
@@ -206,8 +210,8 @@ function _getDataToTable(data, dataTampung) {
 		$(".ipi").append(
 			`
         <td class="n_ipi" scope="col">` +
-				parseFloat(data["ipi"][i]).toFixed(2) +
-				`</td>
+			parseFloat(data["ipi"][i]).toFixed(2) +
+			`</td>
         `
 		);
 	}

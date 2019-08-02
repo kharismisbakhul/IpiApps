@@ -1,9 +1,9 @@
 var url2 = $(location).attr("href");
-var segments2 = url2.split("/");
-var action2 = segments2[5];
+var segments = url2.split("/");
+var action2 = segments[5];
 var data2 = action2.split("?");
 
-let iniUrl2 = "http://localhost:8080/IpiApps/Admin/subdimensiApi?" + data2[1];
+let iniUrl2 = segments[0] + "/IpiApps/Admin/subdimensiApi?" + data2[1];
 let nama_indikator = [];
 let nama_subdimensi = [];
 let tahun = [];
@@ -19,14 +19,21 @@ $(document).ready(function () {
 		startTime: performance.now(),
 		beforeSend: function (data) {
 			$("#chart-subdimensi").hide();
-			$(".chart-sub").append(
-				'<img src="http://localhost:8080/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">'
+			$(".chart-body").append(
+				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
+			);
+			$(".header-table").hide();
+			$(".header-table-root").append(
+				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
 			);
 			$(".temp-tahun").remove();
 			$(".temp-table").remove();
 		},
 		success: function (data) {
+			// alert("SUKSES");
+			console.log(data);
 			$(".loader").remove();
+			$(".header-table").show();
 			$("#chart-subdimensi").show();
 			for (var i in data["tahun"]) {
 				tahun.push(data["tahun"][i].tahun);
@@ -105,6 +112,7 @@ $(document).ready(function () {
 					datasets: setDataDimensi
 				},
 				options: {
+					responsive: false,
 					maintainAspectRatio: false,
 
 					layout: {
@@ -201,10 +209,11 @@ $(document).ready(function () {
 			console.log(x);
 		},
 		error: function (data) {
+			// console.log(data);
 			$(".loader").remove();
 			$("#chart-subdimensi").remove();
 			$(".chart-sub").append(
-				'<img src="http://localhost:8080/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block img-data" width="30%" alt="no data">'
+				`<img src="` + segments[0] + `/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block img-data" width="30%" alt="no data">`
 			);
 		}
 	});
@@ -213,6 +222,10 @@ $(document).ready(function () {
 
 //untutk data table
 function _getDataToTableSub(data, dataTampungSub) {
+	// console.log(data);
+	$('.header-table').append(`
+    <th class="py-5" rowspan="2" colspan="2">Sub-Dimensi</th>
+    <th colspan="` + data['tahun'].length + `">Skor</th>`)
 	data["tahun"].forEach(function (p) {
 		$(".tahun-sub").append(
 			`<th scope="col" class="temp-tahun">` + p.tahun + `</th>`

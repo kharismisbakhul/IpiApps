@@ -12,18 +12,24 @@ class Data extends CI_Controller
     }
     public function reset()
     {
+        $start_time = microtime(true);
+        $this->db->select('kode_indikator');
         $indikator = $this->db->get('indikator')->result_array();
-        // for ($i = 1; $i < count($indikator); $i++) {
-        //     $kode_indikator = $indikator[$i]['kode_indikator'];
-        $kode_indikator = 1;
-        $this->load->model('Kalkulasi_model', 'kalkulasi');
-        $this->kalkulasi->setNilaiMax($kode_indikator);
-        $this->kalkulasi->setNilaiMin($kode_indikator);
-        $this->kalkulasi->setNilaiRescaleIndikator($kode_indikator);
-        $this->kalkulasi->setNilaiRescaleSubDimensi($kode_indikator);
-        $this->kalkulasi->setNilaiRescaleDimensi($kode_indikator);
-        $this->kalkulasi->setNilaiRescaleIPI();
-        // }
+        for ($i = 0; $i < count($indikator); $i++) {
+            $kode_indikator = $indikator[$i]['kode_indikator'];
+            // $kode_indikator = 1;
+            $this->load->model('Kalkulasi_model', 'kalkulasi');
+            $this->kalkulasi->setNilaiMax($kode_indikator);
+            $this->kalkulasi->setNilaiMin($kode_indikator);
+            // $this->kalkulasi->setNilaiRescaleIndikator($kode_indikator);
+            // $this->kalkulasi->setNilaiRescaleSubDimensi($kode_indikator);
+            // $this->kalkulasi->setNilaiRescaleDimensi($kode_indikator);
+            // $this->kalkulasi->setNilaiRescaleIPI();
+        }
+        $end_time = microtime(true);
+        $execution_time = ($end_time - $start_time);
+        echo json_encode($execution_time);
+        die;
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Perhitungan ulang data berhasil</div>');
         redirect('report');
     }
@@ -56,7 +62,10 @@ class Data extends CI_Controller
     }
     public function getTahun()
     {
-        $result = $this->db->get('tahun')->result_array();
+        $this->db->select('tahun');
+        $this->db->from('nilaiindikator');
+        $this->db->group_by('tahun');
+        $result = $this->db->get()->result_array();
         $tahun = [];
         for ($i = 0; $i < count($result); $i++) {
             array_push($tahun, $result[$i]['tahun']);
@@ -164,7 +173,10 @@ class Data extends CI_Controller
     public function getTahunSelected($tahun)
     {
         $this->db->where('tahun >', intval($tahun));
-        $result = $this->db->get('tahun')->result_array();
+        $this->db->select('tahun');
+        $this->db->from('nilaiindikator');
+        $this->db->group_by('tahun');
+        $result = $this->db->get()->result_array();
         $tahun = [];
         for ($i = 0; $i < count($result); $i++) {
             array_push($tahun, $result[$i]['tahun']);

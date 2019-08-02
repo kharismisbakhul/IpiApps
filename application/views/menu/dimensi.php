@@ -15,7 +15,7 @@
         <!-- Area Rentan Waktu -->
         <div class="col-xl-8 col-md-12 col-sm-12 mb-4">
             <div class="card shadow h-100">
-                <div class="card-header bg-red">
+                <div class="card-header <?= $background ?>">
                     <div class="text-sm font-weight-bold text-uppercase mb-1 text-white">
                         Pilih Tahun untuk data <?= $title;  ?>
                     </div>
@@ -31,21 +31,14 @@
                                     <div class="row ml-1 mr-1">
                                         <div class="col-lg-12 mb-2">
                                             <small>dari tahun</small>
-                                            <select class="custom-select" id="inputGroupSelect01" name="star_date">
-                                                <option value="<?= $min_tahun['tahun'] ?>" selected id="star_date">pilih tahun...</option>
-                                                <?php foreach ($tahun_selc as $t) : ?>
-                                                    <option value="<?= $t['tahun'] ?>" id="star_date"><?= $t['tahun'] ?></option>
-                                                <?php endforeach; ?>
+                                            <select class="custom-select" id="start-date" name="star_date">
+
                                             </select>
                                         </div>
                                         <div class="col-lg-12 mb-2">
                                             <small>sampai tahun</small>
-                                            <select class="custom-select" id="inputGroupSelect01" name="end_date">
-                                                <option value="<?= $max_tahun['tahun'] ?>" selected id="end_date">pilih tahun...</option>
-                                                <?php foreach ($tahun_selc as $t) : ?>
-                                                    <option value="<?= $t['tahun'] ?>" id="end_date"><?= $t['tahun'] ?></option>
+                                            <select class="custom-select" id="end-date" name="end_date">
 
-                                                <?php endforeach; ?>
                                             </select>
                                         </div>
                                         <div class="col-lg-12 mt-2">
@@ -66,7 +59,7 @@
         <!-- Area Rentan Waktu -->
         <div class="col-xl-12 col-md-12 col-sm-12 mb-4">
             <div class="card shadow h-100">
-                <div class="card-header bg-red text-white">
+                <div class="card-header <?= $background ?> text-white">
                     <div class="text-sm font-weight-bold text-uppercase mb-1">
                         Table Data dan Chart <?= $title;  ?>
                     </div>
@@ -76,13 +69,10 @@
                         <div class="col-md-12">
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center tClip">
-                                    <thead>
-                                        <tr style="background-color: #f8f8f8; color: #101010">
-                                            <th class="py-5" rowspan="2">#</th>
-                                            <th class="py-5" rowspan="2">Dimensi</th>
-                                            <th colspan="6">Skor</th>
+                                    <thead class="header-table-root">
+                                        <tr style="background-color: #f8f8f8; color: #101010" class="header-table">
                                         </tr>
-                                        <tr style="background-color: #f8f8f8; color: #101010" class="tahun">
+                                        <tr style="background-color: #f8f8f8; color: #101010" class="tahun-dimensi">
                                         </tr>
                                     </thead>
                                     <tbody class="iniData">
@@ -94,47 +84,26 @@
                     <hr>
                     <div class="row no-gutters align-items-center">
                         <div class="col-lg-12">
-                            <div class="chart">
-                                <canvas id="chart-dimensi" width="200" height="500"></canvas>
+                            <div class="card-body chart">
+                                <canvas id="chart-dimensi" style="width: 100%; height: 500px;"></canvas>
                             </div>
                             <div class="col-md-12 mr-2">
                                 <div class="text-gray-800 mt-0">
                                     <div class="legenda card no-border" style="width: auto;">
                                         <div class="card-body">
-                                            <div class="container">
-                                                <div class="row ml-1 mt-0">
-                                                    <div class="col-md-6">
-                                                        <div class="label-1">
-                                                            <a href="#" role="button" class="btn square-legend bg-cream"></a>
-                                                            <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Inflasi</a>
-                                                        </div>
+                                            <?php $subdimensi = $this->db->get_where('subdimensi', ['kode_d' => $this->input->get('d')])->result_array(); ?>
+                                            <?php foreach ($subdimensi as $sd) : ?>
+                                                <div class="row">
+                                                    <div class="col-xs-2">
+                                                        <a href="#" id="subdimensi<?= $sd['kode_sd']; ?>" role="button" class="btn square-legend bg-cream"></a>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="label-1">
-                                                            <a href="#" role="button" class="btn square-legend bg-yellow"></a>
-                                                            <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Aktivitas Ekonomi</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 mt-3">
-                                                        <div class="label-1">
-                                                            <a href="#" role="button" class="btn square-legend bg-orange"></a>
-                                                            <a href="#" class="text-sm text-decoration-none text-secondary ml-4">Indeks Pengembangan Sumberdaya Manusia</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 mt-3">
-                                                        <div class="label-1">
-                                                            <div class="row">
-                                                                <div class="col-2">
-                                                                    <hr class="ml-1 line-legend bg-brown">
-                                                                </div>
-                                                                <div class="col-8">
-                                                                    <a href="#" class="text-sm text-decoration-none text-secondary">Indeks Pertumbuhan Ekonomi</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    <div class="col-xs-6">
+                                                        <small>
+                                                            <a href="<?= base_url('admin/subdimensi?sd=') . $sd['kode_sd']; ?>" class="text-sm text-decoration-none text-secondary ml-4"><?= $sd['nama_sub_dimensi'] ?></a>
+                                                        </small>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            <?php endforeach; ?>
                                         </div>
                                     </div>
                                 </div>

@@ -27,14 +27,32 @@ class Report extends CI_Controller
         $this->load->model('Admin_model', 'admin');
         $this->load->model('Kalkulasi_model', 'kalkulasi');
         $this->load->model('Jumlah_model', 'jumlah');
+        $tahun_terakhir = $this->kalkulasi->tahunTerakhirDataSemuaIndikator();
+        $data['col_span'] = $tahun_terakhir - 2012 + 1;
+        $data['range_tahun'] = $this->admin->getSemuaTahun();
 
+
+        // Data IPI - IPI
+        $start_date = 2012;
+        $data['ipi'] = $this->admin->getIPI();
+        $data['ipi']['nilai_rescale'] = [];
+        for ($j = 0; $j < $data['col_span']; $j++) {
+            $tahunSelect = $start_date++;
+            $data_IPI_sesuai_tahun = $this->admin->getIPIPerTahun($tahunSelect);
+            $rescale_IPI = doubleval($data_IPI_sesuai_tahun['nilai_rescale']);
+            array_push($data['ipi']['nilai_rescale'], round($rescale_IPI, 2));
+        }
+
+        $data['dimensi'] = $this->admin->getDimensiRange(2012, $tahun_terakhir);
+        $data['jumlahData'] = $this->jumlah->getJumlahDimensi();
+        // header("Content-type: application/json");
+        // echo json_encode($data);
+        // die;
         return $data;
     }
     public function index()
     {
         $data = $this->initData();
-        var_dump($data);
-        die;
         $this->loadTemplate($data);
         $this->load->view('menu/report', $data);
         $this->load->view('templates/footer');
@@ -44,5 +62,35 @@ class Report extends CI_Controller
     {
         $data = $this->initData();
         $this->load->view('export', $data);
+    }
+
+    public function test()
+    {
+        $this->load->model('Admin_model', 'admin');
+        $this->load->model('Kalkulasi_model', 'kalkulasi');
+        $this->load->model('Jumlah_model', 'jumlah');
+        $tahun_terakhir = $this->kalkulasi->tahunTerakhirDataSemuaIndikator();
+        $data['dimensi'] = $this->admin->getDimensiRange(2012, $tahun_terakhir);
+        $data['jumlahData'] = $this->jumlah->getJumlahDimensi();
+
+        for ($d = 0; $d < $data['$jumlahData']['jumlah_d']; $d++) {
+
+            $dimensi = $data['dimensi'][$d];
+            $dimensi['new_rescale'] = [];
+            $jumlahSubDimensi = $data['jumlahData']['detail'][$d]['subDimensi']['jumlah_sd'];
+            for ($sd = 0; $sd < $jumlahSubDimensi; $sd++) {
+                $subdimensi = $data['dimensi'][$d]['subDimensi'][$sd];
+                $subdimensi['new_rescale'] = [];
+                $jumlahIndikator = $data['jumlahData']['detail'][$d]['subDimensi']['detail'][$sd]['indikator']['jumlah_indikator'];
+                for ($ind = 0; $ind < $jumlahIndikator; $ind++) {
+                    $indikator = $data['dimensi'][$d]['subDimensi'][$sd]['indikator'][$ind];
+                    $indikator['new_rescale'] = [];
+                    $indikator['new_eksisting'] = [];
+                }
+            }
+        }
+        header("Content-type: application/json");
+        echo json_encode($data);
+        die;
     }
 }

@@ -23,7 +23,7 @@
         <div class="col-lg-8">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header bg-blue">
+                <div class="card-header bg-primary">
                     <div class="text-sm font-weight-bold text-uppercase mb-1 text-white">
                         Indeks Pembangunan Inklusif
                     </div>
@@ -56,7 +56,6 @@
                             <button type="button" class="btn btn-primary tambah-indikator col-sm-2" data-toggle="modal" data-target="#ModalTambahIndikator">
                                 <i class="fas fa-fw fa-plus"></i>Indikator
                             </button>
-                            <div class="col-sm-1"></div>
 
                         </div>
                         <div class="form-group row">
@@ -66,6 +65,9 @@
                                 </select>
                                 <?= form_error('tahun', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
+                            <button type="button" class="btn btn-primary tambah-indikator col-sm-2" data-toggle="modal" data-target="#ModalTambahDataTahun">
+                                <i class="fas fa-fw fa-plus"></i>Tahun
+                            </button>
                         </div>
                         <div class="form-group row">
                             <label for="privileges" class="col-sm-2 col-form-label">Nilai</label>
@@ -77,19 +79,6 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-lg action text-right mt-2 mb-0">
-                                <button type="button" class="btn btn-danger hapus-indikator" data-toggle="modal" data-target="#ModalHapusIndikator">
-                                    <i class="fas fa-fw fa-trash"></i>Hapus Indikator
-                                </button>
-                                <button class="btn btn-secondary">
-                                    <a href="<?= base_url('admin'); ?>" style="text-decoration: none; color: white;">
-                                        <i class="fas fa-fw fa-times"></i>Kembali
-                                    </a>
-                                </button>
-                                <button class="btn btn-danger">
-                                    <a href="<?= base_url('inputData/hapusData'); ?>" style="text-decoration: none; color: white;">
-                                        <i class="fas fa-fw fa-trash"></i>Hapus Data
-                                    </a>
-                                </button>
                                 <button type="submit" class="btn btn-primary tambah-user">
                                     <i class="fas fa-fw fa-plus"></i>Tambah Data
                                 </button>
@@ -99,6 +88,28 @@
                 </div>
             </div>
         </div>
+
+        <!-- Option Delete -->
+        <div class="col-lg-3">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header" style="background-color: #3867d6">
+                    <div class="text-sm font-weight-bold text-uppercase mb-1 text-white">
+                        Action Hapus
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <button type="button" class="btn btn-danger hapus-indikator col-lg" data-toggle="modal" data-target="#ModalHapusIndikator">
+                        <i class="fas fa-fw fa-trash"></i>Hapus Indikator
+                    </button>
+                    <button type="button" class="btn btn-danger hapus-data-tahun mt-2 col-lg" data-toggle="modal" data-target="#ModalHapusDataTahun">
+                        <i class="fas fa-fw fa-trash"></i>Hapus Tahun
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- End Option Delete -->
     </div>
     <!-- /.container-fluid -->
 
@@ -208,3 +219,63 @@
     </div>
 </div>
 <!-- Akhir Modal Hapus Indikator -->
+
+
+<!-- Modal Hapus Tahun -->
+<div class="modal fade" id="ModalHapusDataTahun" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-blue">
+                <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Variabel Indikator</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="formIsian" action="<?= base_url('inputData/hapusDataDiTahun') ?>" method="post">
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="tahun" class="col-sm-2 col-form-label">Tahun</label>
+                        <div class="col-sm-8">
+                            <select class="form-control modal-tahun-hapus" name="tahun" id="modal-tahun-hapus">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-danger tombolTambah">Hapus Semua Di Tahun</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Akhir Modal Hapus Tahun -->
+
+<!-- Modal Tambah Tahun -->
+<div class="modal fade" id="ModalTambahDataTahun" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-blue">
+                <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Tambah Tahun</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="formIsian" action="<?= base_url('inputData/tambahTahun') ?>" method="post">
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="tambah-tahun" class="col-sm-2 col-form-label">Tahun</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control modal-tahun-tambah" name="tambah-tahun" id="modal-tahun-tambah">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary tombolTambah">Tambah Tahun</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Akhir Modal Tambah Tahun -->
