@@ -11,6 +11,9 @@ let max_tahun;
 let min_tahun;
 
 $(document).ready(function () {
+
+
+
 	$(".table-global").hide();
 	$.ajax({
 		url: iniUrl,
@@ -38,9 +41,12 @@ $(document).ready(function () {
 		},
 		error: function (data) {
 			$(".loader").remove();
-			$("#chart-subdimensi").remove();
+			$('.report').remove();
+			$(".data-report").remove();
 			$(".global").append(
-				`<img src="` + segments[0] + `/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">`
+				`
+				<p class="text-center">Data tidak dapat dikalkulasi !</p>
+				<img src="` + segments[0] + `/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">`
 			);
 		}
 	})
@@ -50,6 +56,28 @@ $(document).ready(function () {
 // Akhir Indeks Pembangunan Inklusif
 
 //untutk data table
+$("#btn_export").click(function () {
+
+
+	function ExportTable() {
+		$("table").tableExport({
+			headings: true, // (Boolean), display table headings (th/td elements) in the <thead>
+			footers: true, // (Boolean), display table footers (th/td elements) in the <tfoot>
+			formats: ["xls", "csv", "txt"], // (String[]), filetypes for the export
+			fileName: "id", // (id, String), filename for the downloaded file
+			bootstrap: true, // (Boolean), style buttons using bootstrap
+			position: "well", // (top, bottom), position of the caption element relative to table
+			ignoreRows: null, // (Number, Number[]), row indices to exclude from the exported file
+			ignoreCols: null, // (Number, Number[]), column indices to exclude from the exported file
+			ignoreCSS: ".tableexport-ignore" // (selector, selector[]), selector(s) to exclude from the exported file
+		});
+	}
+
+})
+
+
+
+
 
 function move(x) {
 	var bar = new ProgressBar.Line(progressTimer, {

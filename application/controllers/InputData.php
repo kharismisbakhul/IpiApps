@@ -42,6 +42,10 @@ class InputData extends CI_Controller
         } else {
             $this->load->model('Admin_model', 'admin');
             $indikator = $this->input->post('indikator');
+            if ($indikator == "Pilih Indikator") {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data gagal Diperbarui</div>');
+                redirect('inputData');
+            }
             $kode_indikator = $this->admin->getKodeIndikator($indikator);
             $tahun = intval($this->input->post('tahun'));
             $nilai = doubleval($this->input->post('nilai'));
@@ -188,7 +192,7 @@ class InputData extends CI_Controller
         //Kalkulasi Ulang MAX MIN
         $this->db->select('kode_indikator');
         $indikator = $this->db->get('indikator')->result_array();
-        for ($i = 1; $i < count($indikator); $i++) {
+        for ($i = 0; $i < count($indikator); $i++) {
             $kode_indikator = $indikator[$i]['kode_indikator'];
             $this->load->model('Kalkulasi_model', 'kalkulasi');
             $this->kalkulasi->setNilaiMax($kode_indikator);

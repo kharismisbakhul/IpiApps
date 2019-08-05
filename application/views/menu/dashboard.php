@@ -19,7 +19,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col ml-auto">
-                            <div class="h5 mb-0 font-weight-normal text-gray-800">Hai <span id="user_name" class="text-gray-900 font-weight-bold"><?= $username ?></span>, Selamat datang di IPI - Apps</div>
+                            <div class="h5 mb-0 font-weight-normal text-gray-800">Hai <span id="user_name" class="text-gray-900 font-weight-bold text-capitalize"><?= $username ?></span>, Selamat datang di IPI - Apps</div>
                             <div class="text-s font-weight-normal text-gray-800 mt-2"></div>
                         </div>
                         <div class="col-auto mr-3">
@@ -35,7 +35,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
             <div class="card shadow h-100">
                 <div class="card-header bg-primary text-white">
-                    <div class="text-sm font-weight-bold text-uppercase mb-1">
+                    <div class="text-sm font-weight-bold text-capitalize mb-1">
                         Table Data re-scale Indeks Pembangunan Inklusif
                     </div>
                 </div>
@@ -89,7 +89,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card shadow h-100">
                 <div class="card-header bg-carrot text-white">
-                    <div class="text-sm font-weight-bold text-uppercase">
+                    <div class="text-sm font-weight-bold text-capitalize">
                         Chart Data re-scale Indeks Pembangunan Inklusif
                     </div>
                 </div>

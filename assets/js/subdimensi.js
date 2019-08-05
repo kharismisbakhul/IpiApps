@@ -212,8 +212,9 @@ $(document).ready(function () {
 			// console.log(data);
 			$(".loader").remove();
 			$("#chart-subdimensi").remove();
-			$(".chart-sub").append(
-				`<img src="` + segments[0] + `/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block img-data" width="30%" alt="no data">`
+			$(".chart").append(
+				`<p class="text-center">Data tidak dapat dikalkulasi !</p>	
+				<img src="` + segments[0] + `/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block img-data" width="30%" alt="no data">`
 			);
 		}
 	});

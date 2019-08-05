@@ -44,6 +44,7 @@
     }
 </style>
 
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -77,12 +78,11 @@
                         </div>
                     </div>
                     <div class="row mt-3 col-lg export-excel">
-                        <a href="#" class="btn btn-success btn-icon-split export-to-excel" id="test" onclick="fnExcelReport();">
+                        <a href="<?= base_url('report/export'); ?>" class="btn btn-success btn-icon-split export-to-excel">
                             <span class="icon text-white-50">
                                 <i class="fas fa-fw fa-file-excel"></i>
                             </span>
                             <span class="text">Download Excel File</span>
-                        </a>
                         </a>
                     </div>
                 </div>
@@ -105,10 +105,11 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 data-report">
                             <div class="table-responsive mx-auto my-auto">
                                 <div style="height: 510px">
                                     <div class="loading-progress"></div>
+
                                     <table class="table table-bordered table-report table-global text-nowrap" id="myTable">
                                         <thead class="text-center">
                                             <tr>
@@ -207,6 +208,7 @@
 
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
                         </div>

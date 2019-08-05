@@ -325,6 +325,9 @@ class Admin extends CI_Controller
             $riscaleDimensi[$d['kode_d']] = $this->_getNilaiDimensi($d['kode_d'], $star_date, $end_date);
         }
         $nilairescale_ipi = [];
+        // Tambahan
+        $whereCondition = '';
+        $case = '';
         for ($i = 0; $i < count($tahun); $i++) {
             $nilaiIpi = 0;
             foreach ($riscaleDimensi as $in) { // 3
@@ -333,11 +336,13 @@ class Admin extends CI_Controller
                 }
             }
             $nilairescale_ipi[$tahun[$i]['tahun']] =  $nilaiIpi / (count($riscaleDimensi));
-            // $this->db->where('kode_indikator', $indikator);
-            // $this->db->where('tahun', $tahun);
-            // $this->db->set('nilai_rescale', $nilairescale);
-            // $this->db->update('nilaiindikator');
+            $case .= " WHEN tahun = " . $tahun[$i]['tahun'] . " THEN " . $nilairescale_ipi[$tahun[$i]['tahun']] . "";
+            $tahunTemp = $tahun[$i]['tahun'];
+            $whereCondition .= ($whereCondition == '') ? "'$tahunTemp'" : ',' . "'$tahunTemp'";
         }
+        // Query
+        $sql = "UPDATE ipi set nilai_rescale = CASE $case END WHERE tahun in($whereCondition)";
+        $this->db->query($sql);
         return $nilairescale_ipi;
     }
 
@@ -354,6 +359,11 @@ class Admin extends CI_Controller
         foreach ($allsb as $sb) {
             $rescalesb[$sb['kode_sd']] = $this->_getNilaiRescaleSubDimensi($sb['kode_sd'], $star_date, $end_date);
         }
+
+        //Tambahan
+        $whereCondition = '';
+        $case = '';
+
         $nilairescale_dimensi = [];
         for ($i = 0; $i < count($tahun); $i++) {
             $nilaiTambah = 0;
@@ -363,7 +373,12 @@ class Admin extends CI_Controller
                 }
             }
             $nilairescale_dimensi[$dimensi][$tahun[$i]['tahun']] = (1 / count($rescalesb)) * $nilaiTambah;
+            $case .= " WHEN kode_d = " . $dimensi . " AND tahun = " . $tahun[$i]['tahun'] . " THEN " . $nilairescale_dimensi[$dimensi][$tahun[$i]['tahun']] . "";
         }
+        // Query
+        $whereCondition .= ($whereCondition == '') ? "'$dimensi'" : ',' . "'$dimensi'";
+        $sql = "UPDATE nilaidimensi set nilai_rescale = CASE $case END WHERE kode_d in($whereCondition)";
+        $this->db->query($sql);
         return $nilairescale_dimensi[$dimensi];
     }
 
@@ -389,6 +404,9 @@ class Admin extends CI_Controller
         // Nilai Subdimensi
         $nilairescale_subdimenasi = 0;
         $nilai_sb = [];
+        //Tambahan
+        $whereCondition = '';
+        $case = '';
         for ($i = 0; $i < count($tahun); $i++) {
             $nilairescale_subdimenasi = 0;
             foreach ($nilairescale_indikator as $in) { // 6
@@ -397,7 +415,12 @@ class Admin extends CI_Controller
                 }
             }
             $nilai_sb[$sbdimensi][$tahun[$i]['tahun']] = $nilairescale_subdimenasi;
+            $case .= " WHEN kode_sd = " . $sbdimensi . " AND tahun = " . $tahun[$i]['tahun'] . " THEN " . $nilairescale_subdimenasi . "";
         }
+        // Query
+        $whereCondition .= ($whereCondition == '') ? "'$sbdimensi'" : ',' . "'$sbdimensi'";
+        $sql = "UPDATE nilaisubdimensi set nilai_rescale = CASE $case END WHERE kode_sd in($whereCondition)";
+        $result = $this->db->query($sql);
         return $nilai_sb[$sbdimensi];
     }
 
@@ -405,13 +428,37 @@ class Admin extends CI_Controller
     {
         $this->load->model('Admin_model', 'admin');
         $indikator = $this->admin->getIndikator($sbdimensi, $star_date, $end_date);
+        //Tambahan
+        $this->db->where('kode_sd', $sbdimensi);
+        if ($star_date != null && $star_date != null) {
+            $this->db->where('tahun >=', $star_date);
+            $this->db->where('tahun <=', $end_date);
+        }
+        $data_indikator = $this->db->get('indikator')->result_array();
         $tahun = $this->admin->getTahun($star_date, $end_date);
         $nilairescale_indikator = [];
+        $whereCondition = '';
+        $case = '';
         foreach ($tahun as $t) {
-            foreach ($indikator as $i) {
+
+            foreach ($data_indikator as $i) {
                 $nilairescale_indikator[$i['kode_indikator']][$t['tahun']] = $this->_getNilaiRescale($t['tahun'], $i['kode_indikator'], $star_date, $end_date);
+                //INPUT
+                $ind = intval($i['kode_indikator']);
+                $thn = intval($t['tahun']);
+                $rescale = doubleval($nilairescale_indikator[$i['kode_indikator']][$t['tahun']]);
+
+                $case .= " WHEN kode_indikator = " . $ind . " AND tahun = " . $thn . " THEN " . $rescale . "";
             }
         }
+        foreach ($data_indikator as $i) {
+            $ind = intval($i['kode_indikator']);
+            $whereCondition .= ($whereCondition == '') ? "'$ind'" : ',' . "'$ind'";
+        }
+
+        $sql = "UPDATE nilaiindikator set nilai_rescale = CASE $case END WHERE kode_indikator in($whereCondition)";
+        $this->db->query($sql);
+
         return $nilairescale_indikator;
     }
 

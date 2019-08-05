@@ -63,34 +63,4 @@ class Report extends CI_Controller
         $data = $this->initData();
         $this->load->view('export', $data);
     }
-
-    public function test()
-    {
-        $this->load->model('Admin_model', 'admin');
-        $this->load->model('Kalkulasi_model', 'kalkulasi');
-        $this->load->model('Jumlah_model', 'jumlah');
-        $tahun_terakhir = $this->kalkulasi->tahunTerakhirDataSemuaIndikator();
-        $data['dimensi'] = $this->admin->getDimensiRange(2012, $tahun_terakhir);
-        $data['jumlahData'] = $this->jumlah->getJumlahDimensi();
-
-        for ($d = 0; $d < $data['$jumlahData']['jumlah_d']; $d++) {
-
-            $dimensi = $data['dimensi'][$d];
-            $dimensi['new_rescale'] = [];
-            $jumlahSubDimensi = $data['jumlahData']['detail'][$d]['subDimensi']['jumlah_sd'];
-            for ($sd = 0; $sd < $jumlahSubDimensi; $sd++) {
-                $subdimensi = $data['dimensi'][$d]['subDimensi'][$sd];
-                $subdimensi['new_rescale'] = [];
-                $jumlahIndikator = $data['jumlahData']['detail'][$d]['subDimensi']['detail'][$sd]['indikator']['jumlah_indikator'];
-                for ($ind = 0; $ind < $jumlahIndikator; $ind++) {
-                    $indikator = $data['dimensi'][$d]['subDimensi'][$sd]['indikator'][$ind];
-                    $indikator['new_rescale'] = [];
-                    $indikator['new_eksisting'] = [];
-                }
-            }
-        }
-        header("Content-type: application/json");
-        echo json_encode($data);
-        die;
-    }
 }

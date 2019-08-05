@@ -16,7 +16,7 @@
         <div class="col-xl-6 col-md-12 col-sm-12 mb-4">
             <div class="card shadow h-100">
                 <div class="card-header <?= $background ?>">
-                    <div class="text-sm font-weight-bold text-uppercase mb-1 text-white">
+                    <div class="text-sm font-weight-bold text-capitalize mb-1 text-white">
                         Pilih Tahun untuk data <?= $title;  ?>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
         <div class="col-xl-12 col-md-12 col-sm-12 mb-4">
             <div class="card shadow h-100">
                 <div class="card-header <?= $background ?> text-white">
-                    <div class="text-sm font-weight-bold text-uppercase mb-1">
+                    <div class="text-sm font-weight-bold text-capitalize mb-1">
                         Table Data dan Chart <?= $title;  ?>
                     </div>
                 </div>

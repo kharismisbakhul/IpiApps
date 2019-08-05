@@ -18,6 +18,8 @@
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
 
 <!-- Bootstrap core JavaScript-->
 <script src="<?= base_url('assets/')  ?>vendor/jquery/jquery.min.js"></script>
@@ -38,21 +40,23 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script src="<?= base_url('assets/vendor/chartjs/chartjs-plugin-annotation.js') ?>"></script>
 <!-- Updated -->
-
 <script src="<?= base_url('assets/'); ?>js/inputData.js"></script>
 <script src="<?= base_url('assets/'); ?>js/inputIndikator.js"></script>
 <script src="<?= base_url('assets/'); ?>js/hapusIndikator.js"></script>
 <script src="<?= base_url('assets/'); ?>js/hapusDatadiTahun.js"></script>
 
 <!-- TableExport.js -->
+<script src="<?= base_url('assets/'); ?>js/jsExport.js"></script>
 <script src="<?= base_url('assets/'); ?>js/xlsx.core.min.js"></script>
 <script src="<?= base_url('assets/'); ?>js/Blob.js"></script>
 <script src="<?= base_url('assets/'); ?>js/FileSaver.min.js"></script>
 <script src="<?= base_url('assets/'); ?>js/tableExport.js"></script>
 <script src="<?= base_url('assets/'); ?>js/progressbar.min.js"></script>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+
+
+
+
 
 <!-- Script Modal -->
 

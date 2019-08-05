@@ -181,7 +181,9 @@ $(document).ready(function () {
 			$(".loader").remove();
 			$("#ipi-chart").remove();
 			$(".chart").append(
-				`<img src="` + segments[0] + `/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">`
+				`
+				<p class="text-center">Data tidak dapat dikalkulasi !</p>	
+				<img src="` + segments[0] + `/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">`
 			);
 		}
 	});
