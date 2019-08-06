@@ -2,157 +2,147 @@ var url = $(location).attr("href");
 var segments = url.split("/");
 //Input Data
 $(window).on('load', function () {
-
-	//Pilihan Dimensi
+	let nilai = 0
+	$(".nilai").val(nilai);
 	$.ajax({
 		url: segments[0] + '/IpiApps/data/getDimensi',
 		method: 'get',
 		dataType: 'json',
-
 		success: function (data) {
-			var d = [];
-			for (i = 0; i < data.length; i++) {
-				d.push(data[i]['nama_dimensi']);
-			}
-			$('#dimensi').append(`<option>Pilih Dimensi</option>`);
+			console.log(data)
+			$('.temp-id-d').remove();
+			$('.temp-id-sd').remove();
+			$('.temp-id-i').remove();
+			$('.temp-id-t').remove();
+			$('.nilai').removeAttr('value');
+			$('#dimensi').append(`<option value='Pilih Dimensi'>Pilih Dimensi</option>`);
 			$('#subDimensi').append(`<option>Pilih Sub Dimensi</option>`);
 			$('#indikator').append(`<option>Pilih Indikator</option>`);
 			$('.tahun').empty();
 			$('#tahun').append(`<option>Pilih Tahun</option>`);
-			d.forEach(function (item) {
-				$('#dimensi').append(`<option>` + item + `</option>`);
-			});
 
-			//Milih Dimensi
-			$('.dimensi').on('change', function () {
-				reset(0);
-				var a = $('#dimensi').val();
-				console.log(a);
-				if (a != "Pilih Dimensi") {
-					var regex = / /gi;
-					var b = a.replace(regex, '_');
+			for (var i in data) {
+				$('#dimensi').append(`<option value='` + data[i].kode_d + `'  class='temp-id-d'>` + data[i].nama_dimensi + `</option>`);
+			}
+		}
+	});
+	//Milih Dimensi
+	$('.dimensi').on('change', function () {
+		nilai = 0;
+		$(".nilai").val(nilai);
+		let kode_d = $('.dimensi').val();
+		let a = $('.dimensi').val();
+		if (a) {
+			// Pilihan Sub Dimensi
+			$.ajax({
+				url: segments[0] + '/IpiApps/data/getSubDimensi/' + kode_d,
+				method: 'get',
+				dataType: 'json',
+				success: function (dataSD) {
+					console.log(dataSD)
+					$('.temp-id-sd').remove();
+					$('.temp-id-i').remove();
+					$('.temp-id-t').remove();
+					$('.nilai').removeAttr('value');
 
-					// Pilihan Sub Dimensi
-					$.ajax({
-						url: segments[0] + '/IpiApps/data/getSubDimensi/' + b,
-						method: 'get',
-						dataType: 'json',
-						success: function (dataSD) {
-							var sd = [];
-							for (i = 0; i < dataSD.length; i++) {
-								sd.push(dataSD[i]['nama_sub_dimensi']);
-							}
-							sd.forEach(function (itemsd) {
-								$('#subDimensi').append(`<option>` + itemsd + `</option>`);
-							});
 
-							//Milih Sub Dimensi
-							$('.subDimensi').on('change', function () {
-								reset(1);
-								//bug disini keatas
-								var c = $('#subDimensi').val();
-								console.log(c);
-								if (c != "Pilih Sub Dimensi") {
-									var regex = / /gi;
-									var d = c.replace(regex, '_');
-									// window.location = window.location.origin + "/IpiApps/data/getIndikator/" + d;
-
-									// Pilihan Indikator
-									$.ajax({
-										url: segments[0] + '/IpiApps/data/getIndikator/' + d,
-										method: 'get',
-										dataType: 'json',
-										success: function (dataI) {
-											var indikator = [];
-											for (i = 0; i < dataI.length; i++) {
-												indikator.push(dataI[i]['nama_indikator']);
-											}
-											indikator.forEach(function (itemI) {
-												$('#indikator').append(`<option>` + itemI + `</option>`);
-											});
-
-											//Milih Indikator
-											//Normal
-											$('.indikator').on('change', function () {
-												reset(2);
-												var ind = $('#indikator').val();
-												console.log(ind);
-												//Pilihan Tahun
-												if (ind != "Pilih Indikator") {
-													//Append Tahun
-													$.ajax({
-														url: segments[0] + '/IpiApps/data/getTahun',
-														method: 'get',
-														dataType: 'json',
-														success: function (dataTahun) {
-															$('.tahun').empty();
-															$('.tahun').append(`<option>Pilih Tahun</option>`);
-															dataTahun.forEach(function (dataT) {
-																$('#tahun').append(`<option>` + dataT + `</option>`);
-															});
-														}
-													});
-
-													//Milih Tahun
-													$('.tahun').on('change', function () {
-														reset(3);
-														var tahun = $('#tahun').val();
-														console.log(tahun);
-														if (tahun != "Pilih Tahun") {
-															var regex = / /gi;
-															var ind_nama = ind.replace(regex, '_');
-															// window.location = window.location.origin + "/IpiApps/data/getNilaiIndikator/" + ind_nama + "/" + tahun;
-
-															//Ambil nilai indikator sesuai tahun
-															$.ajax({
-																url: segments[0] + '/IpiApps/data/getNilaiIndikator/' + ind_nama + '/' + tahun,
-																method: 'get',
-																dataType: 'json',
-																success: function (nilai_indikator) {
-																	// var nilai = (nilai_indikator['nilai']).toFixed(2);
-																	$("#nilai").val(parseFloat(nilai_indikator['nilai']).toFixed(2));
-																}
-															});
-														} else {
-															reset(3);
-														}
-													});
-												} else {
-													reset(2);
-												}
-											});
-										}
-									})
-								} else {
-									reset(1);
-								}
-							});
-
-						}
-					});
-				} else {
-					reset(0);
+					for (var i in dataSD) {
+						$('#subDimensi').append(`<option value='` + dataSD[i].kode_sd + `' class='temp-id-sd'>` + dataSD[i].nama_sub_dimensi + `</option>`);
+					}
 				}
 			})
 		}
-	});
-})
+	})
+	//Milih Sub Dimensi
+	$('.subDimensi').on('change', function () {
+		nilai = 0;
+		$(".nilai").val(nilai);
+		var c = $('#subDimensi').val();
 
-//reset field
-function reset(type) {
-	if (type == 0) {
-		$('.subDimensi').html(``);
-		$('.subDimensi').append(`<option>Pilih Sub Dimensi</option>`);
-		reset(1);
-	} else if (type == 1) {
-		$('.indikator').html(``);
-		$('.indikator').append(`<option>Pilih Indikator</option`);
-		reset(2);
-	} else if (type == 2) {
-		$('.tahun').empty();
-		$('.tahun').append(`<option>Pilih Tahun</option>`);
-		reset(3);
-	} else if (type == 3) {
-		$("#nilai").val(``);
-	}
-}
+		if (c) {
+			// Pilihan Indikator
+			$.ajax({
+				url: segments[0] + '/IpiApps/data/getIndikator/' + c,
+				method: 'get',
+				dataType: 'json',
+				success: function (dataI) {
+					console.log(dataI)
+					$('.temp-id-i').remove();
+					$('.temp-id-t').remove();
+					$('.nilai').removeAttr('value');
+
+
+					for (var i in dataI) {
+						$('#indikator').append(`<option value="` + dataI[i].kode_indikator + `" class='temp-id-i'>` + dataI[i].nama_indikator + `</option>`);
+					}
+				}
+			})
+		}
+	})
+	//Milih Indikator
+	//Normal
+	$('.indikator').on('change', function () {
+		nilai = 0;
+		$(".nilai").val(nilai);
+		$('.temp-id-t').remove();
+		ind = $('#indikator').val();
+		let cek = $('.nilai').val()
+		console.log('cuy = ' + cek)
+		//Pilihan Tahun
+		if (ind) {
+			//Append Tahun
+			$.ajax({
+				url: segments[0] + '/IpiApps/data/getTahun',
+				method: 'get',
+				dataType: 'json',
+				success: function (dataTahun) {
+					console.log(dataTahun)
+					$('.temp-id-t').remove();
+					$('.nilai').removeAttr('value');
+
+					for (var i in dataTahun) {
+						$('#tahun').append(`<option class="temp-id-t" value="` + dataTahun[i] + `">` + dataTahun[i] + `</option>`);
+					}
+
+				}
+			})
+		}
+	})
+	//Milih Tahun
+	$('.tahun').on('change', function () {
+		$(".nilai").val(nilai);
+		tahun = $('#tahun').val();
+		if (tahun) {
+			$.ajax({
+				url: segments[0] + '/IpiApps/data/getNilai?i=' + ind + '&t=' + tahun,
+				method: 'get',
+				dataType: 'json',
+				success: function (nilai_indikator) {
+					console.log(nilai_indikator)
+					$(".nilai").removeAttr('value');
+					nilai = parseFloat(nilai_indikator['nilai']).toFixed(2)
+					$(".nilai").val(nilai);
+				}
+
+			})
+		}
+	})
+
+
+	$('.hps').on('click', function () {
+		let indikator = $('#modal-indikator-hapus').val()
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Logout'
+		}).then(function (result) {
+			if (result.value) {
+				window.location = window.location.origin + "/IpiApps/auth/logout";
+			}
+		})
+	})
+})

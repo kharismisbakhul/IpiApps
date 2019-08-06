@@ -77,7 +77,7 @@
                         </div>
                         <div class="form-group row">
                             <label for="privileges" class="col-sm-2 col-form-label">Nilai</label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-4 iniNilai">
                                 <input type="text" class="form-control nilai" name="nilai" id="nilai" placeholder="Nilai">
                                 <small class="text-secondary">Ganti koma (,) dengan titik(.) </small>
                                 <?= form_error('nilai', '<small class="text-danger">', '</small>'); ?>
@@ -110,13 +110,13 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <button type="button" class="btn btn-danger btn-icon-split hapus-indikator" data-toggle="modal" data-target="#ModalHapusIndikator">
+                    <button type="button" class="btn btn-warning btn-icon-split hapus-indikator" data-toggle="modal" data-target="#ModalHapusIndikator">
                         <span class="icon text-white-50">
                             <i class="fas fa-fw fa-trash"></i>
                         </span>
                         <span class="text">Hapus Indikator</span>
                     </button>
-                    <button type="button" class="btn btn-danger btn-icon-split hapus-data-tahun mt-2 " data-toggle="modal" data-target="#ModalHapusDataTahun">
+                    <button type="button" class="btn btn-warning btn-icon-split hapus-data-tahun mt-2 " data-toggle="modal" data-target="#ModalHapusDataTahun">
                         <span class="icon text-white-50">
                             <i class="fas fa-fw fa-trash"></i>
                         </span>
@@ -259,7 +259,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-danger tombolTambah">Hapus Semua Di Tahun</button>
+                    <button type="submit" class="btn btn-danger">Hapus Semua Di Tahun</button>
                 </div>
             </form>
         </div>

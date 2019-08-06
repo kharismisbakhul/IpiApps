@@ -86,7 +86,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col-lg-12">
                             <div class="card-body chart">
-                                <canvas id="chart-dimensi" style="width: 100%; height: 500px;"></canvas>
+                                <canvas id="chart-dimensi" style="width: 100%; height: 30rem;"></canvas>
                             </div>
                             <div class="col-md-12 mr-2">
                                 <div class="text-gray-800 mt-0">

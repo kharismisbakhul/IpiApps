@@ -36,29 +36,29 @@ class Data extends CI_Controller
 
     public function getDimensi()
     {
-        $this->load->model('Admin_model', 'admin');
-        $this->admin->getDimensiJson();
+        $dimensi = $this->db->get('dimensi')->result_array();
+        echo json_encode($dimensi);
     }
-    public function getSubDimensi($url_nama_d)
+    public function getSubDimensi($kode_d)
     {
-        $nama_d = str_replace("_", " ", $url_nama_d);
-        $this->load->model('Admin_model', 'admin');
-        $kode_d = $this->admin->getKodeDimensi($nama_d);
-        $this->admin->getSubDimensiJson($kode_d);
+        $sub_dimensi = $this->db->get_where('subdimensi', ['kode_d' => $kode_d])->result_array();
+        echo json_encode($sub_dimensi);
     }
-    public function getIndikator($url_nama_sd)
+    public function getIndikator($kode_sd)
     {
-        $nama_sd = str_replace("_", " ", $url_nama_sd);
-        $this->load->model('Admin_model', 'admin');
-        $kode_sd = $this->admin->getKodeSubDimensi($nama_sd);
-        $this->admin->getIndikatorJson($kode_sd);
+        $indikator = $this->db->get_where('indikator', ['kode_sd' => $kode_sd])->result_array();
+        echo json_encode($indikator);
     }
-    public function getNilaiIndikator($url_nama_indikator, $tahun)
+    public function getNilai()
     {
-        $nama_indikator = str_replace("_", " ", $url_nama_indikator);
-        $this->load->model('Admin_model', 'admin');
-        $kode_indikator = $this->admin->getKodeIndikator($nama_indikator);
-        $this->admin->getNilaiIndikatorJson($kode_indikator, $tahun);
+        $kode_i = $this->input->get('i');
+        $tahun = $this->input->get('t');
+        $this->db->select('*');
+        $this->db->from('nilaiindikator');
+        $this->db->where('kode_indikator', $kode_i);
+        $this->db->where('tahun', $tahun);
+        $data = $this->db->get()->row_array();
+        echo json_encode($data);
     }
     public function getTahun()
     {

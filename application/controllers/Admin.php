@@ -73,14 +73,44 @@ class Admin extends CI_Controller
                 }
             }
         }
-        // header('Content-Type: application/json');
-        // echo json_encode($data['col_span']);
-        // die;
-
-        // End 
         $this->loadTemplate($data);
         $this->load->view('menu/dashboard', $data);
         $this->load->view('templates/footer');
+    }
+
+    public function changePassword()
+    {
+
+        if (!$this->session->userdata('username')) {
+            $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">ojo masuk lewat kene.</div>');
+            redirect('auth');
+        }
+
+        $this->form_validation->set_rules('passSebelum', 'Password', 'trim|required|min_length[3]');
+        $this->form_validation->set_rules('password1', 'Password', 'trim|required|min_length[3]|matches[password2]');
+        $this->form_validation->set_rules('password2', 'Password', 'trim|required|min_length[3]|matches[password1]');
+
+        $passSebelum = $this->input->post('passSebelum');
+        $data = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+
+        if ($this->form_validation->run() == false) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">data inputan tidak lengkap!</div>');
+            redirect('admin');
+        } else {
+            if (!password_verify($passSebelum, $data['password'])) {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Password tidak sesuai!</div>');
+                redirect('admin');
+            } else {
+                $password = password_hash($this->input->post('password1'), PASSWORD_DEFAULT);
+                $username = $this->session->userdata('username');
+                $this->db->set('password', $password);
+                $this->db->where('username', $username);
+                $this->db->update('user');
+
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Password berhasil diperbaharui!</div>');
+                redirect('admin');
+            }
+        }
     }
 
     public function ipi()
@@ -229,52 +259,6 @@ class Admin extends CI_Controller
         header('Content-type: application/json');
         echo json_encode($data);
     }
-    public function Export()
-    {
-        $this->load->model('Admin_model', 'admin');
-        $data = $this->initData();
-        $data['title'] = 'Report';
-        $star_date = $this->input->get('star_date');
-        $end_date = $this->input->get('end_date');
-        $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
-        $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
-
-        $data['tahun_selc'] = $this->admin->getTahun();
-        $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
-        $data['dimensi'] = $this->db->select('kode_d,nama_dimensi')->get('dimensi')->result_array();
-        $data['subdimensi'] = $this->db->select('kode_sd,kode_d,nama_sub_dimensi')->get('subdimensi')->result_array();
-        $data['indikator'] = $this->db->select('kode_indikator,nama_indikator,kode_sd,status,max_nilai,min_nilai,status')->get('indikator')->result_array();
-        $data['nilai_indikator'] = $this->admin->getNilaiIndikator($star_date, $end_date);
-        $this->loadTemplate($data);
-        $this->load->view('export_2', $data);
-        $this->load->view('templates/footer');
-    }
-
-    public function exportApi()
-    {
-        $this->load->model('Admin_model', 'admin');
-        $star_date = $this->input->get('star_date');
-        $end_date = $this->input->get('end_date');
-        $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
-        $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
-        $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
-        $data['ipi'] = $this->_getNilaiIpi($star_date, $end_date);
-        $data['n_dimensi'] = $this->db->select('nama_dimensi,kode_d')->get_where('dimensi')->result_array();
-        $data['n_ipi'] = 'Indeks Pembangunan Inklusif';
-        foreach ($data['n_dimensi'] as $d) {
-            $data['dimensi'][$d['kode_d']] = $this->_getNilaiDimensi($d['kode_d'], $star_date, $end_date);
-        }
-        $data['n_sb_dimensi'] = $this->db->select('nama_sub_dimensi,kode_sd')->get('subdimensi')->result_array();
-        $allsb = $this->db->select('kode_sd')->get('subdimensi')->result_array();
-        foreach ($allsb as $sb) {
-            $data['sub_dimensi'][$sb['kode_sd']] = $this->_getNilaiRescaleSubDimensi($sb['kode_sd'], $star_date, $end_date);
-        }
-        foreach ($allsb as $sb) {
-            $data['indikator'][$sb['kode_sd']] = $this->_getNilaiIndikator($sb['kode_sd'], $star_date, $end_date);
-        }
-        header('Content-type: application/json');
-        echo json_encode($data);
-    }
 
     public function dimensiApi()
     {
@@ -305,9 +289,13 @@ class Admin extends CI_Controller
         $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
         $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
         $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
+
         $data['subdimensi'] = $this->_getNilaiRescaleSubDimensi($subdimensi, $star_date, $end_date);
+
         $data['n_subdimensi'] = $this->db->select('nama_sub_dimensi,kode_sd')->get_where('subdimensi', ['kode_sd' => $subdimensi])->row_array();
-        $data['n_indikator'] = $this->db->select('nama_indikator,kode_indikator')->get_where('indikator', ['kode_sd' => $subdimensi])->result_array();;
+
+        $data['n_indikator'] = $this->db->select('nama_indikator,kode_indikator')->get_where('indikator', ['kode_sd' => $subdimensi])->result_array();
+
         $data['indikator'] = $this->_getNilaiIndikator($subdimensi, $star_date, $end_date);
         echo json_encode($data);
     }
@@ -335,7 +323,7 @@ class Admin extends CI_Controller
                     $nilaiIpi +=  $in[$tahun[$i]['tahun']];
                 }
             }
-            $nilairescale_ipi[$tahun[$i]['tahun']] =  $nilaiIpi / (count($riscaleDimensi));
+            $nilairescale_ipi[$tahun[$i]['tahun']] = round(($nilaiIpi / (count($riscaleDimensi))), 2);
             $case .= " WHEN tahun = " . $tahun[$i]['tahun'] . " THEN " . $nilairescale_ipi[$tahun[$i]['tahun']] . "";
             $tahunTemp = $tahun[$i]['tahun'];
             $whereCondition .= ($whereCondition == '') ? "'$tahunTemp'" : ',' . "'$tahunTemp'";
@@ -372,7 +360,7 @@ class Admin extends CI_Controller
                     $nilaiTambah +=  $in[$tahun[$i]['tahun']];
                 }
             }
-            $nilairescale_dimensi[$dimensi][$tahun[$i]['tahun']] = (1 / count($rescalesb)) * $nilaiTambah;
+            $nilairescale_dimensi[$dimensi][$tahun[$i]['tahun']] = round(((1 / count($rescalesb)) * $nilaiTambah), 2);
             $case .= " WHEN kode_d = " . $dimensi . " AND tahun = " . $tahun[$i]['tahun'] . " THEN " . $nilairescale_dimensi[$dimensi][$tahun[$i]['tahun']] . "";
         }
         // Query
@@ -386,7 +374,7 @@ class Admin extends CI_Controller
     private function _getNilaiRescaleSubDimensi($sbdimensi, $star_date = null, $end_date = null)
     {
         $this->load->model('Admin_model', 'admin');
-        $indikator = $this->admin->getIndikator($sbdimensi, $star_date, $end_date);
+        $indikator = $this->admin->getIndikator($sbdimensi);
         // Nilai Indikator
         $tahun = $this->admin->getTahun($star_date, $end_date);
         $nilairescale_indikator = [];
@@ -414,7 +402,7 @@ class Admin extends CI_Controller
                     $nilairescale_subdimenasi += ($in[$tahun[$i]['tahun']]) / count($nilairescale_indikator);
                 }
             }
-            $nilai_sb[$sbdimensi][$tahun[$i]['tahun']] = $nilairescale_subdimenasi;
+            $nilai_sb[$sbdimensi][$tahun[$i]['tahun']] = round($nilairescale_subdimenasi, 2);
             $case .= " WHEN kode_sd = " . $sbdimensi . " AND tahun = " . $tahun[$i]['tahun'] . " THEN " . $nilairescale_subdimenasi . "";
         }
         // Query
@@ -427,20 +415,16 @@ class Admin extends CI_Controller
     private function _getNilaiIndikator($sbdimensi, $star_date = null, $end_date = null)
     {
         $this->load->model('Admin_model', 'admin');
-        $indikator = $this->admin->getIndikator($sbdimensi, $star_date, $end_date);
+
         //Tambahan
-        $this->db->where('kode_sd', $sbdimensi);
-        if ($star_date != null && $star_date != null) {
-            $this->db->where('tahun >=', $star_date);
-            $this->db->where('tahun <=', $end_date);
-        }
-        $data_indikator = $this->db->get('indikator')->result_array();
         $tahun = $this->admin->getTahun($star_date, $end_date);
+        $this->db->where('kode_sd', $sbdimensi);
+
+        $data_indikator = $this->db->get('indikator')->result_array();
         $nilairescale_indikator = [];
         $whereCondition = '';
         $case = '';
         foreach ($tahun as $t) {
-
             foreach ($data_indikator as $i) {
                 $nilairescale_indikator[$i['kode_indikator']][$t['tahun']] = $this->_getNilaiRescale($t['tahun'], $i['kode_indikator'], $star_date, $end_date);
                 //INPUT
@@ -458,7 +442,6 @@ class Admin extends CI_Controller
 
         $sql = "UPDATE nilaiindikator set nilai_rescale = CASE $case END WHERE kode_indikator in($whereCondition)";
         $this->db->query($sql);
-
         return $nilairescale_indikator;
     }
 
@@ -484,6 +467,6 @@ class Admin extends CI_Controller
         } else {
             $nilairescale = 'Non';
         }
-        return $nilairescale;
+        return round($nilairescale, 2);
     }
 }

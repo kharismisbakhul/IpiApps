@@ -13,7 +13,9 @@
 
     <div class="row">
         <!-- //Updated -->
-        <?= $this->session->flashdata('message');  ?>
+        <div class="col-lg-12">
+            <?= $this->session->flashdata('message');  ?>
+        </div>
         <div class="d-none d-lg-block col-md-12 mb-4">
             <div class="card border-left-primary shadow py-0">
                 <div class="card-body">
@@ -96,7 +98,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="chart-bar chart">
-                            <canvas id="ipi-chart" width="850" height="500"></canvas>
+                            <canvas id="ipi-chart" style="width: 100%; height: 30rem;"></canvas>
                         </div>
                     </div>
                 </div>
