@@ -1,17 +1,23 @@
 /* General */
+body{
+	font-family: 'Roboto', sans-serif;
+}
 .sidebar {
-	background-color: #3867d6;
-	border-color: #3867d6;
-	/* #0ABDE3 */
-	/* linear-gradient(180deg, #4c0369 10%, rgb(35, 156, 184) 100%); */
-	/* linear-gradient(180deg, #224abe 10%, #36b9cc 100%); */
+	background-color: #2980b9;
+	border-color: #2980b9;
+}
+
+#progressTimer {
+	margin: 20px;
+	width: 95%;
+	height: 8px;
+	position: relative;
 }
 
 .carrot {
 	border-left: 0.25rem solid #e58e26 !important;
 }
 
-//Updated
 .midnight-blue {
 	border-left: 0.25rem solid #2c3e50 !important;
 }
@@ -20,19 +26,25 @@
 	border: 0;
 }
 
+.card,.card-header:first-child{
+	border-radius: 0rem;
+}
+
 .square-legend {
 	width: 3rem;
 	height: 1rem;
-//Updated
 	border-radius: 0.2rem;
 }
 
 .line-legend {
 	background-color: red;
 	width: 3rem;
-//Updated
 	height: 0.3rem;
 	border-radius: 0.2rem;
+}
+
+.bg-orange2 {
+	background-color: #fa8231;
 }
 
 .bg-brown {
@@ -44,7 +56,6 @@
 }
 
 .bg-green {
-//Updated
 	background-color: #27ae60
 }
 
@@ -65,7 +76,6 @@
 }
 
 .bg-cream {
-//Updated
 	background-color: rgb(248, 194, 145);
 }
 
@@ -74,7 +84,6 @@
 }
 
 .bg-yellow2 {
-//Updated
 	background-color: #f1c40f
 }
 
@@ -90,10 +99,10 @@ table.table-bordered {
 	border: 1px solid #2d3436;
 }
 
-//Updated
-table.table-bordered > thead > tr > th {
+table.table-bordered>thead>tr>th {
 	border: 1px solid #2d3436;
 }
-table.table-bordered > tbody > tr > td {
+
+table.table-bordered>tbody>tr>td {
 	border: 1px solid #2d3436;
 }

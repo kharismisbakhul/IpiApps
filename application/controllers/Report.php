@@ -45,6 +45,9 @@ class Report extends CI_Controller
 
         $data['dimensi'] = $this->admin->getDimensiRange(2012, $tahun_terakhir);
         $data['jumlahData'] = $this->jumlah->getJumlahDimensi();
+        // header("Content-type: application/json");
+        // echo json_encode($data);
+        // die;
         return $data;
     }
     public function index()

@@ -3,7 +3,7 @@ var segments = url.split("/");
 var action = segments[5];
 var data = action.split("?");
 
-let iniUrl = "http://localhost/IpiApps/Admin/dimensiApi?" + data[1];
+let iniUrl = segments[0] + "/IpiApps/Admin/dimensiApi?" + data[1];
 let nama_sb_dimensi = [];
 let nama_dimensi = [];
 let tahun = [];
@@ -12,20 +12,26 @@ let nilaiSubDimensi = [];
 let max_tahun;
 let min_tahun;
 
-$(document).ready(function() {
+$(document).ready(function () {
 	$.ajax({
 		url: iniUrl,
 		method: "get",
 		dataType: "json",
 		startTime: performance.now(),
-		beforeSend: function(data) {
+		beforeSend: function (data) {
 			$("#chart-dimensi").hide();
+			$(".header-table").hide();
 			$(".chart").append(
-				'<img src="http://localhost/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">'
+				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
+			);
+			$(".header-table-root").append(
+				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
 			);
 		},
-		success: function(data) {
+		success: function (data) {
+			console.log(data);
 			$(".loader").remove();
+			$(".header-table").show();
 			$("#chart-dimensi").show();
 			for (var i in data["tahun"]) {
 				tahun.push(data["tahun"][i].tahun);
@@ -42,7 +48,7 @@ $(document).ready(function() {
 				}
 				dataTampung[i] = nilaiSubDimensi;
 			}
-			_getDataToTable(data, dataTampung, tahun);
+			_getDataToTable(data, dataTampung);
 
 			for (var i in data["n_dimensi"]) {
 				nama_dimensi.push(data["n_dimensi"][i].nama_dimensi);
@@ -60,7 +66,7 @@ $(document).ready(function() {
 				fill: false,
 				spanGaps: true
 			});
-			let color = ["rgb(132,60,12)", "rgb(84,130,53)", "rgb(191,144,0)"];
+			let color = ["#eb4d4b", "#6ab04c", "#4834d4"];
 			let count = 1;
 			for (var i in data["n_sb_dimensi"]) {
 				setDataDimensi.push({
@@ -68,7 +74,8 @@ $(document).ready(function() {
 					type: "bar",
 					backgroundColor: color[i],
 					data: dataTampung[data["n_sb_dimensi"][i].kode_sd]
-				});
+				})
+				$('#subdimensi' + data["n_sb_dimensi"][i].kode_sd).css('background-color', color[i]);;
 			}
 
 			const canvas = document.querySelector("#chart-dimensi");
@@ -80,6 +87,7 @@ $(document).ready(function() {
 					datasets: setDataDimensi
 				},
 				options: {
+					responsive: false,
 					maintainAspectRatio: false,
 					layout: {
 						padding: {
@@ -90,45 +98,40 @@ $(document).ready(function() {
 						}
 					},
 					scales: {
-						xAxes: [
-							{
-								time: {
-									unit: "year"
-								},
-								gridLines: {
-									display: true,
-									drawBorder: false
-								},
-								ticks: {
-									min: 2,
-									max: 0,
-									maxTicksLimit: 7
-								},
-								maxBarThickness: 70
+						xAxes: [{
+							time: {
+								unit: "year"
+							},
+							gridLines: {
+								display: true,
+								drawBorder: false
+							},
+							ticks: {
+								min: 2,
+								max: 0,
+								maxTicksLimit: 7
+							},
+							maxBarThickness: 70
+						}],
+						yAxes: [{
+							ticks: {
+								min: 0,
+								max: 10,
+								maxTicksLimit: 20,
+								padding: 30
+								// Include a dollar sign in the ticks
+							},
+							gridLines: {
+								color: "rgb(220, 221, 225)",
+								zeroLineColor: "rgb(234, 236, 244)",
+								drawBorder: false,
+								borderDash: [5, 5],
+								zeroLineBorderDash: [2]
 							}
-						],
-						yAxes: [
-							{
-								ticks: {
-									min: 0,
-									max: 10,
-									maxTicksLimit: 30,
-									padding: 30
-									// Include a dollar sign in the ticks
-								},
-								gridLines: {
-									color: "rgb(220, 221, 225)",
-									zeroLineColor: "rgb(234, 236, 244)",
-									drawBorder: false,
-									borderDash: [5, 5],
-									zeroLineBorderDash: [2]
-								}
-							}
-						]
+						}]
 					},
 					annotation: {
-						annotations: [
-							{
+						annotations: [{
 								type: "box",
 								yScaleID: "y-axis-0",
 								yMin: 0,
@@ -176,11 +179,12 @@ $(document).ready(function() {
 				}
 			});
 		},
-		error: function(data) {
+		error: function (data) {
 			$(".loader").remove();
 			$("#chart-subdimensi").remove();
 			$(".chart").append(
-				'<img src="http://localhost/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">'
+				`<p class="text-center">Data tidak dapat dikalkulasi !</p>	
+				<img src="` + segments[0] + `/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">`
 			);
 		}
 	});
@@ -189,18 +193,22 @@ $(document).ready(function() {
 
 //untutk data table
 function _getDataToTable(data, dataTampung) {
-	data["tahun"].forEach(function(p) {
-		$(".tahun").append(`<th scope="col">` + p.tahun + `</th>`);
+	$('.header-table').append(`
+    <th class="py-5" rowspan="2" colspan="2">Sub-Dimensi</th>
+    <th colspan="` + data['tahun'].length + `">Skor</th>`)
+	data["tahun"].forEach(function (p) {
+		$(".tahun-dimensi").append(`<th scope="col">` + p.tahun + `</th>`);
+		// console.log(p.tahun);
 	});
 
 	$(".iniData").append(`<tr class="dimensi"></tr>`);
 
-	data["n_dimensi"].forEach(function(p) {
+	data["n_dimensi"].forEach(function (p) {
 		$(".dimensi").append(
 			`
         <td colspan="2" scope="col">` +
-				p.nama_dimensi +
-				`</td>
+			p.nama_dimensi +
+			`</td>
         `
 		);
 	});
@@ -208,8 +216,8 @@ function _getDataToTable(data, dataTampung) {
 		$(".dimensi").append(
 			`
         <td class="n-dimensi" scope="col">` +
-				parseFloat(data["dimensi"][i]).toFixed(2) +
-				`</td>
+			parseFloat(data["dimensi"][i]).toFixed(2) +
+			`</td>
         `
 		);
 	}
@@ -219,7 +227,7 @@ function _getDataToTable(data, dataTampung) {
 	for (var i in data["n_sb_dimensi"]) {
 		tableTr += "<tr>";
 		tableTr += "<td>" + count++ + "</td>";
-		tableTr += "<td>" + data["n_sb_dimensi"][i].nama_sub_dimensi + "</td>";
+		tableTr += "<td class='text-left'>" + data["n_sb_dimensi"][i].nama_sub_dimensi + "</td>";
 		for (var j in tahun) {
 			tableTr +=
 				"<td>" +

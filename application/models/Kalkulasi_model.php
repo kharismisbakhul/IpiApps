@@ -15,12 +15,9 @@ class Kalkulasi_model extends CI_Model
     }
 
     //Set Nilai max indikator tertentu
-    public function setNilaiMax($kode_indikator, $start = null, $end = null)
+    public function setNilaiMax($kode_indikator)
     {
-        if ($start != null && $end != null) {
-            $this->db->where('tahun >=', $start);
-            $this->db->where('tahun <=', $end);
-        }
+        // $this->db->select('kode_indikator, nilai');
         $result = $this->db->get_where('nilaiindikator', ['kode_indikator' => $kode_indikator])->result_array();
         $jumlah_data_nilai = count($result);
         $max = $result[0];
@@ -29,27 +26,30 @@ class Kalkulasi_model extends CI_Model
                 $max = $result[$i + 1];
             }
         }
+        $data = $this->db->get_where('indikator', ['kode_indikator' => $kode_indikator])->row_array();
 
         $finalMax = doubleval($max['nilai']);
         //Update Nilai Max
-        $data = array('max_nilai' => $finalMax);
+        $data = [
+            'kode_indikator' => $kode_indikator,
+            'nama_indikator' => $data['nama_indikator'],
+            'status' => $data['status'],
+            'min_nilai' => $data['min_nilai'],
+            'max_nilai' => $finalMax,
+            'kode_sd' => $data['kode_sd']
+        ];
         $this->db->set($data);
         $this->db->where('kode_indikator', $kode_indikator);
-        if ($start != null && $end != null) {
-            $this->db->update('indikator_duplikasi');
-        } else {
-            $this->db->update('indikator');
-        }
+
+        $this->db->update('indikator');
+
         // echo json_encode($finalMax);
     }
 
     //Set Nilai min indikator tertentu
-    public function setNilaiMin($kode_indikator, $start = null, $end = null)
+    public function setNilaiMin($kode_indikator)
     {
-        if ($start != null && $end != null) {
-            $this->db->where('tahun >=', $start);
-            $this->db->where('tahun <=', $end);
-        }
+        // $this->db->select('kode_indikator, nilai');
         $result = $this->db->get_where('nilaiindikator', ['kode_indikator' => $kode_indikator])->result_array();
         $jumlah_data_nilai = count($result);
         $min = $result[0];
@@ -63,15 +63,22 @@ class Kalkulasi_model extends CI_Model
         } else {
             $finalMin = doubleval($min['nilai']);
         }
+        $data = $this->db->get_where('indikator', ['kode_indikator' => $kode_indikator])->row_array();
+
         //Update Nilai Min
-        $data = array('min_nilai' => $finalMin);
+        $data = [
+            'kode_indikator' => $kode_indikator,
+            'nama_indikator' => $data['nama_indikator'],
+            'status' => $data['status'],
+            'min_nilai' => $finalMin,
+            'max_nilai' => $data['max_nilai'],
+            'kode_sd' => $data['kode_sd']
+        ];
         $this->db->set($data);
         $this->db->where('kode_indikator', $kode_indikator);
-        if ($start != null && $end != null) {
-            $this->db->update('indikator_duplikasi');
-        } else {
-            $this->db->update('indikator');
-        }
+
+        $this->db->update('indikator');
+
         // echo json_encode($finalMin);
     }
 
@@ -98,20 +105,15 @@ class Kalkulasi_model extends CI_Model
     }
 
     //Set Nilai rescale Indikator tiap tahun
-    public function setNilaiRescaleIndikator($kode_indikator, $start = null, $end = null)
+    public function setNilaiRescaleIndikator($kode_indikator)
     {
         //Ambil indikator
-        if ($start != null && $end != null) {
-            $data_indikator = $this->db->get_where('indikator_duplikasi', ['kode_indikator' => $kode_indikator])->row_array();
-            //Ambil data tahun
-            $tahun_terakhir = $start;
-            $tahun_awal = $end;
-        } else {
-            $data_indikator = $this->db->get_where('indikator', ['kode_indikator' => $kode_indikator])->row_array();
-            //Ambil data tahun
-            $tahun_terakhir = $this->tahunTerakhirDataSemuaIndikator();
-            $tahun_awal = 2012;
-        }
+
+        $data_indikator = $this->db->get_where('indikator', ['kode_indikator' => $kode_indikator])->row_array();
+        //Ambil data tahun
+        $tahun_terakhir = $this->tahunTerakhirDataSemuaIndikator();
+        $tahun_awal = 2012;
+
         $kode_sd = intval($data_indikator['kode_sd']);
         $max = doubleval($data_indikator['max_nilai']);
         $min = doubleval($data_indikator['min_nilai']);
@@ -145,30 +147,22 @@ class Kalkulasi_model extends CI_Model
                     $nilai_rescale = (($max - $nilai_eksisting_perTahun) / ($max - $min)) * 10;
                 }
             }
+            $data = array(
+                'tahun' => $tahun,
+                'nilai' => $nilai_eksisting_perTahun,
+                'nilai_rescale' => $nilai_rescale,
+                'kode_indikator' => $kode_indikator
+            );
             if ($nilai_data_indikator == null) {
                 // Insert Nilai ReScale indikator
-                $data = array(
-                    'tahun' => $tahun,
-                    'nilai' => 0,
-                    'nilai_rescale' => $nilai_rescale,
-                    'kode_indikator' => $kode_indikator
-                );
-                if ($start != null && $end != null) {
-                    $this->db->insert('nilaiindikator_duplikasi', $data);
-                } else {
-                    $this->db->insert('nilaiindikator', $data);
-                }
+                $this->db->insert('nilaiindikator', $data);
             } else {
                 //Update Nilai ReScale Indikator
-                $data = array('nilai_rescale' => $nilai_rescale);
+                // $data = array('nilai_rescale' => $nilai_rescale);
                 $this->db->set($data);
                 $this->db->where('tahun', $tahun);
                 $this->db->where('kode_indikator', $kode_indikator);
-                if ($start != null && $end != null) {
-                    $this->db->update('nilaiindikator_duplikasi');
-                } else {
-                    $this->db->update('nilaiindikator');
-                }
+                $this->db->update('nilaiindikator');
             }
         }
 
@@ -176,16 +170,12 @@ class Kalkulasi_model extends CI_Model
     }
 
     //Set Nilai rescale Sub Dimensi tiap tahun
-    public function setNilaiRescaleSubDimensi($kode_indikator, $start = null, $end = null)
+    public function setNilaiRescaleSubDimensi($kode_indikator)
     {
         //Ambil data tahun
-        if ($start != null && $end != null) {
-            $tahun_terakhir = $start;
-            $tahun_awal = $end;
-        } else {
-            $tahun_terakhir = $this->tahunTerakhirDataSemuaIndikator();
-            $tahun_awal = 2012;
-        }
+        $tahun_terakhir = $this->tahunTerakhirDataSemuaIndikator();
+        $tahun_awal = 2012;
+
         //Ambil indikator
         $indikator = $this->db->get_where('indikator', ['kode_indikator' => $kode_indikator])->row_array();
         $kode_sd = intval($indikator['kode_sd']);
@@ -216,22 +206,15 @@ class Kalkulasi_model extends CI_Model
                     'nilai_rescale' => $nilai_rescale_subDimensi,
                     'kode_sd' => $kode_sd
                 );
-                if ($start != null && $end != null) {
-                    $this->db->insert('nilaisubdimensi_duplikasi', $data);
-                } else {
-                    $this->db->insert('nilaisubdimensi', $data);
-                }
+                $this->db->insert('nilaisubdimensi', $data);
             } else {
                 //Update Nilai ReScale SubDimensi
                 $data = array('nilai_rescale' => $nilai_rescale_subDimensi);
                 $this->db->set($data);
                 $this->db->where('tahun', $tahun);
                 $this->db->where('kode_sd', $kode_sd);
-                if ($start != null && $end != null) {
-                    $this->db->update('nilaisubdimensi_duplikasi');
-                } else {
-                    $this->db->update('nilaisubdimensi');
-                }
+
+                $this->db->update('nilaisubdimensi');
             }
         }
 
@@ -239,16 +222,12 @@ class Kalkulasi_model extends CI_Model
     }
 
     //Set Nilai rescale Dimensi tiap tahun
-    public function setNilaiRescaleDimensi($kode_indikator, $start = null, $end = null)
+    public function setNilaiRescaleDimensi($kode_indikator)
     {
         //Ambil data tahun
-        if ($start != null && $end != null) {
-            $tahun_terakhir = $start;
-            $tahun_awal = $end;
-        } else {
-            $tahun_terakhir = $this->tahunTerakhirDataSemuaIndikator();
-            $tahun_awal = 2012;
-        }
+        $tahun_terakhir = $this->tahunTerakhirDataSemuaIndikator();
+        $tahun_awal = 2012;
+
         //Ambil detail indikator
         $indikator = $this->db->get_where('indikator', ['kode_indikator' => $kode_indikator])->row_array();
         $kode_sd = intval($indikator['kode_sd']);
@@ -285,28 +264,20 @@ class Kalkulasi_model extends CI_Model
                     'nilai_rescale' => $nilai_rescale_Dimensi,
                     'kode_d' => $kode_d
                 );
-                if ($start != null && $end != null) {
-                    $this->db->insert('nilaidimensi_duplikasi', $data);
-                } else {
-                    $this->db->insert('nilaidimensi', $data);
-                }
+                $this->db->insert('nilaidimensi', $data);
             } else {
                 //Update Nilai ReScale Dimensi
                 $data = array('nilai_rescale' => $nilai_rescale_Dimensi);
                 $this->db->set($data);
                 $this->db->where('tahun', $tahun);
                 $this->db->where('kode_d', $kode_d);
-                if ($start != null && $end != null) {
-                    $this->db->update('nilaidimensi_duplikasi');
-                } else {
-                    $this->db->update('nilaidimensi');
-                }
+                $this->db->update('nilaidimensi');
             }
         }
     }
 
     //Set Nilai rescale IPI tiap tahun
-    public function setNilaiRescaleIPI($start = null, $end = null)
+    public function setNilaiRescaleIPI()
     {
         //Ambil Dimensi
         $this->load->model('Admin_model', 'admin');
@@ -314,13 +285,9 @@ class Kalkulasi_model extends CI_Model
         $jumlah_data_dimensi = count($data_dimensi);
 
         //Ambil data tahun
-        if ($start != null && $end != null) {
-            $tahun_terakhir = $start;
-            $tahun_awal = $end;
-        } else {
-            $tahun_terakhir = $this->tahunTerakhirDataSemuaIndikator();
-            $tahun_awal = 2012;
-        }
+        $tahun_terakhir = $this->tahunTerakhirDataSemuaIndikator();
+        $tahun_awal = 2012;
+
         $range_tahun = $tahun_terakhir - $tahun_awal + 1;
 
         for ($j = 0; $j < $range_tahun; $j++) {
@@ -341,21 +308,13 @@ class Kalkulasi_model extends CI_Model
                     'tahun' => $tahun,
                     'nilai_rescale' => $nilai_rescale_IPI
                 );
-                if ($start != null && $end != null) {
-                    $this->db->insert('ipi_duplikasi', $data);
-                } else {
-                    $this->db->insert('ipi', $data);
-                }
+                $this->db->insert('ipi', $data);
             } else {
                 //Update Nilai ReScale SubDimensi
                 $data = array('nilai_rescale' => $nilai_rescale_IPI);
                 $this->db->set($data);
                 $this->db->where('tahun', $tahun);
-                if ($start != null && $end != null) {
-                    $this->db->update('ipi_duplikasi');
-                } else {
-                    $this->db->update('ipi');
-                }
+                $this->db->update('ipi');
             }
         }
     }

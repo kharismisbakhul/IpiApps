@@ -3,8 +3,8 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('admin'); ?>">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-fw fa-chart-line"></i>
+        <div class="sidebar-brand-icon">
+            <img src="<?= base_url('assets/img/logo-ub.png')?>" style="width: 45px; height: 45px;">
         </div>
         <div class="sidebar-brand-text mx-3">IPI APPS</div>
     </a>
@@ -120,7 +120,7 @@
         <?php else : ?>
         <li class="nav-item">
         <?php endif; ?>
-        <a class="nav-link pb-0" href="<?= base_url('report'); ?>">
+        <a class="nav-link pb-0" href="<?= base_url('admin/report'); ?>">
             <i class="fas fa-fw fa-file-alt"></i>
             <span>Report</span>
         </a>

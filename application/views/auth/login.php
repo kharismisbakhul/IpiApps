@@ -59,9 +59,6 @@
                     </button>
                   </form>
                   <hr>
-                  <div class="text-center">
-                    <a class="small text-decoration-none forget" href="<?= base_url('auth/forgotpassword') ?>" style="color:black;">Lupa Password?</a>
-                  </div>
                 </div>
               </div>
             </div>

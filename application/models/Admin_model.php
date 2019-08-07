@@ -346,4 +346,14 @@ class Admin_model extends CI_Model
         $result = $this->db->get()->row_array();
         return $result;
     }
+    public function getNilaiIndikator($star_date = null, $end_date = null)
+    {
+        $this->db->select('nilai,kode_indikator,tahun');
+        $this->db->from('nilaiindikator');
+        if ($star_date != null && $star_date != null) {
+            $this->db->where('tahun >=', $star_date);
+            $this->db->where('tahun <=', $end_date);
+        }
+        return $this->db->get()->result_array();
+    }
 }
