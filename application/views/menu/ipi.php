@@ -21,7 +21,7 @@
     <div class="row">
         <!-- Area Rentan Wakti -->
         <div class="col-lg-3 box">
-            <div class="card shadow border-bottom-primary">
+            <div class="card shadow">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-midnight-blue text-white">
                     <h6 class="m-0 font-weight-bold">Pilih Rentan Waktu</h6>
@@ -59,39 +59,9 @@
                 </div>
             </div>
         </div>
-
-        <!-- Table Data Pembangunan Inklusif -->
-        <div class="col-lg-8 box">
-            <div class="card shadow border-bottom-primary">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-midnight-blue text-white">
-                    <h6 class="m-0 font-weight-bold">Table Data Pembangunan Inklusif</h6>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body bClip">
-                    <div class="table-responsive">
-                        <table class="table table-bordered text-center tClip">
-                            <thead class="header-table-root">
-                                <tr style="background-color: #3498db; color: #FFFFFF" class="header-table">
-                                </tr>
-                                <tr style="background-color: #3498db; color: #FFFFFF" class="tahun-ipi">
-                                </tr>
-                            </thead>
-                            <tbody class="iniDataIpi">
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <?php $dimensi = $this->db->get('dimensi')->result_array(); ?>
-    <div class="row mt-4 mb-4">
-        <!-- Area Rentan Wakti -->
-        <div class="col-lg-11 box">
-            <div class="card shadow border-bottom-primary">
+        <?php $dimensi = $this->db->get('dimensi')->result_array(); ?>
+        <div class="col-lg-9 box2">
+            <div class="card shadow">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-midnight-blue text-white">
                     <h6 class="m-0 font-weight-bold">Chart Data Indeks Pembangunan Inklusif</h6>
@@ -124,6 +94,38 @@
                 </div>
             </div>
         </div>
+        <!-- Table Data Pembangunan Inklusif -->
+
+    </div>
+
+
+    <div class="row mt-4 mb-4">
+        <div class="col-lg-12 box2">
+            <div class="card shadow">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-midnight-blue text-white">
+                    <h6 class="m-0 font-weight-bold">Table Data Pembangunan Inklusif</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body bClip">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered text-center tClip">
+                            <thead class="header-table-root ">
+                                <tr style="background-color: #2c3e50; color: #FFFFFF" class="header-table">
+                                </tr>
+                                <tr style="background-color: #3498db; color: #FFFFFF" class="tahun-ipi">
+                                </tr>
+                            </thead>
+                            <tbody class="iniDataIpi">
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Area Rentan Wakti -->
+
     </div>
 </div>
 <!-- /.container-fluid -->

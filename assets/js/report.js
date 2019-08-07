@@ -60,11 +60,11 @@ $(document).ready(function () {
 function move(x) {
 	var z = performance.now()
 	var y = z - x
-	console.log(y * 10000);
+	console.log(y * 1800);
 	var bar = new ProgressBar.Line(progressTimer, {
 		strokeWidth: 4,
 		easing: 'easeInOut',
-		duration: y * 10000,
+		duration: y * 1800,
 		color: '#3867d6',
 		trailColor: '#eee',
 		trailWidth: 1,

@@ -110,7 +110,7 @@
                                 <div style="height: 510px">
                                     <div class="loading-progress"></div>
 
-                                    <table class="table table-bordered table-report table-global text-nowrap" id="myTable">
+                                    <table class="table table-borde table-report table-global text-nowrap" id="myTable">
                                         <thead class="text-center">
                                             <tr>
                                                 <th class="align-middle" rowspan="2" colspan="3">Kode</th>

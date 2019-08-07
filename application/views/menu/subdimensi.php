@@ -13,7 +13,7 @@
 
     <div class="row">
         <!-- Area Rentan Waktu -->
-        <div class="col-xl-6 col-md-12 col-sm-12 mb-4">
+        <div class="col-xl-6 col-md-12 col-sm-12 mb-4 box">
             <div class="card shadow h-100">
                 <div class="card-header <?= $background ?>">
                     <div class="text-sm font-weight-bold text-capitalize mb-1 text-white">
@@ -56,24 +56,32 @@
         </div>
     </div>
 
-    <div class="row mt-4 mb-4">
+    <div class="row mt-4 mb-4 box">
         <!-- Area Rentan Waktu -->
         <div class="col-xl-12 col-md-12 col-sm-12 mb-4">
             <div class="card shadow h-100">
                 <div class="card-header <?= $background ?> text-white">
-                    <div class="text-sm font-weight-bold text-capitalize mb-1">
+                    <div class="text-sm font-weight-bold text-capitalize">
                         Table Data dan Chart <?= $title;  ?>
                     </div>
                 </div>
                 <div class="card-body mb-2">
+                    <div class="row align-items-center" style="height: 500px;">
+                        <div class="col-lg-12">
+                            <div class="card-body chart mb-2">
+                                <canvas id="chart-subdimensi" style="width: 100%; height: 30rem;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
                     <div class="row no-gutters">
                         <div class="col-md-12">
                             <div class="table-responsive">
-                                <table class="table table-bordered text-center tClip table-sm flex-wrap">
+                                <table class="table table-striped text-center table-bordered tClip table-sm flex-wrap">
                                     <thead class="header-table-root">
-                                        <tr style="background-color: #0097e6; color: #ffffff" class="header-table">
+                                        <tr style="background-color:#2980b9; color: #ffffff" class="header-table">
                                         </tr>
-                                        <tr style="background-color: #0097e6; color: #ffffff" class="tahun-sub">
+                                        <tr style="background-color:#273c75 ; color: #ffffff" class="tahun-sub">
                                         </tr>
                                     </thead>
                                     <tbody class="iniData-subdimensi">
@@ -82,14 +90,7 @@
                             </div>
                         </div>
                     </div>
-                    <hr>
-                    <div class="row align-items-center" style="height: 500px;">
-                        <div class="col-lg-12">
-                            <div class="card-body chart mb-2">
-                                <canvas id="chart-subdimensi" style="width: 100%; height: 30rem;"></canvas>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>

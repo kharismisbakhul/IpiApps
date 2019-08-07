@@ -20,7 +20,7 @@
 
     <div class="row">
         <!-- Area Chart -->
-        <div class="col-lg-8">
+        <div class="col-lg-8 box">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header bg-primary">
@@ -100,7 +100,7 @@
         </div>
 
         <!-- Option Delete -->
-        <div class="col-lg-3">
+        <div class="col-lg-3 box2">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header" style="background-color: #3867d6">

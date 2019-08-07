@@ -3,8 +3,8 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('admin'); ?>">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-fw fa-chart-line"></i>
+        <div class="sidebar-brand-icon">
+            <img src="<?= base_url('assets/img/logo-ub.png') ?>" style="width: 50px">
         </div>
         <div class="sidebar-brand-text mx-3">IPI APPS</div>
     </a>

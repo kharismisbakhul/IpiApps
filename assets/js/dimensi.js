@@ -66,7 +66,7 @@ $(document).ready(function () {
 				fill: false,
 				spanGaps: true
 			});
-			let color = ["#eb4d4b", "#6ab04c", "#4834d4"];
+			let color = ["#2d98da", "#20bf6b", "#fc5c65"];
 			let count = 1;
 			for (var i in data["n_sb_dimensi"]) {
 				setDataDimensi.push({

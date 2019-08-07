@@ -70,11 +70,11 @@ $(document).ready(function () {
 				spanGaps: true
 			});
 			let color = [
-				"rgb(132,60,12)",
-				"rgb(84,130,53)",
-				"rgb(191,144,0)",
-				"#e74c3c",
-				"#3498db",
+				"#45aaf2",
+				"#4b7bec",
+				"#a55eea",
+				"#20bf6b",
+				"#0fb9b1",
 				"#8e44ad",
 				"#34495e",
 				"#f1c40f",

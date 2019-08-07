@@ -13,7 +13,7 @@
 
     <div class="row">
         <!-- Area Rentan Waktu -->
-        <div class="col-xl-6 col-md-12 col-sm-12 mb-4">
+        <div class="col-xl-6 col-md-12 col-sm-12 mb-4 box">
             <div class="card shadow h-100">
                 <div class="card-header <?= $background ?>">
                     <div class="text-sm font-weight-bold text-capitalize mb-1 text-white">
@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <div class="row mt-4 mb-4">
+    <div class="row mt-4 mb-4 box2">
         <!-- Area Rentan Waktu -->
         <div class="col-xl-12 col-md-12 col-sm-12 mb-4">
             <div class="card shadow h-100">
@@ -66,23 +66,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="row no-gutters">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table class="table table-bordered text-center tClip">
-                                    <thead class="header-table-root">
-                                        <tr style="background-color:#0097e6;color: #ffffff" class="header-table">
-                                        </tr>
-                                        <tr style="background-color:#0097e6; color: #ffffff" class="tahun-dimensi">
-                                        </tr>
-                                    </thead>
-                                    <tbody class="iniData">
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
+
+
                     <div class="row no-gutters align-items-center">
                         <div class="col-lg-12">
                             <div class="card-body chart">
@@ -108,6 +93,23 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row no-gutters">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped text-center table-bordered tClip">
+                                    <thead class="header-table-root ">
+                                        <tr style="background-color:#2980b9;color: #ffffff" class="header-table">
+                                        </tr>
+                                        <tr style="background-color:#2c3e50; color: #ffffff" class="tahun-dimensi">
+                                        </tr>
+                                    </thead>
+                                    <tbody class="iniData">
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
