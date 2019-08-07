@@ -22,11 +22,11 @@
 <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
 
 <!-- Bootstrap core JavaScript-->
-<script src="<?= base_url('assets/')  ?>vendor/jquery/jquery.min.js"></script>
-<script src="<?= base_url('assets/')  ?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?= base_url('assets/') ?>vendor/jquery/jquery.min.js"></script>
+<script src="<?= base_url('assets/') ?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="<?= base_url('assets/')  ?>vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="<?= base_url('assets/') ?>vendor/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- Custom scripts for all pages-->
 <script src="<?= base_url('assets/') ?>js/sb-admin-2.min.js"></script>
@@ -60,7 +60,7 @@
 
 <!-- Script Modal -->
 
-<?php if ($this->input->get('d')) : ?>
+<?php if ($this->input->get('d') || $this->uri->segment(1) == "operator") : ?>
     <script src="<?= base_url('assets/'); ?>js/dimensi.js"></script>
 <?php elseif ($this->input->get('sd')) : ?>
     <script src="<?= base_url('assets/'); ?>js/subdimensi.js"></script>
@@ -68,8 +68,6 @@
     <script src="<?= base_url('assets/'); ?>js/ipi.js"></script>
 <?php elseif ($this->uri->segment(2) == 'report') : ?>
     <script src="<?= base_url('assets/'); ?>js/report.js"></script>
-<?php elseif ($this->uri->segment(2) == 'export') : ?>
-    <script src="<?= base_url('assets/'); ?>js/export.js"></script>
 <?php elseif ($this->uri->segment(2) == null && $this->uri->segment(1) == "admin") : ?>
     <script src="<?= base_url('assets/'); ?>js/dashboard.js"></script>
 <?php endif; ?>

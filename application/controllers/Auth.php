@@ -10,7 +10,11 @@ class Auth extends CI_Controller
     public function index()
     {
         if ($this->session->userdata('username')) {
-            redirect('admin');
+            if ($this->session->userdata('status_user') == 0) {
+                redirect('admin');
+            } else {
+                redirect('operator');
+            }
         }
         $this->form_validation->set_rules('username', 'Username', 'required|trim');
         $this->form_validation->set_rules('password', 'Password', 'required|trim');
@@ -34,7 +38,12 @@ class Auth extends CI_Controller
             // cek password
             if (password_verify($password, $user['password'])) {
                 $this->session->set_userdata('username', $username);
-                redirect('admin');
+                $this->session->set_userdata('status_user', $user['status_user']);
+                if ($user['status_user'] == 0) {
+                    redirect('admin');
+                } else {
+                    redirect('operator');
+                }
             } else {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger text-center align-middle mb-3" role="alert"><p>Password salah !</p></div>');
                 redirect('auth');

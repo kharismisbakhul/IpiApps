@@ -1,9 +1,21 @@
 var url = $(location).attr("href");
 var segments = url.split("/");
-var action = segments[5];
-var data = action.split("?");
-
-let iniUrl = segments[0] + "/IpiApps/Admin/dimensiApi?" + data[1];
+let status_user = $('#kode_user').attr('value');
+let iniUrl = '';
+if (segments[4] == "operator") {
+	iniUrl = segments[0] + "/IpiApps/Admin/dimensiApi?d=" + status_user;
+} else {
+	if (segments[5] == null) {
+		var action = segments[4];
+		var data = action.split("?");
+		iniUrl = segments[0] + "/IpiApps/Admin/dimensiApi?d=" + status_user + "&" + data[1];
+	} else {
+		var action = segments[5];
+		var data = action.split("?");
+		// console.log(segments[5]);
+		iniUrl = segments[0] + "/IpiApps/Admin/dimensiApi?" + data[1];
+	}
+}
 let nama_sb_dimensi = [];
 let nama_dimensi = [];
 let tahun = [];
@@ -21,6 +33,7 @@ $(document).ready(function () {
 		beforeSend: function (data) {
 			$("#chart-dimensi").hide();
 			$(".header-table").hide();
+			$(".rescale-chart").hide();
 			$(".chart").append(
 				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
 			);
@@ -29,9 +42,10 @@ $(document).ready(function () {
 			);
 		},
 		success: function (data) {
-			console.log(data);
+			// console.log(data);
 			$(".loader").remove();
 			$(".header-table").show();
+			$(".rescale-chart").show();
 			$("#chart-dimensi").show();
 			for (var i in data["tahun"]) {
 				tahun.push(data["tahun"][i].tahun);

@@ -1,57 +1,71 @@
 var url = $(location).attr("href");
 var segments = url.split("/");
+// Function Data Dimensi
+function selectDimensi() {
+	nilai = 0;
+	$(".nilai").val(nilai);
+	let kode_d = $('.dimensi').val();
+	let a = $('.dimensi').val();
+	if (a) {
+		// Pilihan Sub Dimensi
+		$.ajax({
+			url: segments[0] + '/IpiApps/data/getSubDimensi/' + kode_d,
+			method: 'get',
+			dataType: 'json',
+			success: function (dataSD) {
+				// console.log(dataSD)
+				$('.temp-id-sd').remove();
+				$('.temp-id-i').remove();
+				$('.temp-id-t').remove();
+				$('.nilai').removeAttr('value');
+
+				for (var i in dataSD) {
+					$('#subDimensi').append(`<option value='` + dataSD[i].kode_sd + `' class='temp-id-sd'>` + dataSD[i].nama_sub_dimensi + `</option>`);
+				}
+			}
+		})
+	}
+}
+
 //Input Data
 $(window).on('load', function () {
-	let nilai = 0
+	let nilai = 0;
+	let status_user = $('#kode_user').attr('value');
 	$(".nilai").val(nilai);
 	$.ajax({
 		url: segments[0] + '/IpiApps/data/getDimensi',
 		method: 'get',
 		dataType: 'json',
 		success: function (data) {
-			console.log(data)
+			// console.log(data)
 			$('.temp-id-d').remove();
 			$('.temp-id-sd').remove();
 			$('.temp-id-i').remove();
 			$('.temp-id-t').remove();
 			$('.nilai').removeAttr('value');
-			$('#dimensi').append(`<option value='Pilih Dimensi'>Pilih Dimensi</option>`);
+			if (status_user == 0) {
+				$('#dimensi').append(`<option value='Pilih Dimensi'>Pilih Dimensi</option>`);
+			}
 			$('#subDimensi').append(`<option>Pilih Sub Dimensi</option>`);
 			$('#indikator').append(`<option>Pilih Indikator</option>`);
 			$('.tahun').empty();
 			$('#tahun').append(`<option>Pilih Tahun</option>`);
 
 			for (var i in data) {
-				$('#dimensi').append(`<option value='` + data[i].kode_d + `'  class='temp-id-d'>` + data[i].nama_dimensi + `</option>`);
+				if (status_user == data[i].kode_d || status_user == 0) {
+					$('#dimensi').append(`<option value='` + data[i].kode_d + `'  class='temp-id-d'>` + data[i].nama_dimensi + `</option>`);
+				}
+			}
+
+			if (status_user != 0) {
+				selectDimensi();
 			}
 		}
 	});
+
 	//Milih Dimensi
 	$('.dimensi').on('change', function () {
-		nilai = 0;
-		$(".nilai").val(nilai);
-		let kode_d = $('.dimensi').val();
-		let a = $('.dimensi').val();
-		if (a) {
-			// Pilihan Sub Dimensi
-			$.ajax({
-				url: segments[0] + '/IpiApps/data/getSubDimensi/' + kode_d,
-				method: 'get',
-				dataType: 'json',
-				success: function (dataSD) {
-					console.log(dataSD)
-					$('.temp-id-sd').remove();
-					$('.temp-id-i').remove();
-					$('.temp-id-t').remove();
-					$('.nilai').removeAttr('value');
-
-
-					for (var i in dataSD) {
-						$('#subDimensi').append(`<option value='` + dataSD[i].kode_sd + `' class='temp-id-sd'>` + dataSD[i].nama_sub_dimensi + `</option>`);
-					}
-				}
-			})
-		}
+		selectDimensi();
 	})
 	//Milih Sub Dimensi
 	$('.subDimensi').on('change', function () {
@@ -66,7 +80,7 @@ $(window).on('load', function () {
 				method: 'get',
 				dataType: 'json',
 				success: function (dataI) {
-					console.log(dataI)
+					// console.log(dataI)
 					$('.temp-id-i').remove();
 					$('.temp-id-t').remove();
 					$('.nilai').removeAttr('value');
@@ -87,7 +101,7 @@ $(window).on('load', function () {
 		$('.temp-id-t').remove();
 		ind = $('#indikator').val();
 		let cek = $('.nilai').val()
-		console.log('cuy = ' + cek)
+		// console.log('cuy = ' + cek)
 		//Pilihan Tahun
 		if (ind) {
 			//Append Tahun
@@ -96,7 +110,7 @@ $(window).on('load', function () {
 				method: 'get',
 				dataType: 'json',
 				success: function (dataTahun) {
-					console.log(dataTahun)
+					// console.log(dataTahun)
 					$('.temp-id-t').remove();
 					$('.nilai').removeAttr('value');
 
@@ -118,7 +132,7 @@ $(window).on('load', function () {
 				method: 'get',
 				dataType: 'json',
 				success: function (nilai_indikator) {
-					console.log(nilai_indikator)
+					// console.log(nilai_indikator)
 					$(".nilai").removeAttr('value');
 					nilai = parseFloat(nilai_indikator['nilai']).toFixed(2)
 					$(".nilai").val(nilai);

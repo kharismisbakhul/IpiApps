@@ -7,14 +7,13 @@
             <i class="fas fa-fw fa-chart-bar fo"></i>
         </div>
         <div class="col-sm-6">
-            <h1 class="h3 mb-4 text-gray-800"><?= $title;  ?></h1>
+            <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
         </div>
     </div>
 
-
     <div class="row">
         <div class="col-lg-8">
-            <?= $this->session->flashdata('message');  ?>
+            <?= $this->session->flashdata('message'); ?>
         </div>
     </div>
 
@@ -53,12 +52,15 @@
                                 <select class="form-control indikator" name="indikator" id="indikator">
                                 </select>
                             </div>
+                            <?php if ($this->session->userdata("status_user") == 0) { ?>
                             <button type="button" class="btn btn-primary tambah-indikator col-sm-2 btn-icon-split" data-toggle="modal" data-target="#ModalTambahIndikator">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-fw fa-plus"></i>
                                 </span>
                                 <span class="text">Indikator</span>
                             </button>
+                            <?php 
+                        }; ?>
 
                         </div>
                         <div class="form-group row">
@@ -68,12 +70,15 @@
                                 </select>
                                 <?= form_error('tahun', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
+                            <?php if ($this->session->userdata("status_user") == 0) { ?>
                             <button type="button" class="btn btn-primary tambah-indikator btn-icon-split" data-toggle="modal" data-target="#ModalTambahDataTahun">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-fw fa-plus"></i>
                                 </span>
                                 <span class="text">Tahun</span>
                             </button>
+                            <?php 
+                        }; ?>
                         </div>
                         <div class="form-group row">
                             <label for="privileges" class="col-sm-2 col-form-label">Nilai</label>
@@ -99,6 +104,7 @@
             </div>
         </div>
 
+<?php if ($this->session->userdata("status_user") == 0) { ?>
         <!-- Option Delete -->
         <div class="col-lg-3">
             <div class="card shadow mb-4">
@@ -126,6 +132,9 @@
             </div>
         </div>
         <!-- End Option Delete -->
+<?php 
+}; ?>
+
     </div>
     <!-- /.container-fluid -->
 

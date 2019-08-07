@@ -3,7 +3,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-3">
-        <h1 class="h2 mb-0 text-gray-800"><?= $title;  ?></h1>
+        <h1 class="h2 mb-0 text-gray-800"><?= $title; ?></h1>
         <div class="tanggal">
             <div class="text-s mb-0 font-weight-bold text-gray-400">
                 <span><i class="fas fa-calendar-day text-gray-400"></i></span> <?= date('d M Y') ?>
@@ -14,7 +14,7 @@
     <div class="row">
         <!-- //Updated -->
         <div class="col-lg-12">
-            <?= $this->session->flashdata('message');  ?>
+            <?= $this->session->flashdata('message'); ?>
         </div>
         <div class="d-none d-lg-block col-md-12 mb-4">
             <div class="card shadow py-0">
@@ -49,9 +49,7 @@
                                     <div class="form-row filter-tahun">
                                         <div class="form-group col-md-2">
                                             <label for="dariTahun" class="text-xs">Dari Tahun</label>
-
                                             <select class="custom-select" name="star_date" id="start-date">
-
                                             </select>
                                         </div>
                                         <div class="form-group col-md-2">

@@ -12,11 +12,6 @@ class Admin extends CI_Controller
         }
     }
 
-    public function cek()
-    {
-        $this->load->view('export_2');
-    }
-
     public function initData()
     {
         $data['username'] = $this->session->userdata('username');
@@ -35,6 +30,9 @@ class Admin extends CI_Controller
     public function index()
     {
         $data = $this->initData();
+        if ($this->session->userdata('status_user') != 0) {
+            redirect('operator');
+        }
         $this->load->model('Admin_model', 'admin');
         $this->load->model('Kalkulasi_model', 'kalkulasi');
         $data['title'] = 'Dashboard';
@@ -45,7 +43,8 @@ class Admin extends CI_Controller
         $data['tahun_selc'] = $this->admin->getTahun();
         $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
 
-        if ($this->input->get('star_date') && $this->input->get('end_date')) { } else {
+        if ($this->input->get('star_date') && $this->input->get('end_date')) {
+        } else {
             $data['title2'] = 'Indeks Pembangunan Inklusif';
             //Start - Tambahan Data buat load awal (Semua data)
             $data['ipi'] = $this->admin->getIPI();
@@ -74,8 +73,99 @@ class Admin extends CI_Controller
             }
         }
         $this->loadTemplate($data);
-        $this->load->view('menu/dashboard', $data);
+        $this->load->view('menu/dashboard_admin', $data);
         $this->load->view('templates/footer');
+    }
+
+    //Manajemen User
+    public function manajemenUser()
+    {
+        $data = $this->initData();
+        $this->db->where('username !=', $this->session->userdata('username'));
+        $this->db->select('user.id, menu, username, status_user');
+        $this->db->from('user');
+        $this->db->join('status_user', 'user.status_user = status_user.id');
+        $data['list_user'] = $this->db->get()->result_array();
+        $data['title'] = 'Manajemen User';
+        $this->loadTemplate($data);
+        $this->load->view('menu/manajemen_user', $data);
+        $this->load->view('templates/footer');
+    }
+
+    //Add User
+    public function tambahUser()
+    {
+        $this->form_validation->set_rules('usernameadd', 'Username', 'required|trim|is_unique[user.username]', [
+            'is_unique' => 'Username sudah terdaftar!'
+        ]);
+        $this->form_validation->set_rules('passwordadd', 'Password', 'required|trim|matches[password2]', [
+            'matches' => 'Password tidak sesuai!'
+        ]);
+        $this->form_validation->set_rules('password2', 'Password', 'required|trim|matches[passwordadd]');
+        if ($this->form_validation->run() == false) {
+            $data = $this->initData();
+            $data['status_user'] = $this->db->get('status_user')->result_array();
+            $data['title'] = 'Manajemen User';
+            $this->loadTemplate($data);
+            $this->load->view('menu/add_user', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $username = $this->input->post('usernameadd');
+            $password = $this->input->post('passwordadd');
+            $status_user = $this->input->post('privileges');
+            $data = array(
+                'username' => htmlspecialchars($username),
+                'password' => password_hash($password, PASSWORD_DEFAULT),
+                'status_user' => $status_user
+            );
+            $this->db->insert('user', $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Akun baru telah terdaftar</div>');
+            redirect('admin/manajemenUser');
+        }
+    }
+    // Edit User
+    public function editUser($id)
+    {
+        $this->form_validation->set_rules('usernameadd', 'Username', 'required|trim');
+        $this->form_validation->set_rules('passwordadd', 'Password', 'required|trim|matches[password2]', [
+            'matches' => 'Password dont match!'
+        ]);
+        $this->form_validation->set_rules('password2', 'Password', 'required|trim|matches[passwordadd]');
+        if ($this->form_validation->run() == false) {
+            $data = $this->initData();
+            $data['title'] = 'Manajemen User';
+            $data['detailUser'] = $this->db->get_where('user', ['id' => $id])->row_array();
+            $data['status_user'] = $this->db->get('status_user')->result_array();
+            $this->loadTemplate($data);
+            $data['id_temp'] = $id;
+            $this->load->view('menu/edit_user', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $username = $this->input->post('usernameadd');
+            $password = $this->input->post('passwordadd');
+            $status_user = $this->input->post('privileges');
+            $data = array(
+                'username' => htmlspecialchars($username),
+                'password' => password_hash($password, PASSWORD_DEFAULT),
+                'status_user' => $status_user
+            );
+
+            $this->db->set($data);
+            $this->db->where('id', $id);
+            $this->db->update('user');
+
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Informasi akun berhasil diperbaharui</div>');
+            redirect('admin/manajemenUser');
+        }
+    }
+
+    //Delete User
+    public function deleteUser($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('user');
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Account has been deleted</div>');
+        redirect('admin/manajemenUser');
     }
 
     public function changePassword()
@@ -212,54 +302,6 @@ class Admin extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function Report()
-    {
-        $this->load->model('Admin_model', 'admin');
-        $data = $this->initData();
-        $data['title'] = 'Report';
-        $star_date = $this->input->get('star_date');
-        $end_date = $this->input->get('end_date');
-        $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
-        $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
-
-
-        $data['tahun_selc'] = $this->admin->getTahun();
-        $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
-        $data['dimensi'] = $this->db->select('kode_d,nama_dimensi')->get('dimensi')->result_array();
-        $data['subdimensi'] = $this->db->select('kode_sd,kode_d,nama_sub_dimensi')->get('subdimensi')->result_array();
-        $data['indikator'] = $this->db->select('kode_indikator,nama_indikator,kode_sd,status,max_nilai,min_nilai,status')->get('indikator')->result_array();
-        $data['nilai_indikator'] = $this->admin->getNilaiIndikator($star_date, $end_date);
-        $this->loadTemplate($data);
-        $this->load->view('menu/report_2', $data);
-        $this->load->view('templates/footer');
-    }
-
-    public function reportApi()
-    {
-        $this->load->model('Admin_model', 'admin');
-        $star_date = $this->input->get('star_date');
-        $end_date = $this->input->get('end_date');
-        $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
-        $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
-        $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
-        $data['ipi'] = $this->_getNilaiIpi($star_date, $end_date);
-        $data['n_dimensi'] = $this->db->select('nama_dimensi,kode_d')->get_where('dimensi')->result_array();
-        $data['n_ipi'] = 'Indeks Pembangunan Inklusif';
-        foreach ($data['n_dimensi'] as $d) {
-            $data['dimensi'][$d['kode_d']] = $this->_getNilaiDimensi($d['kode_d'], $star_date, $end_date);
-        }
-        $data['n_sb_dimensi'] = $this->db->select('nama_sub_dimensi,kode_sd')->get('subdimensi')->result_array();
-        $allsb = $this->db->select('kode_sd')->get('subdimensi')->result_array();
-        foreach ($allsb as $sb) {
-            $data['sub_dimensi'][$sb['kode_sd']] = $this->_getNilaiRescaleSubDimensi($sb['kode_sd'], $star_date, $end_date);
-        }
-        foreach ($allsb as $sb) {
-            $data['indikator'][$sb['kode_sd']] = $this->_getNilaiIndikator($sb['kode_sd'], $star_date, $end_date);
-        }
-        header('Content-type: application/json');
-        echo json_encode($data);
-    }
-
     public function dimensiApi()
     {
         $this->load->model('Admin_model', 'admin');
@@ -300,6 +342,53 @@ class Admin extends CI_Controller
         echo json_encode($data);
     }
 
+    public function Report()
+    {
+        $this->load->model('Admin_model', 'admin');
+        $data = $this->initData();
+        $data['title'] = 'Report';
+        $star_date = $this->input->get('star_date');
+        $end_date = $this->input->get('end_date');
+        $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
+        $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
+
+        $data['tahun_selc'] = $this->admin->getTahun();
+        $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
+        $data['dimensi'] = $this->db->select('kode_d,nama_dimensi')->get('dimensi')->result_array();
+        $data['subdimensi'] = $this->db->select('kode_sd,kode_d,nama_sub_dimensi')->get('subdimensi')->result_array();
+        $data['indikator'] = $this->db->select('kode_indikator,nama_indikator,kode_sd,status,max_nilai,min_nilai,status')->get('indikator')->result_array();
+        $data['nilai_indikator'] = $this->admin->getNilaiIndikator($star_date, $end_date);
+        $this->loadTemplate($data);
+        $this->load->view('menu/report_2', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function reportApi()
+    {
+        $this->load->model('Admin_model', 'admin');
+        $star_date = $this->input->get('star_date');
+        $end_date = $this->input->get('end_date');
+        $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
+        $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
+        $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
+        $data['ipi'] = $this->_getNilaiIpi($star_date, $end_date);
+        $data['n_dimensi'] = $this->db->select('nama_dimensi,kode_d')->get_where('dimensi')->result_array();
+        $data['n_ipi'] = 'Indeks Pembangunan Inklusif';
+        foreach ($data['n_dimensi'] as $d) {
+            $data['dimensi'][$d['kode_d']] = $this->_getNilaiDimensi($d['kode_d'], $star_date, $end_date);
+        }
+        $data['n_sb_dimensi'] = $this->db->select('nama_sub_dimensi,kode_sd')->get('subdimensi')->result_array();
+        $allsb = $this->db->select('kode_sd')->get('subdimensi')->result_array();
+        foreach ($allsb as $sb) {
+            $data['sub_dimensi'][$sb['kode_sd']] = $this->_getNilaiRescaleSubDimensi($sb['kode_sd'], $star_date, $end_date);
+        }
+        foreach ($allsb as $sb) {
+            $data['indikator'][$sb['kode_sd']] = $this->_getNilaiIndikator($sb['kode_sd'], $star_date, $end_date);
+        }
+        header('Content-type: application/json');
+        echo json_encode($data);
+    }
+
     // Get Nilai IPI per periode
     private function _getNilaiIpi($star_date = null, $end_date = null)
     {
@@ -320,7 +409,7 @@ class Admin extends CI_Controller
             $nilaiIpi = 0;
             foreach ($riscaleDimensi as $in) { // 3
                 if ($in[$tahun[$i]['tahun']] != null || $in[$tahun[$i]['tahun']] == 0) {
-                    $nilaiIpi +=  $in[$tahun[$i]['tahun']];
+                    $nilaiIpi += $in[$tahun[$i]['tahun']];
                 }
             }
             $nilairescale_ipi[$tahun[$i]['tahun']] = round(($nilaiIpi / (count($riscaleDimensi))), 2);
@@ -357,7 +446,7 @@ class Admin extends CI_Controller
             $nilaiTambah = 0;
             foreach ($rescalesb as $in) { // 3
                 if ($in[$tahun[$i]['tahun']] != null || $in[$tahun[$i]['tahun']] == 0) {
-                    $nilaiTambah +=  $in[$tahun[$i]['tahun']];
+                    $nilaiTambah += $in[$tahun[$i]['tahun']];
                 }
             }
             $nilairescale_dimensi[$dimensi][$tahun[$i]['tahun']] = round(((1 / count($rescalesb)) * $nilaiTambah), 2);
