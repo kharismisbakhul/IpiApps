@@ -1,9 +1,10 @@
 /* General */
-body{
+body {
 	font-family: 'Roboto', sans-serif;
 }
+
 .sidebar {
-	background-color: #2980b9;
+	background-color: #182C61;
 	border-color: #2980b9;
 }
 
@@ -26,7 +27,8 @@ body{
 	border: 0;
 }
 
-.card,.card-header:first-child{
+.card,
+.card-header:first-child {
 	border-radius: 0rem;
 }
 
@@ -43,8 +45,16 @@ body{
 	border-radius: 0.2rem;
 }
 
+.dash {
+	background-image: url('../../img/2.jpg');
+	background-attachment: fixed;
+	background-position: 0 -200px;
+	color: #eaeaea;
+	overflow: hidden;
+}
+
 .bg-orange2 {
-	background-color: #fa8231;
+	background-color: #cd6133;
 }
 
 .bg-brown {
@@ -56,11 +66,11 @@ body{
 }
 
 .bg-green {
-	background-color: #27ae60
+	background-color: #218c74
 }
 
 .bg-red {
-	background-color: #e74c3c
+	background-color: #c0392b
 }
 
 .bg-blue {
@@ -96,13 +106,44 @@ body{
 }
 
 table.table-bordered {
-	border: 1px solid #2d3436;
+	border: 1px solid #ffffff;
 }
 
 table.table-bordered>thead>tr>th {
-	border: 1px solid #2d3436;
+	border: 1px solid #ffffff;
 }
 
 table.table-bordered>tbody>tr>td {
-	border: 1px solid #2d3436;
+	border: 1px solid #ffffff;
+}
+
+table.table-borde {
+	border: 1px solid #101010;
+}
+
+table.table-borde>thead>tr>th {
+	border: 1px solid #101010;
+}
+
+table.table-borde>tbody>tr>td {
+	border: 1px solid #101010;
+}
+
+/* animasi */
+.box {
+	opacity: 0;
+	transition: 1s;
+	transform: translate(0, 50px);
+}
+
+.box2 {
+	opacity: 0;
+	transition: 1.2s;
+	transform: translate(50px, 50px);
+}
+
+.box2.bMuncul,
+.box.bMuncul {
+	opacity: 1;
+	transform: translate(0, 0);
 }

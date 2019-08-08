@@ -49,8 +49,13 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-3">
-        <h1 class="h3 mb-0 text-gray-800"><?= $title;  ?> Data</h1>
+    <div class="row ml-2">
+        <div class="col-sm-0">
+            <i class="fas fa-fw fa-file-alt"></i>
+        </div>
+        <div class="col-sm-6">
+            <h1 class="h3 text-gray-800"><?= $title; ?> Data</h1>
+        </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
@@ -58,24 +63,22 @@
         </div>
     </div>
 
-    <div class="row mt-4">
-        <div class="col-xl-4 col-md-4 col-sm-4 mb-4">
+    <div class="row">
+        <div class="col-xl-4 col-md-4 col-sm-4">
             <div class="card shadow h-100">
                 <div class="card-header text-white" style="background-color:#3867d6;">
-                    <div class="text-sm font-weight-bold text-uppercase mb-1">
+                    <div class="text-sm font-weight-bold text-uppercase">
                         Action
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg">
-                            <a href="<?= base_url('inputData'); ?>" class="btn btn-primary btn-icon-split tambah-user">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-fw fa-plus"></i>
-                                </span>
-                                <span class="text">Tambah Data</span>
-                            </a>
-                        </div>
+                    <div class="row col-lg">
+                        <a href="<?= base_url('inputData'); ?>" class="btn btn-primary btn-icon-split tambah-user pr-5">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-fw fa-plus"></i>
+                            </span>
+                            <span class="text">Tambah Data</span>
+                        </a>
                     </div>
                     <div class="row mt-3 col-lg export-excel">
                         <a href="<?= base_url('report/export'); ?>" class="btn btn-success btn-icon-split export-to-excel">

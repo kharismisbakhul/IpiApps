@@ -19,7 +19,6 @@
     <i class="fas fa-angle-up"></i>
 </a>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
 
 <!-- Bootstrap core JavaScript-->
 <script src="<?= base_url('assets/') ?>vendor/jquery/jquery.min.js"></script>
@@ -31,35 +30,24 @@
 <!-- Custom scripts for all pages-->
 <script src="<?= base_url('assets/') ?>js/sb-admin-2.min.js"></script>
 
-<!-- Page level plugins -->
+<!-- Progress timer level plugins -->
 <script src="<?= base_url('assets/vendor/jquery/jquery.progresstimers.js') ?>"></script>
-
 
 <!-- Sweet alert custom -->
 <script src="<?= base_url('assets/') ?>js/sweet-alert.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script src="<?= base_url('assets/vendor/chartjs/chartjs-plugin-annotation.js') ?>"></script>
-<!-- Updated -->
+
+<!-- Updated Data -->
 <script src="<?= base_url('assets/'); ?>js/inputData.js"></script>
 <script src="<?= base_url('assets/'); ?>js/inputIndikator.js"></script>
 <script src="<?= base_url('assets/'); ?>js/hapusIndikator.js"></script>
 <script src="<?= base_url('assets/'); ?>js/hapusDatadiTahun.js"></script>
 
 <!-- TableExport.js -->
-<script src="<?= base_url('assets/'); ?>js/jsExport.js"></script>
-<script src="<?= base_url('assets/'); ?>js/xlsx.core.min.js"></script>
-<script src="<?= base_url('assets/'); ?>js/Blob.js"></script>
-<script src="<?= base_url('assets/'); ?>js/FileSaver.min.js"></script>
-<script src="<?= base_url('assets/'); ?>js/tableExport.js"></script>
 <script src="<?= base_url('assets/'); ?>js/progressbar.min.js"></script>
 
-
-
-
-
-
-<!-- Script Modal -->
-
+<!-- Script Chart -->
 <?php if ($this->input->get('d') || $this->uri->segment(1) == "operator") : ?>
     <script src="<?= base_url('assets/'); ?>js/dimensi.js"></script>
 <?php elseif ($this->input->get('sd')) : ?>
@@ -72,6 +60,7 @@
     <script src="<?= base_url('assets/'); ?>js/dashboard.js"></script>
 <?php endif; ?>
 
+<!-- Filter tahun -->
 <script src="<?= base_url('assets/'); ?>js/filter.js"></script>
 
 </body>

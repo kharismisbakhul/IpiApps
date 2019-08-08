@@ -4,7 +4,7 @@
     <!-- Page Heading -->
     <div class="row ml-2">
         <div class="col-sm-0">
-            <i class="fas fa-fw fa-chart-bar fo"></i>
+            <i class="fas fa-fw fa-sign-in-alt"></i>
         </div>
         <div class="col-sm-6">
             <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
@@ -53,14 +53,14 @@
                                 </select>
                             </div>
                             <?php if ($this->session->userdata("status_user") == 0) { ?>
-                            <button type="button" class="btn btn-primary tambah-indikator col-sm-2 btn-icon-split" data-toggle="modal" data-target="#ModalTambahIndikator">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-fw fa-plus"></i>
-                                </span>
-                                <span class="text">Indikator</span>
-                            </button>
-                            <?php 
-                        }; ?>
+                                <button type="button" class="btn btn-primary tambah-indikator btn-icon-split" data-toggle="modal" data-target="#ModalTambahIndikator">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-fw fa-plus"></i>
+                                    </span>
+                                    <span class="text">Indikator</span>
+                                </button>
+                            <?php
+                            }; ?>
 
                         </div>
                         <div class="form-group row">
@@ -71,14 +71,14 @@
                                 <?= form_error('tahun', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
                             <?php if ($this->session->userdata("status_user") == 0) { ?>
-                            <button type="button" class="btn btn-primary tambah-indikator btn-icon-split" data-toggle="modal" data-target="#ModalTambahDataTahun">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-fw fa-plus"></i>
-                                </span>
-                                <span class="text">Tahun</span>
-                            </button>
-                            <?php 
-                        }; ?>
+                                <button type="button" class="btn btn-primary tambah-indikator btn-icon-split pr-3" data-toggle="modal" data-target="#ModalTambahDataTahun">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-fw fa-plus"></i>
+                                    </span>
+                                    <span class="text">Tahun</span>
+                                </button>
+                            <?php
+                            }; ?>
                         </div>
                         <div class="form-group row">
                             <label for="privileges" class="col-sm-2 col-form-label">Nilai</label>
@@ -104,36 +104,36 @@
             </div>
         </div>
 
-<?php if ($this->session->userdata("status_user") == 0) { ?>
-        <!-- Option Delete -->
-        <div class="col-lg-3">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header" style="background-color: #3867d6">
-                    <div class="text-sm font-weight-bold text-uppercase mb-1 text-white">
-                        Action Hapus
+        <?php if ($this->session->userdata("status_user") == 0) { ?>
+            <!-- Option Delete -->
+            <div class="col-lg-3">
+                <div class="card shadow">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header" style="background-color: #3867d6">
+                        <div class="text-sm font-weight-bold text-uppercase mb-1 text-white">
+                            Action Hapus
+                        </div>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <button type="button" class="btn btn-warning btn-icon-split hapus-indikator pr-1" data-toggle="modal" data-target="#ModalHapusIndikator">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-fw fa-trash"></i>
+                            </span>
+                            <span class="text">Hapus Indikator</span>
+                        </button>
+                        <button type="button" class="btn btn-warning btn-icon-split hapus-data-tahun mt-2 pr-4 " data-toggle="modal" data-target="#ModalHapusDataTahun">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-fw fa-trash"></i>
+                            </span>
+                            <span class="text">Hapus Tahun</span>
+                        </button>
                     </div>
                 </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <button type="button" class="btn btn-warning btn-icon-split hapus-indikator" data-toggle="modal" data-target="#ModalHapusIndikator">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-fw fa-trash"></i>
-                        </span>
-                        <span class="text">Hapus Indikator</span>
-                    </button>
-                    <button type="button" class="btn btn-warning btn-icon-split hapus-data-tahun mt-2 " data-toggle="modal" data-target="#ModalHapusDataTahun">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-fw fa-trash"></i>
-                        </span>
-                        <span class="text">Hapus Tahun</span>
-                    </button>
-                </div>
             </div>
-        </div>
-        <!-- End Option Delete -->
-<?php 
-}; ?>
+            <!-- End Option Delete -->
+        <?php
+        }; ?>
 
     </div>
     <!-- /.container-fluid -->

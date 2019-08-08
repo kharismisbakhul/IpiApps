@@ -217,6 +217,10 @@ function _getDataToTable(data) {
         `
 		);
 	}
-	console.log("cek");
 }
 //akhir
+
+
+$('.carousel').carousel({
+	interval: 5000
+})

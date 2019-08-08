@@ -43,8 +43,7 @@ class Admin extends CI_Controller
         $data['tahun_selc'] = $this->admin->getTahun();
         $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
 
-        if ($this->input->get('star_date') && $this->input->get('end_date')) {
-        } else {
+        if ($this->input->get('star_date') && $this->input->get('end_date')) { } else {
             $data['title2'] = 'Indeks Pembangunan Inklusif';
             //Start - Tambahan Data buat load awal (Semua data)
             $data['ipi'] = $this->admin->getIPI();
@@ -119,7 +118,7 @@ class Admin extends CI_Controller
                 'status_user' => $status_user
             );
             $this->db->insert('user', $data);
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Akun baru telah terdaftar</div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Akun baru berhasil terdaftar</div>');
             redirect('admin/manajemenUser');
         }
     }
@@ -164,7 +163,7 @@ class Admin extends CI_Controller
     {
         $this->db->where('id', $id);
         $this->db->delete('user');
-        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Account has been deleted</div>');
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Akun berhasil dihapus</div>');
         redirect('admin/manajemenUser');
     }
 

@@ -8,13 +8,12 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <div class="d-sm-flex align-items-center justify-content-between mb-3">
-                    <h1 class="h3 mb-0 text-gray-800">Manajemen User</h1>
-                    <div class="tanggal">
-                        <div class="text-s mb-0 font-weight-bold text-gray-400">
-                            <span><i class="fas fa-calendar-day text-gray-400"></i></span> <?= date('d M Y') ?>
-                        </div>
-
+                <div class="row ml-2">
+                    <div class="col-sm-0">
+                        <i class="fas fa-fw fa-user-friends"></i>
+                    </div>
+                    <div class="col-sm-6">
+                        <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
                     </div>
                 </div>
 
@@ -59,15 +58,13 @@
                                                             <td><?= $lu['username']; ?></td>
                                                             <td><?= $lu['menu']; ?></td>
                                                             <td class="text-center">
-                                                                <button type="button" class="badge badge-pill badge-danger userdelete">
-                                                                    <a href="<?= base_url('admin/deleteUser/') . $lu['id']; ?>" style="text-decoration: none; color: white;">
-                                                                        <span class="icon text-white-50">
-                                                                            <i class="fas fa-fw fa-trash-alt"></i>
-                                                                        </span>
-                                                                        <span class="text">Delete</span>
-                                                                    </a>
+                                                                <button type="button" class="badge badge-pill badge-danger text-white delete-user" value="<?= $lu['id']; ?>">
+                                                                    <span class="icon text-white-50">
+                                                                        <i class="fas fa-fw fa-trash-alt"></i>
+                                                                    </span>
+                                                                    <span class="text">Delete</span>
                                                                 </button>
-                                                                <button type="button" class="badge badge-pill badge-primary">
+                                                                <button type="button" class="badge badge-pill badge-primary ">
                                                                     <a href="<?= base_url('admin/editUser/') . $lu['id']; ?>" style="text-decoration: none; color: white;">
                                                                         <span class=" icon text-white-50">
                                                                             <i class="fas fa-fw fa-pencil-alt"></i>
