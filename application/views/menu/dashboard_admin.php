@@ -10,17 +10,6 @@
             </div>
         </div>
     </div>
-    <div id="carouselExampleIndicators" class="carousel slide mb-4" data-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img class="d-block" src="<?= base_url('assets/img/1.png') ?>" style="width: 100%" alt="First slide">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Indeks Pembangunan Inklusif</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates sed illo adipisci modi itaque. </p>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     <div class="row">
@@ -100,7 +89,7 @@
 
                         <div class="col-md-12">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered text-center tClip">
+                                <table class="table table-bordered table-striped text-center tClip">
                                     <thead class="header-table-root ">
                                         <tr style="background-color: #2c3e50; color: #FFFFFF" class="header-table">
                                         </tr>
@@ -118,6 +107,5 @@
             </div>
 
         </div>
-
     </div>
 </div>

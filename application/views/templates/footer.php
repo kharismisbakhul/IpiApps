@@ -2,7 +2,7 @@
 <footer class="sticky-footer bg-white" style="margin-top: 15rem">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
-            <span>Copyright © <?= date('Y') ?> AKD Web Development Team. All Rights Reserved. </span>
+            <span>Copyright © <?= date('Y') ?> PKEPK FEB UB. All Rights Reserved. </span>
         </div>
     </div>
 </footer>

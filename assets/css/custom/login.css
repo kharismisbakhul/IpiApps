@@ -7,7 +7,9 @@ body {
 	background-image: url('../../img/statistik.jpg');
 	background-repeat: no-repeat;
 	background-size: cover;
+	font-family: 'Roboto', sans-serif;
 }
+
 
 .btn-primary {
 	background-color: #2F80ED;

@@ -13,7 +13,7 @@
 
     <div class="row">
         <!-- Area Rentan Waktu -->
-        <div class="col-xl-6 col-md-12 col-sm-12 mb-4">
+        <div class="col-xl-6 col-md-12 col-sm-12 mb-4 box">
             <div class="card shadow h-100">
                 <div class="card-header <?= $background ?>">
                     <div class="text-sm font-weight-bold text-capitalize mb-1 text-white">
@@ -58,7 +58,7 @@
 
     <div class="row mt-4 mb-4">
         <!-- Area Rentan Waktu -->
-        <div class="col-xl-12 col-md-12 col-sm-12 mb-4">
+        <div class="col-xl-12 col-md-12 col-sm-12 mb-4 box2">
             <div class="card shadow h-100">
                 <div class="card-header <?= $background ?> text-white">
                     <div class="text-sm font-weight-bold text-capitalize mb-1">

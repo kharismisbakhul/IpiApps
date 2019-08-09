@@ -11,37 +11,6 @@
         </div>
     </div>
 
-    <div id="carouselExampleIndicators" class="carousel slide mb-4" data-ride="carousel">
-        <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-        </ol>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img class="d-block" src="<?= base_url('assets/img/1.png') ?>" style="width: 100%" alt="First slide">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Indeks Pembangunan Inklusif</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates sed illo adipisci modi itaque. </p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img class="d-block" src="<?= base_url('assets/img/2.png') ?>" style="width: 100%" alt="Second slide">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Dimensi <?= $title2; ?></h5>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates sed illo adipisci modi itaque. </p>
-                </div>
-            </div>
-        </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-
     <div class="row">
         <!-- //Updated -->
         <div class="col-lg-12">
@@ -66,7 +35,7 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
+        <div class="col-lg-12 col-md-12 col-sm-12 mb-4 box">
             <div class="card shadow h-100">
                 <div class="card-header bg-midnight-blue text-white">
                     <div class="text-sm font-weight-bold text-capitalize">
@@ -126,34 +95,34 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 ">
-        <div class="card shadow h-100">
-            <div class="card-header bg-midnight-blue text-white">
-                <div class="text-sm font-weight-bold text-capitalize mb-1">
-                    Table Data re-scale <?= $title2; ?>
+        <div class="col-lg-12 col-md-12 col-sm-12 box2">
+            <div class="card shadow h-100">
+                <div class="card-header bg-midnight-blue text-white">
+                    <div class="text-sm font-weight-bold text-capitalize mb-1">
+                        Table Data re-scale <?= $title2; ?>
+                    </div>
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="row no-gutters">
-                    <div class="col-md-12">
-                        <div class="table-responsive">
-                            <table class="table table-bordered text-center tClip">
-                                <thead class="header-table-root">
-                                    <tr style="background-color:#2c3e50;color: #ffffff" class="header-table">
-                                    </tr>
-                                    <tr style="background-color:#2c3e50; color: #ffffff" class="tahun-dimensi">
-                                    </tr>
-                                </thead>
-                                <tbody class="iniData">
-                                </tbody>
-                            </table>
+                <div class="card-body">
+                    <div class="row no-gutters">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped text-center tClip">
+                                    <thead class="header-table-root">
+                                        <tr style="background-color:#2c3e50;color: #ffffff" class="header-table">
+                                        </tr>
+                                        <tr style="background-color:#2c3e50; color: #ffffff" class="tahun-dimensi">
+                                        </tr>
+                                    </thead>
+                                    <tbody class="iniData">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 
 </div>

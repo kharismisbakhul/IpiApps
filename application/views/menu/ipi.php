@@ -100,7 +100,7 @@
 
 
     <div class="row mt-4 mb-4">
-        <div class="col-lg-11 box">
+        <div class="col-lg-11 box2">
             <div class="card shadow">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-midnight-blue text-white">

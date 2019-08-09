@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 07, 2019 at 11:19 AM
+-- Generation Time: Aug 09, 2019 at 11:21 AM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -673,10 +673,12 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `username`, `password`, `status_user`) VALUES
 (1, 'admin', '$2y$10$I5PumD0zV5jA6R3OvwymZOp8jPA0CkBQH01mBxK0kkpLuu5Ey/D1W', 0),
-(2, 'Operator A', '$2y$10$I5PumD0zV5jA6R3OvwymZOp8jPA0CkBQH01mBxK0kkpLuu5Ey/D1W', 1),
-(3, 'Operator B', '$2y$10$I5PumD0zV5jA6R3OvwymZOp8jPA0CkBQH01mBxK0kkpLuu5Ey/D1W', 2),
 (4, 'Operator C', '$2y$10$I5PumD0zV5jA6R3OvwymZOp8jPA0CkBQH01mBxK0kkpLuu5Ey/D1W', 3),
-(6, 'admin2', '$2y$10$7QMXdOVjf3QA8g8egI5e5.Hapf/mNOJOL5qsiDmspSbHTv/XDg3Sy', 0);
+(9, 'Operator A', '$2y$10$CLwmUagCYLLrvc7zV3S0T.pjzx02LJttncQHTiJFh6R3aiAjXs8mm', 1),
+(10, 'admin2', '$2y$10$UYOabRPQooQsVb0ugqgVFO.XQt19J9OgbK9Q.RzdYMcyXYrNdhNuW', 2),
+(11, 'OPD1', '$2y$10$e.O9XjeLVF2hgvy1DVQ0GOgzOZ7iEnrTGTM.ol9w9Z3V56iWvxPUq', 1),
+(12, 'OPD2', '$2y$10$JZy9gU5GtTS4SzFGvd65heQ6OjNvEWAHIk5eg0Ol8f4NKlMJoz3Lu', 2),
+(13, 'OPD3', '$2y$10$zXblJ8LuZ3Df1K6S9iWQTelOkM.bl/MzTfoOHMKe1DYQEJlOTtPGC', 3);
 
 --
 -- Indexes for dumped tables
@@ -793,7 +795,7 @@ ALTER TABLE `nilaisubdimensi`
 -- AUTO_INCREMENT for table `status_user`
 --
 ALTER TABLE `status_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `subdimensi`
@@ -811,7 +813,7 @@ ALTER TABLE `tahun`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
