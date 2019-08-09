@@ -95,12 +95,12 @@
             </div>
         </div>
         <!-- Table Data Pembangunan Inklusif -->
-        
+
     </div>
 
-    
+
     <div class="row mt-4 mb-4">
-    <div class="col-lg-11 box">
+        <div class="col-lg-11 box">
             <div class="card shadow">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-midnight-blue text-white">
@@ -109,7 +109,7 @@
                 <!-- Card Body -->
                 <div class="card-body bClip">
                     <div class="table-responsive">
-                        <table class="table table-bordered text-center tClip">
+                        <table class="table table-bordered table-striped text-center tClip">
                             <thead class="header-table-root">
                                 <tr style="background-color: #3498db; color: #FFFFFF" class="header-table">
                                 </tr>
@@ -125,7 +125,7 @@
             </div>
         </div>
         <!-- Area Rentan Wakti -->
-        
+
     </div>
 </div>
 <!-- /.container-fluid -->

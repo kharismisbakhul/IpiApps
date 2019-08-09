@@ -32,7 +32,7 @@
                             <div class="col-lg-12 col-md-6 mb-4">
                                 <!-- Approach -->
                                 <div class="card shadow mb-4">
-                                    <div class="card-header py-3 bg-blue">
+                                    <div class="card-header py-3 bg-midnight-blue">
                                         <h6 class="m-0 font-weight-bold text-capitalize text-white">Daftar User</h6>
                                     </div>
                                     <div class="card-body">
@@ -41,8 +41,8 @@
                                                 <button type="button" class="btn btn-success">
                                                     <a href="<?= base_url('admin/tambahUser'); ?>" style="text-decoration: none; color: white;"><i class="fas fa-fw fa-plus"></i> Tambah User</a></button>
                                             </div>
-                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                                <thead style="text-align: center">
+                                            <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                                                <thead style="text-align: center" class="bg-midnight-blue text-white">
                                                     <tr>
                                                         <th>#</th>
                                                         <th>Username</th>

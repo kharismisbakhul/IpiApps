@@ -66,18 +66,18 @@
                     </div>
                 </div>
                 <div class="card-body mb-2">
-                <div class="row align-items-center" style="height: 500px;">
+                    <div class="row align-items-center" style="height: 500px;">
                         <div class="col-lg-12">
                             <div class="card-body chart mb-2">
                                 <canvas id="chart-subdimensi" style="width: 100%; height: 30rem;"></canvas>
                             </div>
                         </div>
                     </div>
-                <hr>
+                    <hr>
                     <div class="row no-gutters">
                         <div class="col-md-12">
                             <div class="table-responsive">
-                                <table class="table table-bordered text-center tClip table-sm flex-wrap">
+                                <table class="table table-bordered table-striped text-center tClip table-sm flex-wrap">
                                     <thead class="header-table-root">
                                         <tr style="background-color: #0097e6; color: #ffffff" class="header-table">
                                         </tr>
@@ -90,7 +90,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
