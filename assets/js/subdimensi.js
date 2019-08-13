@@ -19,7 +19,7 @@ $(document).ready(function () {
 		startTime: performance.now(),
 		beforeSend: function (data) {
 			$("#chart-subdimensi").hide();
-			$(".chart-body").append(
+			$(".chart").append(
 				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
 			);
 			$(".header-table").hide();
@@ -31,7 +31,7 @@ $(document).ready(function () {
 		},
 		success: function (data) {
 			// alert("SUKSES");
-			console.log(data);
+			// console.log(data);
 			$(".loader").remove();
 			$(".header-table").show();
 			$("#chart-subdimensi").show();

@@ -11,9 +11,6 @@ let max_tahun;
 let min_tahun;
 
 $(document).ready(function () {
-
-
-
 	$(".table-global").hide();
 	$.ajax({
 		url: iniUrl,
@@ -153,5 +150,4 @@ function _getDataToTable(data) {
 			}
 		}
 	}
-
 }

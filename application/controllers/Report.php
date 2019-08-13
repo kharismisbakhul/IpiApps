@@ -27,9 +27,18 @@ class Report extends CI_Controller
         $this->load->model('Admin_model', 'admin');
         $this->load->model('Kalkulasi_model', 'kalkulasi');
         $this->load->model('Jumlah_model', 'jumlah');
-        $tahun_terakhir = $this->kalkulasi->tahunTerakhirDataSemuaIndikator();
-        $data['col_span'] = $tahun_terakhir - 2012 + 1;
-        $data['range_tahun'] = $this->admin->getSemuaTahun();
+        if ($this->input->get('star_date') && $this->input->get('end_date')) {
+
+            $tahun_terakhir = $this->input->get('end_date');
+            $data['col_span'] = $tahun_terakhir - $this->input->get('star_date')   + 1;
+            $data['range_tahun'] = $this->admin->getSemuaTahun($tahun_terakhir);
+        } else {
+            $tahun_terakhir = $this->kalkulasi->tahunTerakhirDataSemuaIndikator();
+            $data['col_span'] = $tahun_terakhir - 2012 + 1;
+            $data['range_tahun'] = $this->admin->getSemuaTahun();
+        }
+
+
 
 
         // Data IPI - IPI

@@ -10,46 +10,6 @@
             </div>
         </div>
     </div>
-    <div id="carouselExampleIndicators" class="carousel slide mb-4" data-ride="carousel">
-        <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img class="d-block" src="<?= base_url('assets/img/1.png') ?>" style="width: 100%" alt="First slide">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Indeks Pertumbuhan Ekonomi</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates sed illo adipisci modi itaque. </p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img class="d-block" src="<?= base_url('assets/img/2.png') ?>" style="width: 100%" alt="Second slide">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Dimensi Ipi</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates sed illo adipisci modi itaque. </p>
-                </div>
-
-            </div>
-            <div class="carousel-item">
-                <img class="d-block" src="<?= base_url('assets/img/3.png') ?>" style="width: 100%" alt="Third slide">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Subdimensi Ipi</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates sed illo adipisci modi itaque. </p>
-                </div>
-
-            </div>
-        </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
 
 
     <div class="row">
@@ -79,8 +39,8 @@
         <div class="col-lg-12 col-md-12 col-sm-12 mb-4 box">
             <div class="card shadow  h-100">
                 <div class="card-header bg-midnight-blue bg text-white">
-                    <div class="text-sm font-weight-bold text-capitalize">
-                        Chart Data re-scale Indeks Pembangunan Inklusif
+                    <div class="text-sm font-weight-bold text-capitalize text-center">
+                    Grafik : Re-scale <?= $title2; ?>
                     </div>
                 </div>
                 <div class="card-body">
@@ -120,8 +80,8 @@
         <div class="col-lg-12 col-md-12 col-sm-12 box2">
             <div class="card shadow h-100">
                 <div class="card-header bg-midnight-blue text-white">
-                    <div class="text-sm font-weight-bold text-capitalize mb-1">
-                        Table Data re-scale Indeks Pembangunan Inklusif
+                    <div class="text-sm font-weight-bold text-capitalize mb-1 text-center">
+                        Tabel : Indeks Pembangunan Inklusif
                     </div>
                 </div>
                 <div class="card-body">
@@ -129,11 +89,11 @@
 
                         <div class="col-md-12">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered text-center tClip">
+                                <table class="table table-bordered table-striped text-center tClip">
                                     <thead class="header-table-root ">
                                         <tr style="background-color: #2c3e50; color: #FFFFFF" class="header-table">
                                         </tr>
-                                        <tr style="background-color: #3498db; color: #FFFFFF" class="tahun-ipi">
+                                        <tr style="background-color: #2c3e50; color: #FFFFFF" class="tahun-ipi">
                                         </tr>
                                     </thead>
                                     <tbody class="iniDataIpi">
@@ -147,6 +107,5 @@
             </div>
 
         </div>
-
     </div>
 </div>

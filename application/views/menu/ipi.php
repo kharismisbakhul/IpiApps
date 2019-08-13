@@ -20,11 +20,11 @@
 
     <div class="row">
         <!-- Area Rentan Wakti -->
-        <div class="col-lg-3 box">
+        <div class="col-lg-6 box">
             <div class="card shadow">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-midnight-blue text-white">
-                    <h6 class="m-0 font-weight-bold">Pilih Rentan Waktu</h6>
+                <div class="card-header py-3 flex-row align-items-center justify-content-between bg-midnight-blue text-white text-capitalize text-center">
+                    <h6 class="m-0 font-weight-bold">Pilih Tahun untuk data <?= $title;  ?></h6>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body bClip">
@@ -59,12 +59,17 @@
                 </div>
             </div>
         </div>
+        <!-- Table Data Pembangunan Inklusif -->
+    </div>
+
+
+    <div class="row mt-4 mb-4">
         <?php $dimensi = $this->db->get('dimensi')->result_array(); ?>
-        <div class="col-lg-9 box2">
+        <div class="col-lg-12 box">
             <div class="card shadow">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-midnight-blue text-white">
-                    <h6 class="m-0 font-weight-bold">Chart Data Indeks Pembangunan Inklusif</h6>
+                <div class="card-header py-3 flex-row align-items-center justify-content-between bg-midnight-blue text-white text-capitalize text-center">
+                    <h6 class="m-0 font-weight-bold">Grafik : Indeks Pembangunan Inklusif</h6>
                 </div>
                 <!-- Card Body -->
                 <div class="table-responsive">
@@ -76,16 +81,16 @@
                             <div class="legenda card no-border" style="width: auto;">
                                 <div class="card-body">
                                     <?php foreach ($dimensi as $d) : ?>
-                                        <div class="row">
-                                            <div class="col-xs-2">
-                                                <a href="#" id="dimensi<?= $d['kode_d']; ?>" role="button" class="btn square-legend bg-cream"></a>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <small>
-                                                    <a href="<?= base_url('admin/dimensi?d=') . $d['kode_d']; ?>" class="text-sm text-decoration-none text-secondary ml-4"><?= $d['nama_dimensi'] ?></a>
-                                                </small>
-                                            </div>
+                                    <div class="row">
+                                        <div class="col-xs-2">
+                                            <a href="#" id="dimensi<?= $d['kode_d']; ?>" role="button" class="btn square-legend bg-cream"></a>
                                         </div>
+                                        <div class="col-xs-6">
+                                            <small>
+                                                <a href="<?= base_url('admin/dimensi?d=') . $d['kode_d']; ?>" class="text-sm text-decoration-none text-secondary ml-4"><?= $d['nama_dimensi'] ?></a>
+                                            </small>
+                                        </div>
+                                    </div>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
@@ -94,26 +99,20 @@
                 </div>
             </div>
         </div>
-        <!-- Table Data Pembangunan Inklusif -->
-
-    </div>
-
-
-    <div class="row mt-4 mb-4">
-        <div class="col-lg-12 box2">
-            <div class="card shadow">
+        <div class="col-lg-12 box2 mt-4">
+            <div class="card shadow box2">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-midnight-blue text-white">
-                    <h6 class="m-0 font-weight-bold">Table Data Pembangunan Inklusif</h6>
+                <div class="card-header py-3 flex-row bg-midnight-blue text-white text-capitalize  ">
+                    <h6 class="m-0 font-weight-bold text-center">Tabel : Indeks Pembangunan Inklusif</h6>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body bClip">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered text-center tClip">
-                            <thead class="header-table-root ">
-                                <tr style="background-color: #2c3e50; color: #FFFFFF" class="header-table">
+                    <div class="table-responsive header-table-root">
+                        <table class="table table-bordered table-striped text-center tClip">
+                            <thead class=" bg-midnight-blue">
+                                <tr style=" color: #FFFFFF" class="header-table">
                                 </tr>
-                                <tr style="background-color: #3498db; color: #FFFFFF" class="tahun-ipi">
+                                <tr style=" color: #FFFFFF" class="tahun-ipi">
                                 </tr>
                             </thead>
                             <tbody class="iniDataIpi">

@@ -56,10 +56,14 @@ class Admin_model extends CI_Model
         echo json_encode($result);
     }
 
-    public function getSemuaTahun()
+    public function getSemuaTahun($tahunn = 0)
     {
         $this->load->model('Kalkulasi_model', 'kalkulasi');
-        $tahun = $this->kalkulasi->tahunTerakhirDataSemuaIndikator();
+        if ($tahunn == 0) {
+            $tahun = $this->kalkulasi->tahunTerakhirDataSemuaIndikator();
+        } else {
+            $tahun = intval($tahunn);
+        }
         $this->db->where('tahun <=', $tahun);
         $this->db->select('tahun');
         $this->db->from('tahun');

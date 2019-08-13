@@ -217,8 +217,10 @@ function _getDataToTable(data) {
         `
 		);
 	}
-
 }
+//akhir
+
+
 $('.carousel').carousel({
 	interval: 5000
 })

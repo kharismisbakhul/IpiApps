@@ -16,7 +16,7 @@
         <div class="col-xl-6 col-md-12 col-sm-12 mb-4 box">
             <div class="card shadow h-100">
                 <div class="card-header <?= $background ?>">
-                    <div class="text-sm font-weight-bold text-capitalize mb-1 text-white">
+                    <div class="text-sm font-weight-bold text-capitalize mb-1 text-white text-center">
                         Pilih Tahun untuk data <?= $title;  ?>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                                     <div class="col-lg-12 mb-2 text-gray-800 mt-1">
                                         Untuk menampilkan data pada
                                         tabel dan chart, harap untuk
-                                        mengisi <br> rentan tahun di bawah
+                                        mengisi rentan tahun di bawah
                                     </div>
                                     <div class="col-lg-12 mb-2">
                                         <small>dari tahun</small>
@@ -56,13 +56,13 @@
         </div>
     </div>
 
-    <div class="row mt-4 mb-4 box">
+    <div class="row mt-4 mb-4">
         <!-- Area Rentan Waktu -->
-        <div class="col-xl-12 col-md-12 col-sm-12 mb-4">
+        <div class="col-xl-12 col-md-12 col-sm-12 mb-4 box2">
             <div class="card shadow h-100">
                 <div class="card-header <?= $background ?> text-white">
-                    <div class="text-sm font-weight-bold text-capitalize">
-                        Table Data dan Chart <?= $title;  ?>
+                    <div class="text-sm font-weight-bold text-capitalize mb-1 text-center">
+                        Grafik : <?= $title;  ?>
                     </div>
                 </div>
                 <div class="card-body mb-2">
@@ -73,15 +73,29 @@
                             </div>
                         </div>
                     </div>
-                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4 mb-4">
+        <!-- Area Rentan Waktu -->
+        <div class="col-xl-12 col-md-12 col-sm-12 mb-4 box2">
+            <div class="card shadow h-100">
+                <div class="card-header <?= $background ?> text-white">
+                    <div class="text-sm font-weight-bold text-capitalize mb-1 text-center">
+                        Tabel : <?= $title;  ?>
+                    </div>
+                </div>
+                <div class="card-body mb-2">
                     <div class="row no-gutters">
                         <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table class="table table-striped text-center table-bordered tClip table-sm flex-wrap">
-                                    <thead class="header-table-root">
-                                        <tr style="background-color:#2980b9; color: #ffffff" class="header-table">
+                            <div class="table-responsive header-table-root">
+                                <table class="table table-bordered table-striped text-center tClip table-sm flex-wrap">
+                                    <thead class=" bg-midnight-blue">
+                                        <tr style="color: #ffffff" class="header-table">
                                         </tr>
-                                        <tr style="background-color:#273c75 ; color: #ffffff" class="tahun-sub">
+                                        <tr style="color: #ffffff" class="tahun-sub">
                                         </tr>
                                     </thead>
                                     <tbody class="iniData-subdimensi">
