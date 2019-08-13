@@ -18,47 +18,7 @@ class Report extends CI_Controller
         $this->load->view('templates/topbar', $data);
     }
 
-    public function initData()
-    {
-        $data['username'] = $this->session->userdata('username');
-        $data['title'] = 'Report';
 
-        //Data
-        $this->load->model('Admin_model', 'admin');
-        $this->load->model('Kalkulasi_model', 'kalkulasi');
-        $this->load->model('Jumlah_model', 'jumlah');
-        if ($this->input->get('star_date') && $this->input->get('end_date')) {
-
-            $tahun_terakhir = $this->input->get('end_date');
-            $data['col_span'] = $tahun_terakhir - $this->input->get('star_date')   + 1;
-            $data['range_tahun'] = $this->admin->getSemuaTahun($tahun_terakhir);
-        } else {
-            $tahun_terakhir = $this->kalkulasi->tahunTerakhirDataSemuaIndikator();
-            $data['col_span'] = $tahun_terakhir - 2012 + 1;
-            $data['range_tahun'] = $this->admin->getSemuaTahun();
-        }
-
-
-
-
-        // Data IPI - IPI
-        $start_date = 2012;
-        $data['ipi'] = $this->admin->getIPI();
-        $data['ipi']['nilai_rescale'] = [];
-        for ($j = 0; $j < $data['col_span']; $j++) {
-            $tahunSelect = $start_date++;
-            $data_IPI_sesuai_tahun = $this->admin->getIPIPerTahun($tahunSelect);
-            $rescale_IPI = doubleval($data_IPI_sesuai_tahun['nilai_rescale']);
-            array_push($data['ipi']['nilai_rescale'], round($rescale_IPI, 2));
-        }
-
-        $data['dimensi'] = $this->admin->getDimensiRange(2012, $tahun_terakhir);
-        $data['jumlahData'] = $this->jumlah->getJumlahDimensi();
-        // header("Content-type: application/json");
-        // echo json_encode($data);
-        // die;
-        return $data;
-    }
     public function index()
     {
         $data = $this->initData();
@@ -69,7 +29,33 @@ class Report extends CI_Controller
 
     public function export()
     {
-        $data = $this->initData();
+        $data['username'] = $this->session->userdata('username');
+        $data['title'] = 'Report';
+
+        //Data
+        $this->load->model('Admin_model', 'admin');
+        $this->load->model('Kalkulasi_model', 'kalkulasi');
+        $this->load->model('Jumlah_model', 'jumlah');
+        $data['star_date'] = '';
+        $data['end_date'] = '';
+        if ($this->input->get('star_date') && $this->input->get('end_date')) {
+            $data['star_date'] = $this->input->get('star_date');
+            $data['end_date'] = $this->input->get('end_date');
+            $data['col_span'] =  $data['end_date'] -  $data['star_date']   + 1;
+            $data['range_tahun'] = $this->admin->getSemuaTahun($data['star_date'], $data['end_date']);
+        } else {
+            $tahun_terakhir = $this->kalkulasi->tahunTerakhirDataSemuaIndikator();
+            $data['col_span'] = $tahun_terakhir - $this->input->get('star_date') + 1;
+            $data['range_tahun'] = $this->admin->getSemuaTahun();
+        }
+        // Data IPI - IPI
+        $data['ipi'] = $this->admin->getIPI($data['star_date'], $data['end_date']);
+        $data['dimensi'] = $this->admin->getDimensiRange($data['star_date'], $data['end_date']);
+        $data['jumlahData'] = $this->jumlah->getJumlahDimensi();
+        // echo json_encode($data);
+        // die;
+        // header("Content-type: application/json");
+
         $this->load->view('export', $data);
     }
 }

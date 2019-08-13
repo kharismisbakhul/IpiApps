@@ -238,9 +238,6 @@
                                                 <?php endif; ?>
                                                 <?php endforeach; ?>
                                                 <?php endforeach; ?>
-                                                <!-- akhir Nilai Indikator -->
-                                                <td><?= round($in['max_nilai'], 2) ?></td>
-                                                <td><?= round($in['min_nilai'], 2) ?></td>
                                             </tr>
                                             <?php endif; ?>
                                             <?php endforeach; ?>

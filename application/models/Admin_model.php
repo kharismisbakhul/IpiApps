@@ -56,28 +56,28 @@ class Admin_model extends CI_Model
         echo json_encode($result);
     }
 
-    public function getSemuaTahun($tahunn = 0)
+    public function getSemuaTahun($star_date = null, $end_date = null)
     {
-        $this->load->model('Kalkulasi_model', 'kalkulasi');
-        if ($tahunn == 0) {
-            $tahun = $this->kalkulasi->tahunTerakhirDataSemuaIndikator();
-        } else {
-            $tahun = intval($tahunn);
-        }
-        $this->db->where('tahun <=', $tahun);
+
         $this->db->select('tahun');
-        $this->db->from('tahun');
-        $result = $this->db->get()->result_array();
-        $tahun = [];
-        for ($i = 0; $i < count($result); $i++) {
-            array_push($tahun, $result[$i]['tahun']);
+        $this->db->from('nilaiindikator');
+        $this->db->group_by('tahun');
+        if ($star_date != null && $end_date != null) {
+            $this->db->where('tahun >=', $star_date);
+            $this->db->where('tahun <=', $end_date);
         }
-        return $tahun;
+        return $this->db->get()->result_array();
     }
 
-    public function getIPI()
+    public function getIPI($star_date = null, $end_date = null)
     {
-        return $this->db->get('ipi')->result_array();
+        $this->db->select('*');
+        $this->db->from('ipi');
+        if ($star_date != null && $end_date != null) {
+            $this->db->where('tahun >=', $star_date);
+            $this->db->where('tahun <=', $end_date);
+        }
+        return $this->db->get()->result_array();
     }
 
     public function getIPIPerTahun($tahun)

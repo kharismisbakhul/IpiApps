@@ -384,7 +384,19 @@ class Admin extends CI_Controller
         foreach ($allsb as $sb) {
             $data['indikator'][$sb['kode_sd']] = $this->_getNilaiIndikator($sb['kode_sd'], $star_date, $end_date);
         }
-        header('Content-type: application/json');
+        $allIndikator = $this->db->get('indikator')->result_array();
+        $whereCondition = '';
+        $max = '';
+        $min = '';
+        foreach ($allIndikator as $in) {
+            $data['min_max'][$in['kode_indikator']] = $this->_getNilaiMinMax($in['kode_indikator'], $star_date, $end_date);
+            $max .= " WHEN kode_indikator = " . $in['kode_indikator'] . " THEN " . $data['min_max'][$in['kode_indikator']]['max']['nilai'] . "";
+            $min .= " WHEN kode_indikator = " . $in['kode_indikator'] . " THEN " . $data['min_max'][$in['kode_indikator']]['min']['nilai'] . "";
+            $kode_indikator = $in['kode_indikator'];
+            $whereCondition .= ($whereCondition == '') ? "'$kode_indikator'" : ',' . "'$kode_indikator'";
+        }
+        $sql = "UPDATE indikator set max_nilai = CASE $max END,min_nilai = CASE $min END WHERE kode_indikator in($whereCondition)";
+        $this->db->query($sql);
         echo json_encode($data);
     }
 
@@ -556,5 +568,13 @@ class Admin extends CI_Controller
             $nilairescale = 'Non';
         }
         return round($nilairescale, 2);
+    }
+
+    private function _getNilaiMinMax($indikator, $star_date = null, $end_date = null)
+    {
+        $this->load->model('Admin_model', 'admin');
+        $data['max'] = $this->admin->getMax($indikator, $star_date, $end_date);
+        $data['min'] = $this->admin->getMin($indikator, $star_date, $end_date);
+        return $data;
     }
 }
