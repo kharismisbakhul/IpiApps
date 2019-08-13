@@ -2,12 +2,20 @@
 <ul class="navbar-nav bg-gradient-ipiapps sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('admin'); ?>">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-fw fa-chart-line"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3">IPI APPS</div>
-    </a>
+    <?php if ($this->session->userdata("status_user") == 0) { ?>
+    <span style="background-color: white; border-right: 2px solid #2c3e50">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('admin'); ?>">
+        <?php 
+    } else { ?>
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('operator'); ?>">
+    <?php 
+    } ?>
+            <div class="sidebar-brand-icon">
+                <img src="<?= base_url('assets/img/logo-ub.png') ?>" style="width: 45px; height: 45px;">
+            </div>
+            <div class="sidebar-brand-text mx-3" style="color: black;">IPI APPS</div>
+        </a>
+    </span>
 
     <!-- Divider -->
     <hr class="sidebar-divider">
@@ -16,7 +24,13 @@
         <?php else : ?>
         <li class="nav-item">
         <?php endif; ?>
+        <?php if ($this->session->userdata("status_user") == 0) { ?>
         <a class="nav-link mt-0 pt-0" href="<?= base_url('admin'); ?> ">
+        <?php 
+    } else { ?>
+        <a class="nav-link mt-0 pt-0" href="<?= base_url('operator'); ?> ">
+        <?php 
+    } ?>
             <i class="fas fa-fw fa-university"></i>
             <span>Dashboard</span>
         </a>
@@ -24,12 +38,30 @@
     <hr class="sidebar-divider">
 
     <!-- Menu Heading -->
+<?php if ($this->session->userdata("status_user") == 0) { ?>
     <div class="sidebar-heading">
         Administrator
     </div>
+    <!-- Tambah user -->
+    <?php if ($title == "Manejemen User") : ?>
+        <li class="nav-item active">
+        <?php else : ?>
+        <li class="nav-item">
+        <?php endif; ?>
+        <a class="nav-link pb-0" href="<?= base_url('admin/manajemenUser'); ?>">
+            <i class="fas fa-fw fa-user-friends"></i>
+            <span>Manajemen User</span>
+        </a>
+    </li>
+<?php 
+} else { ?>
+    <div class="sidebar-heading">
+        Operator
+    </div>
+<?php 
+} ?>
 
     <!-- Menu -->
-
     <!-- Input Data -->
     <?php if ($title == "Input Data") : ?>
         <li class="nav-item active">
@@ -42,6 +74,8 @@
         </a>
     </li>
 
+
+<?php if ($this->session->userdata("status_user") == 0) { ?>
     <!-- Global/IPI -->
     <?php if ($title == "Indeks Pembangunan Inklusif") : ?>
         <li class="nav-item active">
@@ -54,6 +88,8 @@
         </a>
     </li>
 
+    <?php 
+}; ?>
     <?php $subDimensi = $this->db->get('subDimensi')->result_array(); ?>
     <?php $dimensi = $this->db->get('dimensi')->result_array(); ?>
     <!-- Nav Item - Pages Collapse Menu -->
@@ -62,6 +98,7 @@
 
     <!-- Aktivitas Ekonomi -->
     <?php foreach ($dimensi as $d) : ?>
+    <?php if ($this->session->userdata("status_user") == 0 || $this->session->userdata("status_user") == intval($d['kode_d'])) { ?>
         <?php if ($title == $d['nama_dimensi']) : ?>
             <li class="nav-item active">
             <?php else : ?>
@@ -75,7 +112,9 @@
                         <?php if ($i != 2) : ?>
                             <?= $n_dimensi[$i] . ' ' ?>
                         <?php else : ?>
+                       
                             <br><span class="ml-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $n_dimensi[$i] ?> </span>
+                        
                         <?php endif; ?>
                     <?php endfor; ?>
                 </span>
@@ -97,21 +136,25 @@
 
                     <?php foreach ($subDimensi as $sd) :
                         if ($sd['kode_d'] == $d['kode_d']) {
-                            $str = $sd['nama_sub_dimensi'];
-                            $result = explode(" ", $str);
-                            if (count($result) < 3) {
-                                ?>
+                        $str = $sd['nama_sub_dimensi'];
+                        $result = explode(" ", $str);
+                        if (count($result) < 3) {
+                            ?>
                                 <a class="collapse-item" href="<?= base_url('admin/subdimensi?sd=') . $sd['kode_sd'] ?>"> <?= $str ?></a>
-                            <?php } else {
-                                ?>
+                            <?php 
+                        } else {
+                            ?>
                                 <a class="collapse-item" href="<?= base_url('admin/subdimensi?sd=') . $sd['kode_sd'] ?>"><span><?= $result[0] . " " . $result[1] . " " ?><br><span class="ml-0"><?= $result[2] ?></span></span></a>
-                            <?php }
-                        };
+                            <?php 
+                        }
+                    };
                     endforeach; ?>
                 </div>
                 <!-- -- Updated -->
             </div>
         </li>
+    <?php 
+}; ?>
     <?php endforeach; ?>
 
     <!-- Report -->
@@ -120,7 +163,7 @@
         <?php else : ?>
         <li class="nav-item">
         <?php endif; ?>
-        <a class="nav-link pb-0" href="<?= base_url('report'); ?>">
+        <a class="nav-link pb-0" href="<?= base_url('admin/report'); ?>">
             <i class="fas fa-fw fa-file-alt"></i>
             <span>Report</span>
         </a>

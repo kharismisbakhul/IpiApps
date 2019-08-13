@@ -42,33 +42,33 @@ class InputData extends CI_Controller
         } else {
             $this->load->model('Admin_model', 'admin');
             $indikator = $this->input->post('indikator');
-            $kode_indikator = $this->admin->getKodeIndikator($indikator);
-            $tahun = $this->input->post('tahun');
-            $nilai = $this->input->post('nilai');
+            if ($indikator == null) {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data gagal Diperbarui</div>');
+                redirect('inputData');
+            }
+            $kode_indikator =  $indikator;
+            $tahun = intval($this->input->post('tahun'));
+            $nilai = doubleval($this->input->post('nilai'));
             $data = array(
                 'tahun' => $tahun,
                 'nilai' => $nilai,
                 'kode_indikator' => $kode_indikator
             );
-            $cek_data = $this->db->get_where('nilaiindikator', ['kode_indikator' => $kode_indikator, 'tahun' => $tahun])->row_array();
-            if ($cek_data['nilai'] != null) {
-                $this->db->set($data);
-                $this->db->where('kode_indikator', $kode_indikator);
-                $this->db->where('tahun', $tahun);
-                $this->db->update('nilaiindikator');
-                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil Diperbarui</div>');
-            } else {
-                $this->db->insert('nilaiindikator', $data);
-                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil Ditambahkan</div>');
-            }
+            $this->db->set($data);
+            $this->db->where('kode_indikator', $kode_indikator);
+            $this->db->where('tahun', $tahun);
+            $this->db->update('nilaiindikator');
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil Diperbarui</div>');
+
             $this->load->model('Kalkulasi_model', 'kalkulasi');
             $this->kalkulasi->setNilaiMax($kode_indikator);
             $this->kalkulasi->setNilaiMin($kode_indikator);
-            $this->kalkulasi->setNilaiRescaleIndikator($kode_indikator);
-            $this->kalkulasi->setNilaiRescaleSubDimensi($kode_indikator);
-            $this->kalkulasi->setNilaiRescaleDimensi($kode_indikator);
-            $this->kalkulasi->setNilaiRescaleIPI();
-            redirect('report');
+            // $this->kalkulasi->setNilaiRescaleIndikator($kode_indikator);
+            // $this->kalkulasi->setNilaiRescaleSubDimensi($kode_indikator);
+            // $this->kalkulasi->setNilaiRescaleDimensi($kode_indikator);
+            // $this->kalkulasi->setNilaiRescaleIPI();
+
+            redirect('inputData');
         }
     }
 
@@ -76,8 +76,7 @@ class InputData extends CI_Controller
     {
         $this->load->model('Admin_model', 'admin');
         $Dimensi = $this->input->post('modal-dimensi');
-        $subDimensi = $this->input->post('modal-subDimensi');
-        $kode_sd = $this->admin->getKodeSubDimensi($subDimensi);
+        $kode_sd = $this->input->post('modal-subDimensi');
         $nama_indikator = $this->input->post('modal-indikator');
         $status = $this->input->post('modal-status');
         $status_kode = 0;
@@ -94,9 +93,10 @@ class InputData extends CI_Controller
             'status' => $status_kode,
             'kode_sd' => $kode_sd
         );
-        if ($Dimensi == "Pilih Dimensi" && $subDimensi == "Pilih Sub Dimensi") {
+
+        if ($Dimensi == "Pilih Dimensi" && $kode_sd == null) {
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Dimensi Belum ada yang dipilih</div>');
-        } else if ($subDimensi == "Pilih Sub Dimensi") {
+        } else if ($kode_sd == null) {
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Sub Dimensi belum ada yang dipilih</div>');
         } else {
             $cek_indikator =  $this->db->get_where('indikator', ['nama_indikator' => $nama_indikator])->row_array();
@@ -107,30 +107,98 @@ class InputData extends CI_Controller
                 $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Variabel indikator berhasil ditambahkan</div>');
             }
         }
-        redirect('report');
+
+        $this->db->select('MIN(tahun) as tahun');
+        $this->db->from('nilaiindikator');
+        $tahun_min = $this->db->get()->row_array();
+
+        $this->db->select('MAX(tahun) as tahun');
+        $this->db->from('nilaiindikator');
+        $tahun_max = $this->db->get()->row_array();
+
+        $indikator = $this->db->get_where('indikator', ['nama_indikator' => $nama_indikator])->row_array();
+        for ($i = intval($tahun_min['tahun']); $i <= intval($tahun_max['tahun']); $i++) {
+            $dataNilai = array(
+                'tahun' => $i,
+                'nilai' => 0,
+                'kode_indikator' => intval($indikator['kode_indikator'])
+            );
+            $this->db->insert('nilaiindikator', $dataNilai);
+        }
+
+        redirect('inputData');
+    }
+    public function tambahTahun()
+    {
+        $tahun = intval($this->input->post('tambah-tahun'));
+        $this->db->select('tahun');
+        $this->db->from('nilaiindikator');
+        $this->db->group_by('tahun');
+        $temp_tahun = $this->db->get()->result_array();
+        $cek_tahun = true;
+        for ($i = 0; $i < count($temp_tahun); $i++) {
+            if (intval($temp_tahun[$i]['tahun']) == $tahun) {
+                $cek_tahun = false;
+            }
+        }
+        if ($cek_tahun == true) {
+            $indikator = $this->db->get('indikator')->result_array();
+            for ($i = 0; $i < count($indikator); $i++) {
+                $kode_indikator = $indikator[$i]['kode_indikator'];
+                $dataNilai = array(
+                    'tahun' => $tahun,
+                    'nilai' => 0,
+                    'kode_indikator' => intval($kode_indikator)
+                );
+                $this->db->insert('nilaiindikator', $dataNilai);
+                $this->load->model('Kalkulasi_model', 'kalkulasi');
+                $this->kalkulasi->setNilaiMin($kode_indikator);
+            }
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Tahun berhasil ditambahkan!!</div>');
+            redirect('inputData');
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Tahun sudah ada!!</div>');
+            redirect('inputData');
+        }
     }
     public function hapusIndikator()
     {
-        $nama_indikator = $this->input->post('modal-indikator-hapus');
-        $nama_subdimensi = $this->input->post('modal-subDimensi-hapus');
+
         $this->load->model('Admin_model', 'admin');
-        $kode_indikator = $this->admin->getKodeIndikator($nama_indikator);
-        $kode_subDimensi = $this->admin->getKodeIndikator($nama_subdimensi);
+        $kode_indikator = $this->input->post('modal-indikator-hapus');
         $this->db->where('kode_indikator', $kode_indikator);
         $this->db->delete('nilaiindikator');
-
         $this->db->where('kode_indikator', $kode_indikator);
         $this->db->delete('indikator');
-
-        $temp_indikator = $this->db->get_where('indikator', ['kode_sd' => $kode_subDimensi])->row_array();
-        $kode_temp_indikator = intval($temp_indikator['kode_indikator']);
-        $this->kalkulasi->setNilaiRescaleSubDimensi($kode_temp_indikator);
-        $this->kalkulasi->setNilaiRescaleDimensi($kode_temp_indikator);
-        $this->kalkulasi->setNilaiRescaleIPI();
+        $this->load->model('Kalkulasi_model', 'kalkulasi');
+        // $temp_indikator = $this->db->get_where('indikator', ['kode_sd' => $kode_subDimensi])->row_array();
+        // $kode_temp_indikator = intval($temp_indikator['kode_indikator']);
+        // $this->kalkulasi->setNilaiRescaleSubDimensi($kode_temp_indikator);
+        // $this->kalkulasi->setNilaiRescaleDimensi($kode_temp_indikator);
+        // $this->kalkulasi->setNilaiRescaleIPI();
 
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Variabel indikator berhasil dihapus</div>');
-        redirect('report');
+        redirect('inputData');
     }
+    public function hapusDataDiTahun()
+    {
+        $tahun = intval($this->input->post('tahun'));
+        $this->db->where('tahun', $tahun);
+        $this->db->delete('nilaiindikator');
+        //Kalkulasi Ulang MAX MIN
+        $this->db->select('kode_indikator');
+        $indikator = $this->db->get('indikator')->result_array();
+        for ($i = 0; $i < count($indikator); $i++) {
+            $kode_indikator = $indikator[$i]['kode_indikator'];
+            $this->load->model('Kalkulasi_model', 'kalkulasi');
+            $this->kalkulasi->setNilaiMax($kode_indikator);
+            $this->kalkulasi->setNilaiMin($kode_indikator);
+        }
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Tahun berhasil dihapus</div>');
+        redirect('inputData');
+    }
+
+
     public function hapusData()
     {
         $data = $this->initData();
@@ -139,9 +207,6 @@ class InputData extends CI_Controller
         $this->form_validation->set_rules('subDimensi', 'Sub Dimensi', 'required|trim');
         $this->form_validation->set_rules('indikator', 'Indikator', 'required|trim');
         $this->form_validation->set_rules('tahun', 'Tahun', 'required|trim');
-        $this->form_validation->set_rules('nilai', 'Nilai', 'required|trim', [
-            'required' => 'Nilai tidak boleh kosong!!'
-        ]);
         if ($this->form_validation->run() == false) {
             $this->loadTemplate($data);
             $this->load->view('menu/deleteData', $data);
@@ -156,13 +221,32 @@ class InputData extends CI_Controller
                 'kode_indikator' => $kode_indikator
             );
             $this->db->delete('nilaiindikator', $data);
+            $this->load->model('Kalkulasi_model', 'kalkulasi');
+            $this->kalkulasi->setNilaiMax($kode_indikator);
+            $this->kalkulasi->setNilaiMin($kode_indikator);
+            $this->kalkulasi->setNilaiRescaleSubDimensi($kode_indikator);
+            $this->kalkulasi->setNilaiRescaleDimensi($kode_indikator);
+            $this->kalkulasi->setNilaiRescaleIPI();
 
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data berhasil Dihapus</div>');
-            redirect('report');
+            redirect('admin/report');
         }
     }
     public function hai()
     {
-        echo $this->db->get_where('tahun', ['tahun' => 2030])->result_array();
+        $data = array(
+            'tahun' => 2012,
+            'nilai' => 20,
+            'kode_indikator' => 1
+        );
+        $this->load->model('Kalkulasi_model', 'kalkulasi');
+        $this->db->set($data);
+        $this->db->where('kode_indikator', 1);
+        $this->db->where('tahun', 2012);
+        $this->db->update('nilaiindikator');
+        $this->kalkulasi->setNilaiMax(1);
+        $this->kalkulasi->setNilaiMin(1);
+
+        // var_dump(2012);
     }
 }

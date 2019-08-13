@@ -71,13 +71,10 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <div class="col-lg action text-right mt-4 mb-0">
-                                <a href="<?= base_url('inputData'); ?>"  class="btn btn-primary tambah-user mr-3">
-                                    <i class="fas fa-fw fa-plus"></i>Tambah Data
-                                </a>
+                            <div class="col-lg action text-right mt-2 mb-0">
                                 <button type="submit" class="btn btn-danger tambah-user">
                                     <i class="fas fa-fw fa-trash"></i>Hapus Data
-                                </button> 
+                                </button>
                             </div>
                         </div>
                     </form>

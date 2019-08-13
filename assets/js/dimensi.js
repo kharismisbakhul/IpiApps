@@ -1,9 +1,21 @@
 var url = $(location).attr("href");
 var segments = url.split("/");
-var action = segments[5];
-var data = action.split("?");
-
-let iniUrl = "http://localhost/IpiApps/Admin/dimensiApi?" + data[1];
+let status_user = $('#kode_user').attr('value');
+let iniUrl = '';
+if (segments[4] == "operator") {
+	iniUrl = segments[0] + "/IpiApps/Admin/dimensiApi?d=" + status_user;
+} else {
+	if (segments[5] == null) {
+		var action = segments[4];
+		var data = action.split("?");
+		iniUrl = segments[0] + "/IpiApps/Admin/dimensiApi?d=" + status_user + "&" + data[1];
+	} else {
+		var action = segments[5];
+		var data = action.split("?");
+		// console.log(segments[5]);
+		iniUrl = segments[0] + "/IpiApps/Admin/dimensiApi?" + data[1];
+	}
+}
 let nama_sb_dimensi = [];
 let nama_dimensi = [];
 let tahun = [];
@@ -20,12 +32,20 @@ $(document).ready(function () {
 		startTime: performance.now(),
 		beforeSend: function (data) {
 			$("#chart-dimensi").hide();
+			$(".header-table").hide();
+			$(".rescale-chart").hide();
 			$(".chart").append(
-				'<img src="http://localhost/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">'
+				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
+			);
+			$(".header-table-root").append(
+				`<img src="` + segments[0] + `/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">`
 			);
 		},
 		success: function (data) {
+			// console.log(data);
 			$(".loader").remove();
+			$(".header-table").show();
+			$(".rescale-chart").show();
 			$("#chart-dimensi").show();
 			for (var i in data["tahun"]) {
 				tahun.push(data["tahun"][i].tahun);
@@ -42,7 +62,7 @@ $(document).ready(function () {
 				}
 				dataTampung[i] = nilaiSubDimensi;
 			}
-			_getDataToTable(data, dataTampung, tahun);
+			_getDataToTable(data, dataTampung);
 
 			for (var i in data["n_dimensi"]) {
 				nama_dimensi.push(data["n_dimensi"][i].nama_dimensi);
@@ -60,7 +80,7 @@ $(document).ready(function () {
 				fill: false,
 				spanGaps: true
 			});
-			let color = ["rgb(132,60,12)", "rgb(84,130,53)", "rgb(191,144,0)"];
+			let color = ["#2d98da", "#20bf6b", "#fc5c65"];
 			let count = 1;
 			for (var i in data["n_sb_dimensi"]) {
 				setDataDimensi.push({
@@ -68,7 +88,8 @@ $(document).ready(function () {
 					type: "bar",
 					backgroundColor: color[i],
 					data: dataTampung[data["n_sb_dimensi"][i].kode_sd]
-				});
+				})
+				$('#subdimensi' + data["n_sb_dimensi"][i].kode_sd).css('background-color', color[i]);;
 			}
 
 			const canvas = document.querySelector("#chart-dimensi");
@@ -80,6 +101,7 @@ $(document).ready(function () {
 					datasets: setDataDimensi
 				},
 				options: {
+					responsive: false,
 					maintainAspectRatio: false,
 					layout: {
 						padding: {
@@ -90,45 +112,40 @@ $(document).ready(function () {
 						}
 					},
 					scales: {
-						xAxes: [
-							{
-								time: {
-									unit: "year"
-								},
-								gridLines: {
-									display: true,
-									drawBorder: false
-								},
-								ticks: {
-									min: 2,
-									max: 0,
-									maxTicksLimit: 7
-								},
-								maxBarThickness: 70
+						xAxes: [{
+							time: {
+								unit: "year"
+							},
+							gridLines: {
+								display: true,
+								drawBorder: false
+							},
+							ticks: {
+								min: 2,
+								max: 0,
+								maxTicksLimit: 7
+							},
+							maxBarThickness: 70
+						}],
+						yAxes: [{
+							ticks: {
+								min: 0,
+								max: 10,
+								maxTicksLimit: 20,
+								padding: 30
+								// Include a dollar sign in the ticks
+							},
+							gridLines: {
+								color: "rgb(220, 221, 225)",
+								zeroLineColor: "rgb(234, 236, 244)",
+								drawBorder: false,
+								borderDash: [5, 5],
+								zeroLineBorderDash: [2]
 							}
-						],
-						yAxes: [
-							{
-								ticks: {
-									min: 0,
-									max: 10,
-									maxTicksLimit: 30,
-									padding: 30
-									// Include a dollar sign in the ticks
-								},
-								gridLines: {
-									color: "rgb(220, 221, 225)",
-									zeroLineColor: "rgb(234, 236, 244)",
-									drawBorder: false,
-									borderDash: [5, 5],
-									zeroLineBorderDash: [2]
-								}
-							}
-						]
+						}]
 					},
 					annotation: {
-						annotations: [
-							{
+						annotations: [{
 								type: "box",
 								yScaleID: "y-axis-0",
 								yMin: 0,
@@ -180,8 +197,8 @@ $(document).ready(function () {
 			$(".loader").remove();
 			$("#chart-subdimensi").remove();
 			$(".chart").append(
-				`<img src="http://localhost/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">
-				<h5 class="text-center mb-3">Data tidak ada, harap untuk memilih rentan tahun terlebih dahulu</h5>`
+				`<p class="text-center">Data tidak dapat dikalkulasi !</p>	
+				<img src="` + segments[0] + `/IpiApps/assets/img/no_data.png" class="rounded mx-auto d-block" width="30%" alt="no data">`
 			);
 		}
 	});
@@ -190,8 +207,12 @@ $(document).ready(function () {
 
 //untutk data table
 function _getDataToTable(data, dataTampung) {
+	$('.header-table').append(`
+    <th class="py-5" rowspan="2" colspan="2">Sub-Dimensi</th>
+    <th colspan="` + data['tahun'].length + `">Skor</th>`)
 	data["tahun"].forEach(function (p) {
-		$(".tahun").append(`<th scope="col">` + p.tahun + `</th>`);
+		$(".tahun-dimensi").append(`<th scope="col">` + p.tahun + `</th>`);
+		// console.log(p.tahun);
 	});
 
 	$(".iniData").append(`<tr class="dimensi"></tr>`);
@@ -220,7 +241,7 @@ function _getDataToTable(data, dataTampung) {
 	for (var i in data["n_sb_dimensi"]) {
 		tableTr += "<tr>";
 		tableTr += "<td>" + count++ + "</td>";
-		tableTr += "<td>" + data["n_sb_dimensi"][i].nama_sub_dimensi + "</td>";
+		tableTr += "<td class='text-left'>" + data["n_sb_dimensi"][i].nama_sub_dimensi + "</td>";
 		for (var j in tahun) {
 			tableTr +=
 				"<td>" +

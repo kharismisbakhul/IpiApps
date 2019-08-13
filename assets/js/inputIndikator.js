@@ -1,52 +1,40 @@
 //Tambah Indikator
 $('.tambah-indikator').on('click', function () {
-    //Pilihan Dimensi
-    $.ajax({
-        url: 'http://localhost/IpiApps/data/getDimensi',
-        method: 'get',
-        dataType: 'json',
+	//Pilihan Dimensi
+	$.ajax({
+		url: segments[0] + '/IpiApps/data/getDimensi',
+		method: 'get',
+		dataType: 'json',
 
-        success: function (data) {
-            var d = [];
-            for (i = 0; i < data.length; i++) {
-                d.push(data[i]['nama_dimensi']);
-            }
-            $('#modal-dimensi').append(`<option>Pilih Dimensi</option>`);
-            $('#modal-subDimensi').append(`<option>Pilih Sub Dimensi</option>`);
-            d.forEach(function (item) {
-                $('#modal-dimensi').append(`<option>` + item + `</option>`);
-            });
+		success: function (data) {
+			console.log(data)
+			$('.temp-i-d').remove()
+			$('.temp-i-sd').remove()
+			$('#modal-dimensi').append(`<option  class='temp-i-d'>Pilih Dimensi</option>`);
+			$('#modal-subDimensi').append(`<option  class='temp-i-sd'>Pilih Sub Dimensi</option>`);
+			for (var i in data) {
+				$('#modal-dimensi').append(`<option value='` + data[i].kode_d + `'  class='temp-i-d'>` + data[i].nama_dimensi + `</option>`);
+			};
 
-            //Milih Dimensi
-            $('.modal-dimensi').on('change', function () {
-                $('#modal-subDimensi').html(``);
-                $('#modal-subDimensi').append(`<option>Pilih Sub Dimensi</option>`);
-                var a = $('#modal-dimensi').val();
-                if (a != "Pilih Dimensi") {
-                    var regex = / /gi;
-                    var b = a.replace(regex, '_');
+		}
+	});
 
-                    // Pilihan Sub Dimensi
-                    $.ajax({
-                        url: 'http://localhost/IpiApps/data/getSubDimensi/' + b,
-                        method: 'get',
-                        dataType: 'json',
-                        success: function (dataSD) {
-                            var sd = [];
-                            for (i = 0; i < dataSD.length; i++) {
-                                sd.push(dataSD[i]['nama_sub_dimensi']);
-                            }
-                            sd.forEach(function (itemsd) {
-                                $('#modal-subDimensi').append(`<option>` + itemsd + `</option>`);
-                            });
-                        }
-                    });
-                }
-                else {
-                    $('.modal-subDimensi').html(``);
-                    $('.modal-subDimensi').append(`<option>Pilih Sub Dimensi</option>`);
-                }
-            })
-        }
-    });
+	//Milih Dimensi
+	$('.modal-dimensi').on('change', function () {
+		$('.temp-i-sd').remove();
+		var a = $('#modal-dimensi').val();
+		if (a) {
+			// Pilihan Sub Dimensi
+			$.ajax({
+				url: segments[0] + '/IpiApps/data/getSubDimensi/' + a,
+				method: 'get',
+				dataType: 'json',
+				success: function (dataSD) {
+					for (var i in dataSD) {
+						$('#modal-subDimensi').append(`<option value='` + dataSD[i].kode_sd + `' class='temp-i-sd'>` + dataSD[i].nama_sub_dimensi + `</option>`);
+					}
+				}
+			});
+		}
+	})
 });

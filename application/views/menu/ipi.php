@@ -20,44 +20,33 @@
 
     <div class="row">
         <!-- Area Rentan Wakti -->
-        <div class="col-lg-3 box">
+        <div class="col-lg-6 box">
             <div class="card shadow">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background-color: #3867d6">
-                    <h6 class="m-0 font-weight-bold text-white">Pilih Rentan Waktu</h6>
+                <div class="card-header py-3 flex-row align-items-center justify-content-between bg-midnight-blue text-white text-capitalize text-center">
+                    <h6 class="m-0 font-weight-bold">Pilih Tahun untuk data <?= $title;  ?></h6>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body bClip">
                     <div class="row">
-                        <div class="col-lg-12 mb-2">
-                            Untuk menampilkan data pada
-                            tabel dan chart, harap untuk
-                            mengisi rentan tahun di bawah
-                        </div>
+
                         <form action="<?= base_url('admin/ipi') ?>" method="get">
                             <div class="row ml-1 mr-1">
+                                <div class="col-lg-12 mb-2 text-justify">
+                                    Untuk menampilkan data pada
+                                    tabel dan chart, harap untuk
+                                    mengisi rentan tahun di bawah
+                                </div>
                                 <div class="col-lg-12 mb-2">
                                     <small>dari tahun</small>
-                                    <select class="custom-select" id="inputGroupSelect01" name="star_date">
-                                        <?php foreach ($tahun_selc as $t) : ?>
-                                            <?php if ($t['tahun'] == $star_date) : ?>
-                                                <option value="<?= $t['tahun'] ?>" selected id="star_date"><?= $t['tahun'] ?></option>
-                                            <?php else : ?>
-                                                <option value="<?= $t['tahun'] ?>" id="star_date"><?= $t['tahun'] ?></option>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
+                                    <select class="custom-select" id="start-date" name="star_date">
+
                                     </select>
                                 </div>
                                 <div class="col-lg-12 mb-2">
                                     <small>sampai tahun</small>
-                                    <select class="custom-select" id="inputGroupSelect01" name="end_date">
-                                        <?php foreach ($tahun_selc as $t) : ?>
-                                            <?php if ($t['tahun'] == $end_date) : ?>
-                                                <option value="<?= $t['tahun'] ?>" selected id="end_date"><?= $t['tahun'] ?></option>
-                                            <?php else : ?>
-                                                <option value="<?= $t['tahun'] ?>" id="end_date"><?= $t['tahun'] ?></option>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
+                                    <select class="custom-select" id="end-date" name="end_date">
+
                                     </select>
                                 </div>
                                 <div class="col-lg-12 mt-2">
@@ -70,50 +59,22 @@
                 </div>
             </div>
         </div>
-
         <!-- Table Data Pembangunan Inklusif -->
-        <div class="col-lg-8 box">
-            <div class="card shadow">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between " style="background-color: #3867d6">
-                    <h6 class="m-0 font-weight-bold text-white">Table Data Pembangunan Inklusif</h6>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body bClip">
-                    <div class="table-responsive">
-                        <table class="table table-bordered text-center tClip">
-                            <thead>
-                                <tr style="background-color: #f8f8f8; color: #101010">
-                                    <th class="py-5" rowspan="2">#</th>
-                                    <th class="py-5" rowspan="2">Dimensi</th>
-                                    <th colspan="6">Skor</th>
-                                </tr>
-                                <tr style="background-color: #f8f8f8; color: #101010" class="tahun-ipi">
-                                </tr>
-                            </thead>
-                            <tbody class="iniDataIpi">
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-            </div>
-        </div>
     </div>
 
-    <?php $dimensi = $this->db->get('dimensi')->result_array(); ?>
+
     <div class="row mt-4 mb-4">
-        <!-- Area Rentan Wakti -->
+    <?php $dimensi = $this->db->get('dimensi')->result_array(); ?>
         <div class="col-lg-11 box">
             <div class="card shadow">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background-color: #3867d6">
-                    <h6 class="m-0 font-weight-bold text-white">Chart Data Indeks Pembangunan Inklusif</h6>
+                <div class="card-header py-3 flex-row align-items-center justify-content-between bg-midnight-blue text-white text-capitalize text-center">
+                    <h6 class="m-0 font-weight-bold">Grafik : Indeks Pembangunan Inklusif</h6>
                 </div>
                 <!-- Card Body -->
                 <div class="table-responsive">
                     <div class="card-body chart">
-                        <canvas id="ipi-chart" width="200" height="500"></canvas>
+                        <canvas id="ipi-chart" style="width: 100%; height: 30rem;"></canvas>
                     </div>
                     <div class="col-md-12 mr-2">
                         <div class="text-gray-800 mt-0">
@@ -122,11 +83,11 @@
                                     <?php foreach ($dimensi as $d) : ?>
                                         <div class="row">
                                             <div class="col-xs-2">
-                                                <a href="#" role="button" class="btn square-legend bg-cream"></a>
+                                                <a href="#" id="dimensi<?= $d['kode_d']; ?>" role="button" class="btn square-legend bg-cream"></a>
                                             </div>
                                             <div class="col-xs-6">
                                                 <small>
-                                                    <a href="#" class="text-sm text-decoration-none text-secondary ml-4"><?= $d['nama_dimensi'] ?></a>
+                                                    <a href="<?= base_url('admin/dimensi?d=') . $d['kode_d']; ?>" class="text-sm text-decoration-none text-secondary ml-4"><?= $d['nama_dimensi'] ?></a>
                                                 </small>
                                             </div>
                                         </div>
@@ -138,6 +99,32 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-11 box2 mt-4">
+            <div class="card shadow">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 flex-row bg-midnight-blue text-white text-capitalize  ">
+                    <h6 class="m-0 font-weight-bold text-center">Tabel : Indeks Pembangunan Inklusif</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body bClip">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped text-center tClip">
+                            <thead class="header-table-root bg-midnight-blue">
+                                <tr style=" color: #FFFFFF" class="header-table">
+                                </tr>
+                                <tr style=" color: #FFFFFF" class="tahun-ipi">
+                                </tr>
+                            </thead>
+                            <tbody class="iniDataIpi">
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Area Rentan Wakti -->
+
     </div>
 </div>
 <!-- /.container-fluid -->

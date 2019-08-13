@@ -14,6 +14,7 @@
   <!-- Custom fonts for this template-->
   <link href="<?= base_url('assets/');  ?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
 
   <!-- Custom styles for this template-->
   <link href="<?= base_url('assets/');  ?>css/sb-admin-2.min.css" rel="stylesheet">
@@ -59,9 +60,6 @@
                     </button>
                   </form>
                   <hr>
-                  <div class="text-center">
-                    <a class="small text-decoration-none forget" href="<?= base_url('auth/forgotpassword') ?>" style="color:black;">Lupa Password?</a>
-                  </div>
                 </div>
               </div>
             </div>
@@ -73,7 +71,7 @@
 
   </div>
   </div>
-  <p class="text-center" style="margin-top: -30px; font-size: .7rem; color: white;">Copyright © <?= date('Y') ?> AKD Web Development Team. All Rights Reserved. </p>
+  <p class="text-center" style="margin-top: -30px; font-size: .7rem; color: white;">Copyright © <?= date('Y') ?> PKEPK FEB UB. All Rights Reserved. </p>
 
   <!-- Bootstrap core JavaScript-->
   <script src="<?= base_url('assets/');  ?>vendor/jquery/jquery.min.js"></script>

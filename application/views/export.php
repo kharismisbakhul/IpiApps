@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Custom fonts for this template-->
     <link href="<?= base_url('assets/');  ?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
+    <link href="<?= base_url('assets/')  ?>css/sb-admin-2.css" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="<?= base_url('assets/')  ?>css/sb-admin-2.css" rel="stylesheet">
 
@@ -20,7 +20,7 @@
         table thead tr th {
             background-color: #485460;
             color: #ecf0f1;
-            border: 1px black;
+            border: 1px solid black;
         }
 
         table thead tr th,
@@ -33,6 +33,7 @@
 
         table thead tr th {
             color: white;
+
         }
 
         #ipi td {
@@ -67,7 +68,7 @@
     header("Content-Disposition: attachment; filename=Report.xls");
     ?>
 
-    <table class="table table-bordered table-report">
+    <table class="table table-report">
         <thead class="text-center">
             <tr>
                 <th class="align-middle" rowspan="2" colspan="3">Kode</th>

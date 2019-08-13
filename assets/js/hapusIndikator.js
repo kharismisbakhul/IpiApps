@@ -1,87 +1,62 @@
 //Hapus Indikator
 $('.hapus-indikator').on('click', function () {
-    //Pilihan Dimensi
-    $.ajax({
-        url: 'http://localhost/IpiApps/data/getDimensi',
-        method: 'get',
-        dataType: 'json',
+	//Pilihan Dimensi
+	$.ajax({
+		url: segments[0] + '/IpiApps/data/getDimensi',
+		method: 'get',
+		dataType: 'json',
 
-        success: function (data) {
-            var d = [];
-            for (i = 0; i < data.length; i++) {
-                d.push(data[i]['nama_dimensi']);
-            }
-            $('#modal-dimensi-hapus').append(`<option>Pilih Dimensi</option>`);
-            $('#modal-subDimensi-hapus').append(`<option>Pilih Sub Dimensi</option>`);
-            $('#modal-indikator-hapus').append(`<option>Pilih Indikator</option>`);
-            d.forEach(function (item) {
-                $('#modal-dimensi-hapus').append(`<option>` + item + `</option>`);
-            });
+		success: function (data) {
 
-            //Milih Dimensi
-            $('.modal-dimensi-hapus').on('change', function () {
-                $('#modal-subDimensi-hapus').html(``);
-                $('#modal-subDimensi-hapus').append(`<option>Pilih Sub Dimensi</option>`);
-                var a = $('#modal-dimensi-hapus').val();
-                if (a != "Pilih Dimensi") {
-                    var regex = / /gi;
-                    var b = a.replace(regex, '_');
+			$('.temp-d').remove();
+			$('#modal-dimensi-hapus').append(`<option class='temp-d'>Pilih Dimensi</option>`);
+			$('#modal-subDimensi-hapus').append(`<option class='temp-sd'>Pilih Sub Dimensi</option>`);
+			$('#modal-indikator-hapus').append(`<option class='temp-i'>Pilih Indikator</option>`);
+			for (var i in data) {
+				$('#modal-dimensi-hapus').append(`<option value='` + data[i].kode_d + `'  class='temp-d'>` + data[i].nama_dimensi + `</option>`);
+			};
 
-                    // Pilihan Sub Dimensi
-                    $.ajax({
-                        url: 'http://localhost/IpiApps/data/getSubDimensi/' + b,
-                        method: 'get',
-                        dataType: 'json',
-                        success: function (dataSD) {
-                            var sd = [];
-                            for (i = 0; i < dataSD.length; i++) {
-                                sd.push(dataSD[i]['nama_sub_dimensi']);
-                            }
-                            sd.forEach(function (itemsd) {
-                                $('#modal-subDimensi-hapus').append(`<option>` + itemsd + `</option>`);
-                            });
+		}
+	});
 
-                            $('.modal-subDimensi-hapus').on('change', function () {
-                                var c = $('#modal-subDimensi-hapus').val();
-                                $('.modal-indikator-hapus').html(``);
-                                $('.modal-indikator-hapus').append(`<option>Pilih Indikator</option`);
-                                if (c != "Pilih Sub Dimensi") {
-                                    var regex = / /gi;
-                                    var d = c.replace(regex, '_');
-                                    // window.location = window.location.origin + "/IpiApps/data/getIndikator/" + d;
-
-                                    // Pilihan Indikator
-                                    $.ajax({
-                                        url: 'http://localhost/IpiApps/data/getIndikator/' + d,
-                                        method: 'get',
-                                        dataType: 'json',
-                                        success: function (dataI) {
-                                            var indikator = [];
-                                            for (i = 0; i < dataI.length; i++) {
-                                                indikator.push(dataI[i]['nama_indikator']);
-                                            }
-                                            indikator.forEach(function (itemI) {
-                                                $('#modal-indikator-hapus').append(`<option>` + itemI + `</option>`);
-                                            });
-                                        }
-                                    })
-                                }
-                                else {
-                                    $('.modal-indikator-hapus').html(``);
-                                    $('.modal-indikator-hapus').append(`<option>Pilih Indikator</option`);
-                                }
-                            });
-                        }
-                    });
-                }
-                else {
-                    $('.modal-subDimensi-hapus').html(``);
-                    $('.modal-subDimensi-hapus').append(`<option>Pilih Sub Dimensi</option>`);
-                    $('.modal-indikator-hapus').html(``);
-                    $('.modal-indikator-hapus').append(`<option>Pilih Indikator</option`);
-
-                }
-            })
-        }
-    });
-});
+	//Milih Dimensi
+	$('.modal-dimensi-hapus').on('change', function () {
+		var a = $('#modal-dimensi-hapus').val();
+		if (a) {
+			$.ajax({
+				url: segments[0] + '/IpiApps/data/getSubDimensi/' + a,
+				method: 'get',
+				dataType: 'json',
+				success: function (dataSD) {
+					console.log('subdimensi')
+					console.log(dataSD)
+					$('.temp-sd').remove()
+					$('#modal-subDimensi-hapus').append(`<option class='temp-sd'>Pilih Sub Dimensi</option>`);
+					for (var i in dataSD) {
+						$('#modal-subDimensi-hapus').append(`<option value='` + dataSD[i].kode_sd + `' class='temp-sd'>` + dataSD[i].nama_sub_dimensi + `</option>`);
+					};
+				}
+			})
+		}
+	})
+	// Pilihan Indikator
+	$('.modal-subDimensi-hapus').on('change', function () {
+		var c = $('#modal-subDimensi-hapus').val();
+		console.log('cek' + c)
+		if (c) {
+			$.ajax({
+				url: segments[0] + '/IpiApps/data/getIndikator/' + c,
+				method: 'get',
+				dataType: 'json',
+				success: function (dataI) {
+					console.log(dataI)
+					$('.temp-i').remove()
+					$('#modal-indikator-hapus').append(`<option class='temp-i'>Pilih Indikator</option>`);
+					for (var i in dataI) {
+						$('#modal-indikator-hapus').append(`<option value="` + dataI[i].kode_indikator + `"  class='temp-i'>` + dataI[i].nama_indikator + `</option>`);
+					};
+				}
+			})
+		}
+	});
+})
