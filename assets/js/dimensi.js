@@ -211,7 +211,7 @@ function _getDataToTable(data, dataTampung) {
     <th class="py-5" rowspan="2" colspan="2">Sub-Dimensi</th>
     <th colspan="` + data['tahun'].length + `">Skor</th>`)
 	data["tahun"].forEach(function (p) {
-		$(".tahun-dimensi").append(`<th scope="col">` + p.tahun + `</th>`);
+		$(".tahun-dimensi").append(`<th scope="col" class="align-middle">` + p.tahun + `</th>`);
 		// console.log(p.tahun);
 	});
 

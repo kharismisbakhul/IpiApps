@@ -11,6 +11,7 @@
         color: black;
         font-size: 14px;
         border: 1px solid black;
+        text-align: center;
     }
 
     table thead tr th {
@@ -193,7 +194,7 @@
                                                 <td><?= $indek1++ ?></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td><?= $d['nama_dimensi'] ?></td>
+                                                <td class="text-left"><?= $d['nama_dimensi'] ?></td>
                                                 <?php foreach ($tahun as $t) : ?>
                                                 <td></td>
                                                 <?php endforeach; ?>
@@ -208,7 +209,7 @@
                                                 <td></td>
                                                 <td><?= $indek2++; ?></td>
                                                 <td></td>
-                                                <td><?= $sd['nama_sub_dimensi'] ?></td>
+                                                <td class="text-left"><?= $sd['nama_sub_dimensi'] ?></td>
                                                 <?php foreach ($tahun as $t) : ?>
                                                 <td></td>
                                                 <?php endforeach; ?>
@@ -229,7 +230,7 @@
                                                                     } elseif ($in['status'] == 2) {
                                                                         $id = "status2";
                                                                     } ?>
-                                                <td id="<?= $id ?>"><?= $in['nama_indikator'] ?></td>
+                                                <td id="<?= $id ?>" class="text-left"><?= $in['nama_indikator'] ?></td>
                                                 <!-- Nilai Indikator -->
                                                 <?php foreach ($tahun as $t) : ?>
                                                 <?php foreach ($nilai_indikator as $nilai) : ?>

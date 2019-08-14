@@ -229,7 +229,7 @@ function _getDataToTableSub(data, dataTampungSub) {
     <th colspan="` + data['tahun'].length + `">Skor</th>`)
 	data["tahun"].forEach(function (p) {
 		$(".tahun-sub").append(
-			`<th scope="col" class="temp-tahun">` + p.tahun + `</th>`
+			`<th scope="col" class="temp-tahun align-middle">` + p.tahun + `</th>`
 		);
 	});
 

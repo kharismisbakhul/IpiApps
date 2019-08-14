@@ -196,7 +196,7 @@ function _getDataToTable(data, dataTampung) {
     <th class="py-5" rowspan="2" colspan="2">Dimensi</th>
     <th colspan="` + data['tahun'].length + `">Skor</th>`)
 	data["tahun"].forEach(function (p) {
-		$(".tahun-ipi").append(`<th scope="col">` + p.tahun + `</th>`);
+		$(".tahun-ipi").append(`<th scope="col" class="align-middle">` + p.tahun + `</th>`);
 	});
 
 	$(".iniDataIpi").append(`<tr class="ipi"></tr>`);

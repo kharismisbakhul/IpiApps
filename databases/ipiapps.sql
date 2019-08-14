@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 09, 2019 at 11:21 AM
+-- Generation Time: Aug 14, 2019 at 08:38 AM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -114,7 +114,8 @@ INSERT INTO `indikator` (`kode_indikator`, `nama_indikator`, `status`, `max_nila
 (50, 'Rasio belanja kesehatan terhadap total penduduk', 0, 0.350097427, 0.153151906, 6),
 (51, 'Produktivitas Lahan Sawah', 0, 65.5, 61.55, 7),
 (52, 'Ketersediaan air bersih perkapita', 0, 0.070404524, 0.050192935, 7),
-(53, 'Ketersedian listrik per kapita', 0, 0.000739032, 0.000612356, 7);
+(53, 'Ketersedian listrik per kapita', 0, 0.000739032, 0.000612356, 7),
+(54, 'BBBBBBB', 0, 1234444, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -133,12 +134,12 @@ CREATE TABLE `ipi` (
 --
 
 INSERT INTO `ipi` (`id_nilai_ipi`, `tahun`, `nilai_rescale`) VALUES
-(1, 2012, 4.61),
-(2, 2013, 4.42),
-(3, 2014, 5.01),
-(4, 2015, 5.24),
-(5, 2016, 5.5),
-(6, 2017, 5.04);
+(1, 2012, 4.54),
+(2, 2013, 4.35),
+(3, 2014, 4.95),
+(4, 2015, 5.29),
+(5, 2016, 5.46),
+(6, 2017, 4.99);
 
 -- --------------------------------------------------------
 
@@ -158,12 +159,12 @@ CREATE TABLE `nilaidimensi` (
 --
 
 INSERT INTO `nilaidimensi` (`id_nilai_d`, `tahun`, `nilai_rescale`, `kode_d`) VALUES
-(1, 2012, 6.23, 1),
-(2, 2013, 5.4, 1),
-(3, 2014, 4.36, 1),
-(4, 2015, 4.72, 1),
-(5, 2016, 3.68, 1),
-(6, 2017, 3.38, 1),
+(1, 2012, 6.02, 1),
+(2, 2013, 5.19, 1),
+(3, 2014, 4.16, 1),
+(4, 2015, 4.89, 1),
+(5, 2016, 3.57, 1),
+(6, 2017, 3.22, 1),
 (7, 2012, 2.6, 2),
 (8, 2013, 4.37, 2),
 (9, 2014, 5.37, 2),
@@ -513,7 +514,13 @@ INSERT INTO `nilaiindikator` (`id_nilai_i`, `tahun`, `nilai`, `nilai_rescale`, `
 (315, 2014, 0.000675874, 5.01, 53),
 (316, 2015, 0.000695332, 6.55, 53),
 (317, 2016, 0.000654812, 3.35, 53),
-(318, 2017, 0.000612356, 0, 53);
+(318, 2017, 0.000612356, 0, 53),
+(319, 2012, 12.02, 0, 54),
+(320, 2013, 1234, 0.01, 54),
+(321, 2014, 10.2, 0, 54),
+(322, 2015, 1234444, 10, 54),
+(323, 2016, 0, 0, 54),
+(324, 2017, 0, 0, 54);
 
 -- --------------------------------------------------------
 
@@ -539,12 +546,12 @@ INSERT INTO `nilaisubdimensi` (`id_nilai_sd`, `tahun`, `nilai_rescale`, `kode_sd
 (4, 2015, 3.8916666666667, 1),
 (5, 2016, 3.12, 1),
 (6, 2017, 1.2883333333333, 1),
-(7, 2012, 5.66375, 2),
-(8, 2013, 5.6325, 2),
-(9, 2014, 5.38375, 2),
-(10, 2015, 5.2775, 2),
-(11, 2016, 2.89875, 2),
-(12, 2017, 4.32375, 2),
+(7, 2012, 5.0344444444444, 2),
+(8, 2013, 5.0077777777778, 2),
+(9, 2014, 4.7855555555556, 2),
+(10, 2015, 5.8022222222222, 2),
+(11, 2016, 2.5766666666667, 2),
+(12, 2017, 3.8433333333333, 2),
 (13, 2012, 4.1628571428571, 3),
 (14, 2013, 3.8880952380952, 3),
 (15, 2014, 3.4709523809524, 3),
@@ -765,7 +772,7 @@ ALTER TABLE `dimensi`
 -- AUTO_INCREMENT for table `indikator`
 --
 ALTER TABLE `indikator`
-  MODIFY `kode_indikator` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `kode_indikator` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `ipi`
@@ -783,7 +790,7 @@ ALTER TABLE `nilaidimensi`
 -- AUTO_INCREMENT for table `nilaiindikator`
 --
 ALTER TABLE `nilaiindikator`
-  MODIFY `id_nilai_i` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=319;
+  MODIFY `id_nilai_i` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=325;
 
 --
 -- AUTO_INCREMENT for table `nilaisubdimensi`
