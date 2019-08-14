@@ -36,17 +36,18 @@ class Report extends CI_Controller
         $this->load->model('Admin_model', 'admin');
         $this->load->model('Kalkulasi_model', 'kalkulasi');
         $this->load->model('Jumlah_model', 'jumlah');
-        $data['star_date'] = '';
-        $data['end_date'] = '';
+        $min =  $this->db->select('min(tahun) as tahun')->get('nilaiindikator')->row_array();
+        $max = $this->db->select('max(tahun) as tahun')->get('nilaiindikator')->row_array();
+        $data['star_date'] = $min['tahun'];
+        $data['end_date'] = $max['tahun'];
         if ($this->input->get('star_date') && $this->input->get('end_date')) {
             $data['star_date'] = $this->input->get('star_date');
             $data['end_date'] = $this->input->get('end_date');
             $data['col_span'] =  $data['end_date'] -  $data['star_date']   + 1;
             $data['range_tahun'] = $this->admin->getSemuaTahun($data['star_date'], $data['end_date']);
         } else {
-            $tahun_terakhir = $this->kalkulasi->tahunTerakhirDataSemuaIndikator();
-            $data['col_span'] = $tahun_terakhir - $this->input->get('star_date') + 1;
-            $data['range_tahun'] = $this->admin->getSemuaTahun();
+            $data['col_span'] = $data['end_date'] -  $data['star_date']   + 1;
+            $data['range_tahun'] = $this->admin->getSemuaTahun($data['star_date'], $data['end_date']);
         }
         // Data IPI - IPI
         $data['ipi'] = $this->admin->getIPI($data['star_date'], $data['end_date']);
