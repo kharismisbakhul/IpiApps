@@ -3,9 +3,20 @@ body {
 	font-family: 'Roboto', sans-serif;
 }
 
+.brnd {
+	background-color: #fff;
+}
+
+.text-ipi {
+	padding: 10px;
+	border-left: 1px solid #101010;
+}
+
+
 .sidebar {
 	background-color: #182C61;
 	border-color: #2980b9;
+
 }
 
 #progressTimer {
@@ -128,6 +139,7 @@ table.table-borde>thead>tr>th {
 table.table-borde>tbody>tr>td {
 	border: 1px solid #101010;
 }
+
 
 /* animasi */
 .box {

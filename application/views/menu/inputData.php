@@ -23,7 +23,7 @@
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header bg-primary">
-                    <div class="text-sm font-weight-bold text-uppercase mb-1 text-white">
+                    <div class="text-sm font-weight-bold text-uppercase mb-1 text-white text-capitalize text-center">
                         Indeks Pembangunan Inklusif
                     </div>
                 </div>
@@ -110,7 +110,7 @@
                 <div class="card shadow">
                     <!-- Card Header - Dropdown -->
                     <div class="card-header" style="background-color: #3867d6">
-                        <div class="text-sm font-weight-bold text-uppercase mb-1 text-white">
+                        <div class="text-sm font-weight-bold text-uppercase mb-1 text-white text-capitalize text-center">
                             Action Hapus
                         </div>
                     </div>
@@ -182,7 +182,6 @@
                             <select class="form-control modal-status" name="modal-status" id="modal-status">
                                 <option>Putih</option>
                                 <option>Merah</option>
-                                <option>Kuning</option>
                             </select>
                             <?= form_error('modal-status', '<small class="text-danger pl-3">', '</small>'); ?>
                         </div>

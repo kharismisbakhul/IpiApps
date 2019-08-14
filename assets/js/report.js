@@ -35,7 +35,7 @@ $(document).ready(function () {
 
 		},
 		done: function () {
-			progress.progressTimer('complete');
+
 		},
 		error: function (data) {
 			$(".loader").remove();
@@ -104,9 +104,7 @@ function _getDataToTable(data) {
 	for (var i in data["ipi"]) {
 		$(".ipi").append(
 			`
-        <td scope="col">` +
-			parseFloat(data["ipi"][i]).toFixed(2) +
-			`</td>
+        <td scope="col">` + parseFloat(data["ipi"][i]).toFixed(2) + `</td>
         `
 		);
 	}
@@ -136,6 +134,19 @@ function _getDataToTable(data) {
 		}
 	}
 
+	for (var i in data['min_max']) {
+		$(".indikator" + i).append(
+			`
+			<td scope="col">` +
+			parseFloat(data["min_max"][i]['max']['nilai']).toFixed(2) +
+			`</td>
+			<td scope="col">` +
+			parseFloat(data["min_max"][i]['min']['nilai']).toFixed(2) +
+			`</td>
+		`
+		)
+	}
+
 	// console.log(data['indikator'])
 	for (var i in data['sub_dimensi']) {
 		for (var j in data['indikator'][i]) {
@@ -150,5 +161,4 @@ function _getDataToTable(data) {
 			}
 		}
 	}
-
 }

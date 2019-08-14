@@ -33,20 +33,21 @@
                                 <!-- Approach -->
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3 bg-midnight-blue">
-                                        <h6 class="m-0 font-weight-bold text-capitalize text-white">Daftar User</h6>
+                                        <h6 class="m-0 font-weight-bold text-capitalize text-white text-center">Daftar Pengguna</h6>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <div class="col-lg-12 text-right mb-2">
-                                                <button type="button" class="btn btn-success">
-                                                    <a href="<?= base_url('admin/tambahUser'); ?>" style="text-decoration: none; color: white;"><i class="fas fa-fw fa-plus"></i> Tambah User</a></button>
+                                                <button type="button" class="btn btn-success mb-2">
+                                                    <a href="<?= base_url('admin/tambahUser'); ?>" style="text-decoration: none; color: white;"><i class="fas fa-fw fa-plus"></i> Tambah User</a>
+                                                </button>
                                             </div>
                                             <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                                                 <thead style="text-align: center" class="bg-midnight-blue text-white">
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Username</th>
-                                                        <th>Status User</th>
+                                                        <th>Pengguna</th>
+                                                        <th>Status Pengguna</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -62,14 +63,14 @@
                                                                     <span class="icon text-white-50">
                                                                         <i class="fas fa-fw fa-trash-alt"></i>
                                                                     </span>
-                                                                    <span class="text">Delete</span>
+                                                                    <span class="text">Hapus</span>
                                                                 </button>
                                                                 <button type="button" class="badge badge-pill badge-primary ">
                                                                     <a href="<?= base_url('admin/editUser/') . $lu['id']; ?>" style="text-decoration: none; color: white;">
                                                                         <span class=" icon text-white-50">
                                                                             <i class="fas fa-fw fa-pencil-alt"></i>
                                                                         </span>
-                                                                        <span class="text">Edit</span>
+                                                                        <span class="text">Ubah</span>
                                                                     </a>
                                                                 </button>
                                                             </td>

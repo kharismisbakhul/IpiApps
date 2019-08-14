@@ -160,3 +160,16 @@ $(window).on('load', function () {
 		})
 	})
 })
+
+//Regex
+$('.nilai').on('change', function () {
+	var length = $('.nilai').val().length;
+	var value = $('.nilai').val();
+	var cek = value.search("[A-Za-z, ]");
+	$('.nilai').attr('pattern', "[^A-Za-z, ]" + "{" + length + "}")
+	if (cek != -1) {
+		$('.nilai').attr('onchange', "setCustomValidity('Masukkan angka')")
+	} else {
+		$('.nilai').attr('onchange', "setCustomValidity('')")
+	}
+})
