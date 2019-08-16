@@ -6,7 +6,7 @@
     <a class="sidebar-brand d-flex align-items-center justify-content-center brnd shadow" href="<?= base_url('admin'); ?>">
         <?php
         } else { ?>
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('operator'); ?>">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center brnd shadow" href="<?= base_url('operator'); ?>">
             <?php
             } ?>
             <div>
@@ -47,7 +47,7 @@
             Administrator
         </div>
         <!-- Tambah user -->
-        <?php if ($title == "Manejemen User") : ?>
+        <?php if ($title == "Manajemen User") : ?>
         <li class="nav-item active">
             <?php else : ?>
         <li class="nav-item">
@@ -170,6 +170,14 @@
             <a class="nav-link pb-0" href="<?= base_url('admin/report'); ?>">
                 <i class="fas fa-fw fa-file-alt"></i>
                 <span>Report</span>
+            </a>
+        </li>
+
+        <!-- Panduan -->
+        <li class="nav-item">
+            <a class="nav-link pb-0" href="<?= base_url('assets/Panduan_IPI_APPS.pdf'); ?>">
+                <i class="fas fa-fw fa-file-alt"></i>
+                <span>Panduan</span>
             </a>
         </li>
 

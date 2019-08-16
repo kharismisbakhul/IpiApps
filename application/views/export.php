@@ -1,25 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- Custom fonts for this template-->
-    <link href="<?= base_url('assets/');  ?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="<?= base_url('assets/')  ?>css/sb-admin-2.css" rel="stylesheet">
-    <!-- Custom styles for this template-->
-    <link href="<?= base_url('assets/')  ?>css/sb-admin-2.css" rel="stylesheet">
-
     <title>Export Table</title>
-
-</head>
-
-<body>
     <style type="text/css">
         table thead tr th {
             background-color: #485460;
             color: #ecf0f1;
+            color: white;
             border: 1px solid black;
         }
 
@@ -27,13 +15,13 @@
         table tbody tr td {
             font-family: 'Calibri', sans-serif;
             color: black;
-            font-size: 18px;
+            font-size: 14px;
             border: 1px solid black;
+            text-align: center;
         }
 
         table thead tr th {
             color: white;
-
         }
 
         #ipi td {
@@ -42,12 +30,12 @@
             color: black;
         }
 
-        #dimensi td {
+        #dimensiD td {
             background-color: #3498db;
             color: white;
         }
 
-        #sub-dimensi td {
+        #sub-dimensiSD td {
             background-color: #fa8231;
             color: black;
         }
@@ -61,22 +49,37 @@
             background-color: #f9ca24;
             color: black;
         }
-    </style>
 
-    <!-- <?php
-            header("Content-type: application/vnd-ms-excel");
-            header("Content-Disposition: attachment; filename=Report.xls");
-            ?> -->
+        .nama_indikator {
+            text-align: left;
+        }
+
+        .nama_dimensi {
+            text-align: left;
+        }
+
+        .nama_sub_dimensi {
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+
+    <?php
+    header("Content-type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=Report.xls");
+    ?>
 
     <table class="table table-report text-wrap">
-        <thead class="text-center">
+        <thead class="">
             <tr>
-                <th class="align-middle" rowspan="2" colspan="3">Kode</th>
-                <th class="align-middle" rowspan="2">Dimensi</th>
-                <th colspan="<?= $col_span ?>" class="align-middle">Nilai Indikator Eksisting</th>
-                <th rowspan="2" class="align-middle">Nilai Max</th>
-                <th rowspan="2" class="align-middle">Nilai Min</th>
-                <th colspan="<?= $col_span ?>" class="align-middle">Re-Scale Indikator (SCORE)</th>
+                <th rowspan="2" colspan="3">Kode</th>
+                <th rowspan="2">Dimensi</th>
+                <th colspan="<?= $col_span ?>">Nilai Indikator Eksisting</th>
+                <th rowspan="2">Nilai Max</th>
+                <th rowspan="2">Nilai Min</th>
+                <th colspan="<?= $col_span ?>">Re-Scale Indikator (SCORE)</th>
             </tr>
             <tr>
                 <!-- Tahun Nilai Indikator -->
@@ -92,7 +95,7 @@
         </thead>
         <tbody style="color: #101010">
             <!-- IPI Column -->
-            <tr class="font-weight-bold" id="ipi">
+            <tr id="ipi">
                 <td colspan="4">Indeks Pembangunan Inklusif</td>
                 <?php foreach ($range_tahun as $rt) : ?>
                 <td scope="col"></td>
@@ -107,35 +110,35 @@
 
             <?php for ($d = 0; $d < $jumlahData['jumlah_d']; $d++) { ?>
             <!-- Dimensi -->
-            <tr class="dimensi font-weight-bold" id="dimensi">
+            <tr class="dimensiD" id="dimensiD">
                 <td><?= ($d + 1); ?></td>
                 <td></td>
                 <td></td>
-                <td><?= $dimensi[$d]['nama_dimensi'] ?></td>
+                <td class="nama_dimensi"><?= $dimensi[$d]['nama_dimensi'] ?></td>
                 <?php foreach ($range_tahun as $rt) : ?>
                 <td scope="col"></td>
                 <?php endforeach; ?>
                 <td></td>
                 <td></td>
                 <?php foreach ($dimensi[$d]['nilai_rescale'] as $nr) : ?>
-                <td class="text-center"><?= $nr ?></td>
+                <td class=""><?= $nr ?></td>
                 <?php endforeach; ?>
             </tr>
             <?php $jumlahSubDimensi = $jumlahData['detail'][$d]['subDimensi']['jumlah_sd'];
                 for ($sd = 0; $sd < $jumlahSubDimensi; $sd++) { ?>
             <!-- Sub Dimensi -->
-            <tr class="sub-dimensi font-weight-bold" id="sub-dimensi">
+            <tr class="sub-dimensiSD" id="sub-dimensiSD">
                 <td></td>
                 <td><?= ($sd + 1); ?></td>
                 <td></td>
-                <td><?= $dimensi[$d]['subDimensi'][$sd]['nama_sub_dimensi'] ?></td>
+                <td class="nama_sub_dimensi"><?= $dimensi[$d]['subDimensi'][$sd]['nama_sub_dimensi'] ?></td>
                 <?php foreach ($range_tahun as $rt) : ?>
                 <td scope="col"></td>
                 <?php endforeach; ?>
                 <td></td>
                 <td></td>
                 <?php foreach ($dimensi[$d]['subDimensi'][$sd]['nilai_rescale'] as $snr) : ?>
-                <td class="text-center"><?= $snr ?></td>
+                <td class=""><?= $snr ?></td>
                 <?php endforeach; ?>
             </tr>
             <?php $jumlahIndikator = $jumlahData['detail'][$d]['subDimensi']['detail'][$sd]['indikator']['jumlah_indikator']; ?>
@@ -153,14 +156,14 @@
                 <td class=""></td>
                 <td class=""></td>
                 <td class="" id="<?= $id ?>"><?= $ind + 1; ?></td>
-                <td class="" id="<?= $id ?>"><?= $indikator[$ind]['nama_indikator'] ?></td>
+                <td class="nama_indikator" id="<?= $id ?>"><?= $indikator[$ind]['nama_indikator'] ?></td>
                 <?php foreach ($indikator[$ind]['nilai_eksisting'] as $ine) : ?>
-                <td class="text-center"><?= $ine ?></td>
+                <td class=""><?= $ine ?></td>
                 <?php endforeach; ?>
-                <td class="text-center"><?= round($indikator[$ind]['max_nilai'], 2); ?></td>
-                <td class="text-center"><?= round($indikator[$ind]['min_nilai'], 2); ?></td>
+                <td class=""><?= round($indikator[$ind]['max_nilai'], 2); ?></td>
+                <td class=""><?= round($indikator[$ind]['min_nilai'], 2); ?></td>
                 <?php foreach ($indikator[$ind]['nilai_rescale'] as $inr) : ?>
-                <td class="text-center"><?= $inr ?></td>
+                <td class=""><?= $inr ?></td>
                 <?php endforeach; ?>
             </tr>
             <?php } ?>
