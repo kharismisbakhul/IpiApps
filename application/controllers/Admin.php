@@ -336,6 +336,8 @@ class Admin extends CI_Controller
         $data['n_subdimensi'] = $this->db->select('nama_sub_dimensi,kode_sd')->get_where('subdimensi', ['kode_sd' => $subdimensi])->row_array();
 
         $data['n_indikator'] = $this->db->select('nama_indikator,kode_indikator')->get_where('indikator', ['kode_sd' => $subdimensi])->result_array();
+        $data['nilai_indikator'] = $this->_getNilaiRealIndikator($subdimensi);
+
 
         $data['indikator'] = $this->_getNilaiIndikator($subdimensi, $star_date, $end_date);
         echo json_encode($data);
@@ -576,5 +578,20 @@ class Admin extends CI_Controller
         $data['max'] = $this->admin->getMax($indikator, $star_date, $end_date);
         $data['min'] = $this->admin->getMin($indikator, $star_date, $end_date);
         return $data;
+    }
+
+    private function _getNilaiRealIndikator($sbdimensi, $star_date = null, $end_date = null)
+    {
+        $this->load->model('Admin_model', 'admin');
+        $tahun = $this->admin->getTahun($star_date, $end_date);
+        $data_indikator = $this->db->get_where('indikator', ['kode_sd' => $sbdimensi])->result_array();
+        $nilai_indikator = [];
+        foreach ($tahun as $t) {
+            foreach ($data_indikator as $i) {
+                $nilai = $this->admin->getNilaiIndikatorReal($i['kode_indikator'], $t['tahun']);
+                $nilai_indikator[$i['kode_indikator']][$t['tahun']] = round($nilai['nilai'], 2);
+            }
+        }
+        return $nilai_indikator;
     }
 }

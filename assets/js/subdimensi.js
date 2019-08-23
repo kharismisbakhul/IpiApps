@@ -9,6 +9,7 @@ let nama_subdimensi = [];
 let tahun = [];
 let nilaiSubdimensi = [];
 let nilaiIndikator = [];
+let nilaiReal = [];
 let max_tahun;
 let min_tahun;
 $(document).ready(function () {
@@ -32,14 +33,26 @@ $(document).ready(function () {
 		success: function (data) {
 			// alert("SUKSES");
 			// console.log(data);
+
 			$(".loader").remove();
 			$(".header-table").show();
 			$("#chart-subdimensi").show();
+
+
 			for (var i in data["tahun"]) {
 				tahun.push(data["tahun"][i].tahun);
 			}
 			for (var i in data["n_indikator"]) {
 				nama_indikator.push(data["n_indikator"][i].nama_indikator);
+			}
+
+			let dataTampungSub2 = [];
+			let index = 1
+			for (var i in data["nilai_indikator"]) {
+				nilaiReal = [];
+				nilaiReal = data['nilai_indikator'][i];
+				dataTampungSub2[index] = nilaiReal
+				index++
 			}
 
 			let dataTampungSub = [];
@@ -192,6 +205,7 @@ $(document).ready(function () {
 						display: true
 					},
 					tooltips: {
+						// enabled: false,
 						titleMarginBottom: 10,
 						titleFontColor: "#6e707e",
 						titleFontSize: 14,
@@ -202,13 +216,25 @@ $(document).ready(function () {
 						xPadding: 1,
 						yPadding: 6,
 						displayColors: false,
-						caretPadding: 10
+						caretPadding: 10,
+						footerFontColor: 'red',
+						callbacks: {
+							afterFooter: function (tooltipItem, data) {
+
+								if (tooltipItem[0]['datasetIndex'] != 0) {
+									return dataTampungSub2[tooltipItem[0]['datasetIndex']][tooltipItem[0]['label']]
+
+								}
+
+							}
+						}
+
 					}
 				}
 			});
-			console.log(x);
 		},
 		error: function (data) {
+
 			// console.log(data);
 			$(".loader").remove();
 			$("#chart-subdimensi").remove();

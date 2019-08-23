@@ -4,6 +4,17 @@ class Admin_model extends CI_Model
 {
     //Updated
 
+    public function getNilaiIndikatorReal($kode_indikator, $tahun = null)
+    {
+        $this->db->select('nilaiindikator.nilai');
+        $this->db->from('nilaiindikator');
+        $this->db->where('nilaiindikator.kode_indikator', $kode_indikator);
+        if ($tahun != null) {
+            $this->db->where('nilaiindikator.tahun', $tahun);
+        }
+        return $this->db->get()->row_array();
+    }
+
     public function getKodeDimensi($nama_d)
     {
         $this->db->where('nama_dimensi', $nama_d);

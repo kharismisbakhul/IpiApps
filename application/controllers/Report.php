@@ -53,9 +53,7 @@ class Report extends CI_Controller
         $data['ipi'] = $this->admin->getIPI($data['star_date'], $data['end_date']);
         $data['dimensi'] = $this->admin->getDimensiRange($data['star_date'], $data['end_date']);
         $data['jumlahData'] = $this->jumlah->getJumlahDimensi();
-        // echo json_encode($data);
-        // die;
-        // header("Content-type: application/json");
+
 
         $this->load->view('export', $data);
     }
