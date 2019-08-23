@@ -94,7 +94,7 @@
 
         <?php
         }; ?>
-        <?php $subDimensi = $this->db->get('subDimensi')->result_array(); ?>
+        <?php $subDimensi = $this->db->get('subdimensi')->result_array(); ?>
         <?php $dimensi = $this->db->get('dimensi')->result_array(); ?>
         <!-- Nav Item - Pages Collapse Menu -->
 
@@ -167,10 +167,20 @@
             <?php else : ?>
         <li class="nav-item">
             <?php endif; ?>
-            <a class="nav-link pb-0" href="<?= base_url('admin/report'); ?>">
+            <a class="nav-link collapsed pb-0" href="#" data-toggle="collapse" data-target="#colepsReport" aria-expanded="true" aria-controls="collapseOne">
                 <i class="fas fa-fw fa-file-alt"></i>
                 <span>Report</span>
             </a>
+            <!-- Menu Dropdown -->
+            <div id="colepsReport" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <span>
+                        <a class="collapse-item" href="<?= base_url('admin/report/asli') ?>">Data Indikator Sosial<br>Ekonomi</a>
+                        <a class="collapse-item" href="<?= base_url('admin/report/rescale') ?>">Data Indeks Sosial<br>Ekonomi</a>
+                    </span>
+                </div>
+                <!-- -- Updated -->
+            </div>
         </li>
 
         <!-- Panduan -->

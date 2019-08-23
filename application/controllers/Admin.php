@@ -336,7 +336,7 @@ class Admin extends CI_Controller
         $data['n_subdimensi'] = $this->db->select('nama_sub_dimensi,kode_sd')->get_where('subdimensi', ['kode_sd' => $subdimensi])->row_array();
 
         $data['n_indikator'] = $this->db->select('nama_indikator,kode_indikator')->get_where('indikator', ['kode_sd' => $subdimensi])->result_array();
-
+        $data['nilai_indikator'] = $this->_getNilaiRealIndikator($subdimensi);
         $data['indikator'] = $this->_getNilaiIndikator($subdimensi, $star_date, $end_date);
         echo json_encode($data);
     }
@@ -344,22 +344,50 @@ class Admin extends CI_Controller
     public function Report()
     {
         $this->load->model('Admin_model', 'admin');
+        $this->load->model('Jumlah_model', 'jumlah');
         $data = $this->initData();
         $data['title'] = 'Report';
-        $star_date = $this->input->get('star_date');
-        $end_date = $this->input->get('end_date');
-        $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
-        $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
+        $seleksi = $this->uri->segment(3);
+        if ($seleksi === "asli") {
+            $min =  $this->db->select('min(tahun) as tahun')->get('nilaiindikator')->row_array();
+            $max = $this->db->select('max(tahun) as tahun')->get('nilaiindikator')->row_array();
+            $data['star_date'] = $min['tahun'];
+            $data['end_date'] = $max['tahun'];
+            if ($this->input->get('star_date') && $this->input->get('end_date')) {
+                $data['star_date'] = $this->input->get('star_date');
+                $data['end_date'] = $this->input->get('end_date');
+                $data['col_span'] =  $data['end_date'] -  $data['star_date']   + 1;
+                $data['range_tahun'] = $this->admin->getSemuaTahun($data['star_date'], $data['end_date']);
+            } else {
+                $data['col_span'] = $data['end_date'] -  $data['star_date']   + 1;
+                $data['range_tahun'] = $this->admin->getSemuaTahun($data['star_date'], $data['end_date']);
+            }
+            // Data IPI - IPI
+            $data['ipi'] = $this->admin->getIPI($data['star_date'], $data['end_date']);
+            $data['dimensi'] = $this->admin->getDimensiRange($data['star_date'], $data['end_date']);
+            $data['jumlahData'] = $this->jumlah->getJumlahDimensi();
+            $this->loadTemplate($data);
+            $this->load->view('menu/report_asli', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $star_date = $this->input->get('star_date');
+            $end_date = $this->input->get('end_date');
+            $data['max_tahun'] = $this->db->select('MAX(tahun) as tahun')->get('ipi')->row_array();
+            $data['min_tahun'] = $this->db->select('MIN(tahun) as tahun')->get('ipi')->row_array();
+            $data['tahun_selc'] = $this->admin->getTahun();
+            $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
+            $data['dimensi'] = $this->db->select('kode_d,nama_dimensi')->get('dimensi')->result_array();
+            $data['subdimensi'] = $this->db->select('kode_sd,kode_d,nama_sub_dimensi')->get('subdimensi')->result_array();
+            $data['indikator'] = $this->db->select('kode_indikator,nama_indikator,kode_sd,status,max_nilai,min_nilai,status')->get('indikator')->result_array();
+            $data['nilai_indikator'] = $this->admin->getNilaiIndikator($star_date, $end_date);
+            $this->loadTemplate($data);
+            $this->load->view('menu/report_rescale', $data);
+            $this->load->view('templates/footer');
+        }
+        // header("Content-type: application/json");
+        // echo json_encode($data);
+        // die;
 
-        $data['tahun_selc'] = $this->admin->getTahun();
-        $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
-        $data['dimensi'] = $this->db->select('kode_d,nama_dimensi')->get('dimensi')->result_array();
-        $data['subdimensi'] = $this->db->select('kode_sd,kode_d,nama_sub_dimensi')->get('subdimensi')->result_array();
-        $data['indikator'] = $this->db->select('kode_indikator,nama_indikator,kode_sd,status,max_nilai,min_nilai,status')->get('indikator')->result_array();
-        $data['nilai_indikator'] = $this->admin->getNilaiIndikator($star_date, $end_date);
-        $this->loadTemplate($data);
-        $this->load->view('menu/report_2', $data);
-        $this->load->view('templates/footer');
     }
 
     public function reportApi()
@@ -576,5 +604,19 @@ class Admin extends CI_Controller
         $data['max'] = $this->admin->getMax($indikator, $star_date, $end_date);
         $data['min'] = $this->admin->getMin($indikator, $star_date, $end_date);
         return $data;
+    }
+    private function _getNilaiRealIndikator($sbdimensi, $star_date = null, $end_date = null)
+    {
+        $this->load->model('Admin_model', 'admin');
+        $tahun = $this->admin->getTahun($star_date, $end_date);
+        $data_indikator = $this->db->get_where('indikator', ['kode_sd' => $sbdimensi])->result_array();
+        $nilai_indikator = [];
+        foreach ($tahun as $t) {
+            foreach ($data_indikator as $i) {
+                $nilai = $this->admin->getNilaiIndikatorReal($i['kode_indikator'], $t['tahun']);
+                $nilai_indikator[$i['kode_indikator']][$t['tahun']] = round($nilai['nilai'], 2);
+            }
+        }
+        return $nilai_indikator;
     }
 }

@@ -2,7 +2,6 @@
     table thead tr th {
         background-color: #485460;
         color: #ecf0f1;
-        border: 1px black;
     }
 
     table thead tr th,
@@ -74,7 +73,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <form action="<?= base_url('admin/report') ?>" method="get">
+                        <form action="<?= base_url('admin/report/asli') ?>" method="get">
                             <div class="row ml-1 mr-1">
                                 <div class="col-lg-12 mb-2 text-justify">
                                     Untuk menampilkan data pada
@@ -102,7 +101,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-4 col-md-4 col-sm-4">
+        <div class="col-xl-5 col-md-5 col-sm-5">
             <div class="card shadow h-auto" style="width: 70%">
                 <div class="card-header text-white" style="background-color:#3867d6;">
                     <div class="text-sm font-weight-bold text-center">
@@ -111,7 +110,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg">
                             <a href="<?= base_url('inputData'); ?>" class="btn btn-primary btn-icon-split tambah-user pr-5 float-left">
                                 <span class="icon text-white-50 float-left">
                                     <i class="fas fa-fw fa-plus"></i>
@@ -120,7 +119,7 @@
                             </a>
                         </div>
                         <div class="mt-3 col-lg export-excel">
-                            <a href="<?= base_url('report/export?star_date=') . $this->input->get('star_date'); ?>&end_date=<?= $this->input->get('end_date');   ?>" class="btn btn-success btn-icon-split export-to-excel">
+                            <a href="<?= base_url('report/export/asli?star_date=') . $this->input->get('star_date'); ?>&end_date=<?= $this->input->get('end_date');   ?>" class="btn btn-success btn-icon-split export-to-excel">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-fw fa-file-excel"></i>
                                 </span>
@@ -137,114 +136,85 @@
             <div class="card shadow h-100">
                 <div class="card-header text-white" style="background-color:#3867d6;">
                     <div class="text-sm font-weight-bold text-center">
-                        <?= $title;  ?> : Indeks Pembangunan Inklusif
+                        <?= $title;  ?> : Indeks Pembangunan Inklusif - Data Indikator Sosial Ekonomi
                     </div>
                 </div>
                 <div class="card-body global">
-                    <div class="text-center report">
-                        <p>Kalkulasi Data Indeks Pembangunan Inklusif...</p>
-                        <div id="progressTimer"></div>
-                    </div>
-
                     <div class="row">
                         <div class="col-md-12 data-report">
                             <div class="table-responsive mx-auto my-auto">
                                 <div style="height: 510px">
-                                    <div class="loading-progress"></div>
-
-                                    <table class="table table-bordered table-borde table-report table-global text-nowrap" id="myTable">
+                                    <table class="table table-bordered table-borde table-report table-global text-nowrap">
                                         <thead class="text-center">
                                             <tr>
                                                 <th class="align-middle" rowspan="2" colspan="3">Kode</th>
                                                 <th class="align-middle" rowspan="2">Dimensi</th>
-                                                <th colspan="<?= count($tahun) ?>" class="align-middle">Nilai Indikator Eksisting</th>
-                                                <th rowspan="2" class="align-middle">Nilai Max</th>
-                                                <th rowspan="2" class="align-middle">Nilai Min</th>
-                                                <th colspan="<?= count($tahun) ?>" class="align-middle">Re-Scale Indikator (SCORE)</th>
+                                                <th colspan="<?= $col_span ?>" class="align-middle">Data Indikator Sosial Ekonomi</th>
                                             </tr>
                                             <tr>
-                                                <!-- Tahun Nilai Indikator -->
-                                                <?php foreach ($tahun as $t) : ?>
-                                                <th scope="col"><?= $t['tahun'] ?></th>
-                                                <?php endforeach; ?>
                                                 <!-- Tahun Re-Scale Indikator (SCORE) -->
-                                                <?php foreach ($tahun as $rt) : ?>
+                                                <?php foreach ($range_tahun as $rt) : ?>
                                                 <th scope="col"><?= $rt['tahun'] ?></th>
                                                 <?php endforeach; ?>
-
                                             </tr>
                                         </thead>
-                                        <tbody class="iniData" style="color: #101010">
-                                            <tr class="ipi" id="ipi">
+                                        <tbody style="color: #101010">
+                                            <!-- IPI Column -->
+                                            <tr id="ipi">
                                                 <td colspan="4">Indeks Pembangunan Inklusif</td>
-                                                <?php foreach ($tahun as $t) : ?>
-                                                <td></td>
-                                                <?php endforeach; ?>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <!-- dimensi -->
-                                            <?php $indek1 = 1; ?>
-                                            <?php foreach ($dimensi as $d) : ?>
-                                            <tr class="dimensi<?= $d['kode_d'] ?>" id="dimensiD">
-                                                <td><?= $indek1++ ?></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class="text-left"><?= $d['nama_dimensi'] ?></td>
-                                                <?php foreach ($tahun as $t) : ?>
-                                                <td></td>
-                                                <?php endforeach; ?>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <!-- Subdimensi -->
-                                            <?php $indek2 = 1; ?>
-                                            <?php foreach ($subdimensi as $sd) : ?>
-                                            <?php if ($sd['kode_d'] == $d['kode_d']) : ?>
-                                            <tr class="subdimensi<?= $sd['kode_sd'] ?>" id="sub-dimensiSD">
-                                                <td></td>
-                                                <td><?= $indek2++; ?></td>
-                                                <td></td>
-                                                <td class="text-left"><?= $sd['nama_sub_dimensi'] ?></td>
-                                                <?php foreach ($tahun as $t) : ?>
-                                                <td></td>
-                                                <?php endforeach; ?>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <!-- Indikator -->
-                                            <?php $indek3 = 1; ?>
-                                            <?php foreach ($indikator as $in) : ?>
-                                            <?php if ($in['kode_sd'] == $sd['kode_sd']) : ?>
-                                            <tr class="indikator<?= $in['kode_indikator']  ?>" id="indikatorI">
-                                                <td></td>
-                                                <td></td>
-                                                <td><?= $indek3++; ?></td>
-                                                <?php $id = "";
-                                                                    if ($in['status'] == 1) {
-                                                                        $id = "status1";
-                                                                    } elseif ($in['status'] == 2) {
-                                                                        $id = "status2";
-                                                                    } ?>
-                                                <td id="<?= $id ?>" class="text-left"><?= $in['nama_indikator'] ?></td>
-                                                <!-- Nilai Indikator -->
-                                                <?php foreach ($tahun as $t) : ?>
-                                                <?php foreach ($nilai_indikator as $nilai) : ?>
-                                                <?php if ($nilai['tahun'] == $t['tahun'] && $nilai['kode_indikator'] == $in['kode_indikator']) : ?>
-                                                <td><?= round($nilai['nilai'], 2) ?></td>
-                                                <?php endif; ?>
-                                                <?php endforeach; ?>
+                                                <?php foreach ($range_tahun as $rt) : ?>
+                                                <td scope="col"></td>
                                                 <?php endforeach; ?>
                                             </tr>
-                                            <?php endif; ?>
-                                            <?php endforeach; ?>
-                                            <!-- Akhir Indikator -->
-                                            <?php endif; ?>
-                                            <?php endforeach; ?>
-                                            <!-- akhir Subdimensi -->
-                                            <?php endforeach; ?>
-                                            <!-- akhir dimensi -->
+                                            <!-- IPI Column End -->
 
+                                            <?php for ($d = 0; $d < $jumlahData['jumlah_d']; $d++) { ?>
+                                            <!-- Dimensi -->
+                                            <tr class="dimensiD" id="dimensiD">
+                                                <td><?= ($d + 1); ?></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-left"><?= $dimensi[$d]['nama_dimensi'] ?></td>
+                                                <?php foreach ($range_tahun as $rt) : ?>
+                                                <td scope="col"></td>
+                                                <?php endforeach; ?>
+                                            </tr>
+                                            <?php $jumlahSubDimensi = $jumlahData['detail'][$d]['subDimensi']['jumlah_sd'];
+                                                for ($sd = 0; $sd < $jumlahSubDimensi; $sd++) { ?>
+                                            <!-- Sub Dimensi -->
+                                            <tr class="sub-dimensiSD" id="sub-dimensiSD">
+                                                <td></td>
+                                                <td><?= ($sd + 1); ?></td>
+                                                <td></td>
+                                                <td class="text-left"><?= $dimensi[$d]['subDimensi'][$sd]['nama_sub_dimensi'] ?></td>
+                                                <?php foreach ($range_tahun as $rt) : ?>
+                                                <td scope="col"></td>
+                                                <?php endforeach; ?>
+                                            </tr>
+                                            <?php $jumlahIndikator = $jumlahData['detail'][$d]['subDimensi']['detail'][$sd]['indikator']['jumlah_indikator']; ?>
+                                            <?php for ($ind = 0; $ind < $jumlahIndikator; $ind++) { ?>
+                                            <!-- Indikator -->
+                                            <tr class="indikator" id="indikator">
+                                                <?php $id = "";
+                                                            $indikator = $dimensi[$d]['subDimensi'][$sd]['indikator'];
+                                                            if ($indikator[$ind]['status'] == 1) {
+                                                                $id = "status1";
+                                                            } elseif ($indikator[$ind]['status'] == 2) {
+                                                                $id = "status2";
+                                                            }
+                                                            ?>
+                                                <td class=""></td>
+                                                <td class=""></td>
+                                                <td class="" id="<?= $id ?>"><?= $ind + 1; ?></td>
+                                                <td class="text-left" id="<?= $id ?>"><?= $indikator[$ind]['nama_indikator'] ?></td>
+                                                <?php foreach ($indikator[$ind]['nilai_eksisting'] as $ine) : ?>
+                                                <td class=""><?= $ine ?></td>
+                                                <?php endforeach; ?>
+                                            </tr>
+                                            <?php } ?>
+                                            <?php } ?>
+                                            <?php } ?>
+                                            <!-- End Data -->
                                         </tbody>
                                     </table>
 

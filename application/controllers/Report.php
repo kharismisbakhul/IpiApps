@@ -11,6 +11,7 @@ class Report extends CI_Controller
         }
     }
 
+
     public function loadTemplate($data)
     {
         $this->load->view('templates/header', $data);
@@ -57,6 +58,7 @@ class Report extends CI_Controller
         // die;
         // header("Content-type: application/json");
 
+        $data['segment'] = $this->uri->segment(3);
         $this->load->view('export', $data);
     }
 }

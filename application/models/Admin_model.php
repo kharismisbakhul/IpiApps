@@ -360,4 +360,14 @@ class Admin_model extends CI_Model
         }
         return $this->db->get()->result_array();
     }
+    public function getNilaiIndikatorReal($kode_indikator, $tahun = null)
+    {
+        $this->db->select('nilaiindikator.nilai');
+        $this->db->from('nilaiindikator');
+        $this->db->where('nilaiindikator.kode_indikator', $kode_indikator);
+        if ($tahun != null) {
+            $this->db->where('nilaiindikator.tahun', $tahun);
+        }
+        return $this->db->get()->row_array();
+    }
 }

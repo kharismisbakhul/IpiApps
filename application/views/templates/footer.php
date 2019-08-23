@@ -61,7 +61,7 @@ if ($this->uri->segment(1) == 'inputData') {
 <script src="<?= base_url('assets/'); ?>js/subdimensi.js"></script>
 <?php elseif ($this->uri->segment(2) == 'ipi') : ?>
 <script src="<?= base_url('assets/'); ?>js/ipi.js"></script>
-<?php elseif ($this->uri->segment(2) == 'report') : ?>
+<?php elseif ($this->uri->segment(3) == 'rescale') : ?>
 <script src="<?= base_url('assets/'); ?>js/report.js"></script>
 <?php elseif ($this->uri->segment(2) == null && $this->uri->segment(1) == "admin") : ?>
 <script src="<?= base_url('assets/'); ?>js/dashboard.js"></script>

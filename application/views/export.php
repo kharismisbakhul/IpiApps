@@ -76,18 +76,14 @@
             <tr>
                 <th rowspan="2" colspan="3">Kode</th>
                 <th rowspan="2">Dimensi</th>
-                <th colspan="<?= $col_span ?>">Nilai Indikator Eksisting</th>
-                <th rowspan="2">Nilai Max</th>
-                <th rowspan="2">Nilai Min</th>
-                <th colspan="<?= $col_span ?>">Re-Scale Indikator (SCORE)</th>
+                <?php if ($segment === "asli") { ?>
+                <th colspan="<?= $col_span ?>">Data Indikator Sosial Ekonomi</th>
+                <?php } else { ?>
+                <th colspan="<?= $col_span ?>">Data Indeks Sosial Ekonomi</th>
+                <?php } ?>
             </tr>
             <tr>
                 <!-- Tahun Nilai Indikator -->
-                <?php foreach ($range_tahun as $rt) : ?>
-                <th scope="col"><?= $rt['tahun'] ?></th>
-                <?php endforeach; ?>
-
-                <!-- Tahun Re-Scale Indikator (SCORE) -->
                 <?php foreach ($range_tahun as $rt) : ?>
                 <th scope="col"><?= $rt['tahun'] ?></th>
                 <?php endforeach; ?>
@@ -97,14 +93,15 @@
             <!-- IPI Column -->
             <tr id="ipi">
                 <td colspan="4">Indeks Pembangunan Inklusif</td>
+                <?php if ($segment === "asli") { ?>
                 <?php foreach ($range_tahun as $rt) : ?>
                 <td scope="col"></td>
                 <?php endforeach; ?>
-                <td></td>
-                <td></td>
+                <?php } else { ?>
                 <?php foreach ($ipi as $i) : ?>
                 <td><?= $i['nilai_rescale'] ?></td>
                 <?php endforeach; ?>
+                <?php } ?>
             </tr>
             <!-- IPI Column End -->
 
@@ -115,14 +112,15 @@
                 <td></td>
                 <td></td>
                 <td class="nama_dimensi"><?= $dimensi[$d]['nama_dimensi'] ?></td>
+                <?php if ($segment === "asli") { ?>
                 <?php foreach ($range_tahun as $rt) : ?>
                 <td scope="col"></td>
                 <?php endforeach; ?>
-                <td></td>
-                <td></td>
+                <?php } else { ?>
                 <?php foreach ($dimensi[$d]['nilai_rescale'] as $nr) : ?>
                 <td class=""><?= $nr ?></td>
                 <?php endforeach; ?>
+                <?php } ?>
             </tr>
             <?php $jumlahSubDimensi = $jumlahData['detail'][$d]['subDimensi']['jumlah_sd'];
                 for ($sd = 0; $sd < $jumlahSubDimensi; $sd++) { ?>
@@ -132,14 +130,15 @@
                 <td><?= ($sd + 1); ?></td>
                 <td></td>
                 <td class="nama_sub_dimensi"><?= $dimensi[$d]['subDimensi'][$sd]['nama_sub_dimensi'] ?></td>
+                <?php if ($segment === "asli") { ?>
                 <?php foreach ($range_tahun as $rt) : ?>
                 <td scope="col"></td>
                 <?php endforeach; ?>
-                <td></td>
-                <td></td>
+                <?php } else { ?>
                 <?php foreach ($dimensi[$d]['subDimensi'][$sd]['nilai_rescale'] as $snr) : ?>
                 <td class=""><?= $snr ?></td>
                 <?php endforeach; ?>
+                <?php } ?>
             </tr>
             <?php $jumlahIndikator = $jumlahData['detail'][$d]['subDimensi']['detail'][$sd]['indikator']['jumlah_indikator']; ?>
             <?php for ($ind = 0; $ind < $jumlahIndikator; $ind++) { ?>
@@ -157,14 +156,15 @@
                 <td class=""></td>
                 <td class="" id="<?= $id ?>"><?= $ind + 1; ?></td>
                 <td class="nama_indikator" id="<?= $id ?>"><?= $indikator[$ind]['nama_indikator'] ?></td>
+                <?php if ($segment === "asli") { ?>
                 <?php foreach ($indikator[$ind]['nilai_eksisting'] as $ine) : ?>
                 <td class=""><?= $ine ?></td>
                 <?php endforeach; ?>
-                <td class=""><?= round($indikator[$ind]['max_nilai'], 2); ?></td>
-                <td class=""><?= round($indikator[$ind]['min_nilai'], 2); ?></td>
+                <?php } else { ?>
                 <?php foreach ($indikator[$ind]['nilai_rescale'] as $inr) : ?>
                 <td class=""><?= $inr ?></td>
                 <?php endforeach; ?>
+                <?php } ?>
             </tr>
             <?php } ?>
             <?php } ?>

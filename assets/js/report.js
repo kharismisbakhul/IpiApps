@@ -1,6 +1,6 @@
 var url = $(location).attr("href");
 var segments = url.split("/");
-var action = segments[5];
+var action = segments[6];
 var data = action.split("?");
 
 let iniUrl = segments[0] + "/IpiApps/Admin/reportApi?" + data[1];
@@ -134,18 +134,18 @@ function _getDataToTable(data) {
 		}
 	}
 
-	for (var i in data['min_max']) {
-		$(".indikator" + i).append(
-			`
-			<td scope="col">` +
-			parseFloat(data["min_max"][i]['max']['nilai']).toFixed(2) +
-			`</td>
-			<td scope="col">` +
-			parseFloat(data["min_max"][i]['min']['nilai']).toFixed(2) +
-			`</td>
-		`
-		)
-	}
+	// for (var i in data['min_max']) {
+	// 	$(".indikator" + i).append(
+	// 		`
+	// 		<td scope="col">` +
+	// 		parseFloat(data["min_max"][i]['max']['nilai']).toFixed(2) +
+	// 		`</td>
+	// 		<td scope="col">` +
+	// 		parseFloat(data["min_max"][i]['min']['nilai']).toFixed(2) +
+	// 		`</td>
+	// 	`
+	// 	)
+	// }
 
 	// console.log(data['indikator'])
 	for (var i in data['sub_dimensi']) {

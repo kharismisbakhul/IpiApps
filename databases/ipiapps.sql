@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Aug 14, 2019 at 08:38 AM
--- Server version: 10.1.30-MariaDB
--- PHP Version: 7.2.1
+-- Host: localhost
+-- Generation Time: Aug 23, 2019 at 10:56 AM
+-- Server version: 10.4.6-MariaDB
+-- PHP Version: 7.3.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -52,8 +52,8 @@ CREATE TABLE `indikator` (
   `kode_indikator` int(11) NOT NULL,
   `nama_indikator` varchar(128) NOT NULL,
   `status` int(11) NOT NULL,
-  `max_nilai` double NOT NULL DEFAULT '0',
-  `min_nilai` double NOT NULL DEFAULT '0',
+  `max_nilai` double NOT NULL DEFAULT 0,
+  `min_nilai` double NOT NULL DEFAULT 0,
   `kode_sd` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -62,60 +62,59 @@ CREATE TABLE `indikator` (
 --
 
 INSERT INTO `indikator` (`kode_indikator`, `nama_indikator`, `status`, `max_nilai`, `min_nilai`, `kode_sd`) VALUES
-(1, 'Deflator PDRB', 1, 1.30563473, 1.114462916, 1),
-(2, 'Deflator Sektor Pertanian', 1, 1.588604204, 1.170133092, 1),
-(3, 'Deflator Sektor Pertambangan', 1, 1.343635264, 0.820265656, 1),
-(4, 'Deflator Sektor Industri', 1, 1.316739472, 1.114506355, 1),
-(5, 'Deflator Sektor Konstruksi', 1, 1.382268242, 1.068184125, 1),
-(6, 'Deflator Sektor Perdagangan', 1, 1.361137545, 1.089844822, 1),
-(7, 'Pertumbuhan PDRB harga konstan', 0, 7.04, 5.49, 2),
-(8, 'PDRB perkapita harga konstan', 0, 70703.8, 55499, 2),
-(9, 'Pertumbuhan PDRB riil per kapita', 0, 11.48843483, 5.755846473, 2),
-(10, 'Pertumbuhan Sektor Pertanian', 0, 6.25, 4.46, 2),
-(11, 'Pertumbuhan Sektor Industri', 0, 7.576369588, 4.21, 2),
-(12, 'Kontribusi Sektor Industri', 0, 49.39004464, 47.54319065, 2),
-(13, 'Pertumbuhan Pembentukan Modal Tetap Bruto', 0, 11.58, 4.59, 2),
-(14, 'Pertumbuhan Ekspor', 0, 6.69, 3.6, 2),
-(15, 'Persentase tenaga kerja sektor industri', 0, 35.22329346, 27.97073336, 3),
-(16, 'Rata-rata Lama Sekolah', 0, 8.95, 8.41, 3),
-(17, 'Angka Harapan Lama Sekolah', 0, 13.7, 12.63, 3),
-(18, 'Angka Partisipasi Murni (APM) setingkat sekolah dasar', 0, 98.73, 91.47, 3),
-(19, 'Angka Partisipasi Murni (APM) setingkat sekolah menengah pertama', 0, 90.61, 79.91, 3),
-(20, 'Angka Partisipasi Murni (APM) setingkat sekolah menengah atas', 0, 79.27, 61.3, 3),
-(21, 'Angka Harapan Hidup', 0, 72.36, 72.18, 3),
-(22, 'Rasio Murid terhadap Guru SD', 1, 15.58678021, 15.07555988, 3),
-(23, 'Rasio Murid terhadap Guru SMP', 1, 12.75116279, 11.59346847, 3),
-(24, 'Rasio Murid terhadap Guru SMA', 1, 11.49681529, 8.355473555, 3),
-(25, 'Rasio Murid terhadap Guru SMK', 1, 12.55679812, 11.26842461, 3),
-(26, 'Rasio Murid terhadap Jumah SD', 1, 174.3536036, 170.8764045, 3),
-(27, 'Rasio Murid terhadap Jumah SMP', 1, 326.0873786, 308.85, 3),
-(28, 'Rasio Murid terhadap Jumah SMA', 1, 11.49681529, 8.355473555, 3),
-(29, 'Rasio Murid terhadap Jumah SMK', 1, 402.5283019, 352.8653846, 3),
-(30, 'Angka Kematian Bayi', 1, 20.95, 18.24, 3),
-(31, 'Angka Morbiditas', 1, 13.21, 9.35, 3),
-(32, 'Rasio Kasus Penyakit Utamas Masyarakat Gresik terhadap Penduduk', 1, 0.388702315, 0.080999474, 3),
-(33, 'Persentase Bayi dengan Gizi Cukup (Berat Badan > 2.5 kg)', 0, 0.991074528, 0.972570613, 3),
-(34, 'Rasio Rumah Sakit per Penduduk', 0, 0.74276669, 0.700379294, 3),
-(35, 'Rasio Puskesmas Umum dan Pembantu per Penduduk', 0, 8.995729917, 8.171091767, 3),
-(36, 'Persentase Penduduk Miskin', 1, 14.35, 12.8, 4),
-(37, 'Indeks Keparahan Kemiskinan', 1, 2.58, 2.19, 4),
-(38, 'Indeks Kedalaman Kemiskinan', 1, 0.72, 0.56, 4),
-(39, 'Tingkat Pengangguran Terbuka', 1, 6.78, 4.54, 4),
-(40, 'Indeks Pemberdayaan Gender', 0, 66.21, 62.26, 5),
-(41, 'Persentase Rumah Tangga dengan Luas Lantai Hunian ? 50 m2', 0, 86.42, 82.36, 5),
-(42, 'Persentase Rumah Tangga dengan Lantai Bukan Tanah', 0, 97.91, 93.83, 5),
-(43, 'Persentase Rumah Tangga dengan Dinding Tembok', 0, 91.73, 85.02, 5),
-(44, 'Persentase Rumah Tangga dengan Atap Beton/Tembok', 0, 94.66, 90.05, 5),
-(45, 'Persentase Rumah Tangga dengan Sumber Air Minum Kemasan/Isi Ulang', 0, 84.78, 68.7, 5),
-(46, 'Persentase Rumah Tangga dengan Fasilitas BAB Sendiri', 0, 91.8, 86.35, 5),
-(47, 'Ruang Fiskal Daerah', 0, 0.683071642, 0.558244311, 6),
-(48, 'Derajat Desentralisasi Fiskal', 0, 0.310386692, 0.240590091, 6),
-(49, 'Rasio belanja pendidikan terhadap penduduk usia sekolah', 0, 2.259465144, 1.688141333, 6),
-(50, 'Rasio belanja kesehatan terhadap total penduduk', 0, 0.350097427, 0.153151906, 6),
-(51, 'Produktivitas Lahan Sawah', 0, 65.5, 61.55, 7),
-(52, 'Ketersediaan air bersih perkapita', 0, 0.070404524, 0.050192935, 7),
-(53, 'Ketersedian listrik per kapita', 0, 0.000739032, 0.000612356, 7),
-(54, 'BBBBBBB', 0, 1234444, 0, 2);
+(1, 'Indeks Deflator PDRB', 1, 1.30563473, 1.114462916, 1),
+(2, 'Indeks Deflator Sektor Pertanian', 1, 1.588604204, 1.170133092, 1),
+(3, 'Indeks Deflator Sektor Pertambangan', 1, 1.343635264, 0.820265656, 1),
+(4, 'Indeks Deflator Sektor Industri', 1, 1.316739472, 1.114506355, 1),
+(5, 'Indeks Deflator Sektor Konstruksi', 1, 1.382268242, 1.068184125, 1),
+(6, 'Indeks Deflator Sektor Perdagangan', 1, 1.361137545, 1.089844822, 1),
+(7, 'Indeks Pertumbuhan PDRB harga konstan', 0, 7.04, 5.49, 2),
+(8, 'Indeks PDRB perkapita harga konstan', 0, 70703.8, 55499, 2),
+(9, 'Indeks Pertumbuhan PDRB riil per kapita', 0, 11.48843483, 5.755846473, 2),
+(10, 'Indeks Pertumbuhan Sektor Pertanian', 0, 6.25, 4.46, 2),
+(11, 'Indeks Pertumbuhan Sektor Industri', 0, 7.576369588, 4.21, 2),
+(12, 'Indeks Kontribusi Sektor Industri', 0, 49.39004464, 47.54319065, 2),
+(13, 'Indeks Pertumbuhan Pembentukan Modal Tetap Bruto', 0, 11.58, 4.59, 2),
+(14, 'Indeks Pertumbuhan Ekspor', 0, 6.69, 3.6, 2),
+(15, 'Indeks Persentase tenaga kerja sektor industri', 0, 35.22329346, 27.97073336, 3),
+(16, 'Indeks Rata-rata Lama Sekolah', 0, 8.95, 8.41, 3),
+(17, 'Indeks Angka Harapan Lama Sekolah', 0, 13.7, 12.63, 3),
+(18, 'Indeks Angka Partisipasi Murni (APM) setingkat sekolah dasar', 0, 98.73, 91.47, 3),
+(19, 'Indeks Angka Partisipasi Murni (APM) setingkat sekolah menengah pertama', 0, 90.61, 79.91, 3),
+(20, 'Indeks Angka Partisipasi Murni (APM) setingkat sekolah menengah atas', 0, 79.27, 61.3, 3),
+(21, 'Indeks Angka Harapan Hidup', 0, 72.36, 72.18, 3),
+(22, 'Indeks Rasio Murid terhadap Guru SD', 1, 15.58678021, 15.07555988, 3),
+(23, 'Indeks Rasio Murid terhadap Guru SMP', 1, 12.75116279, 11.59346847, 3),
+(24, 'Indeks Rasio Murid terhadap Guru SMA', 1, 11.49681529, 8.355473555, 3),
+(25, 'Indeks Rasio Murid terhadap Guru SMK', 1, 12.55679812, 11.26842461, 3),
+(26, 'Indeks Rasio Murid terhadap Jumah SD', 1, 174.3536036, 170.8764045, 3),
+(27, 'Indeks Rasio Murid terhadap Jumah SMP', 1, 326.0873786, 308.85, 3),
+(28, 'Indeks Rasio Murid terhadap Jumah SMA', 1, 11.49681529, 8.355473555, 3),
+(29, 'Indeks Rasio Murid terhadap Jumah SMK', 1, 402.5283019, 352.8653846, 3),
+(30, 'Indeks Angka Kematian Bayi', 1, 20.95, 18.24, 3),
+(31, 'Indeks Angka Morbiditas', 1, 13.21, 9.35, 3),
+(32, 'Indeks Rasio Kasus Penyakit Utamas Masyarakat Gresik terhadap Penduduk', 1, 0.388702315, 0.080999474, 3),
+(33, 'Indeks Persentase Bayi dengan Gizi Cukup (Berat Badan > 2.5 kg)', 0, 0.991074528, 0.972570613, 3),
+(34, 'Indeks Rasio Rumah Sakit per Penduduk', 0, 0.74276669, 0.700379294, 3),
+(35, 'Indeks Rasio Puskesmas Umum dan Pembantu per Penduduk', 0, 8.995729917, 8.171091767, 3),
+(36, 'Indeks Persentase Penduduk Miskin', 1, 14.35, 12.8, 4),
+(37, 'Indeks Indeks Keparahan Kemiskinan', 1, 2.58, 2.19, 4),
+(38, 'Indeks Indeks Kedalaman Kemiskinan', 1, 0.72, 0.56, 4),
+(39, 'Indeks Tingkat Pengangguran Terbuka', 1, 6.78, 4.54, 4),
+(40, 'Indeks Indeks Pemberdayaan Gender', 0, 66.21, 62.26, 5),
+(41, 'Indeks Persentase Rumah Tangga dengan Luas Lantai Hunian ? 50 m2', 0, 86.42, 82.36, 5),
+(42, 'Indeks Persentase Rumah Tangga dengan Lantai Bukan Tanah', 0, 97.91, 93.83, 5),
+(43, 'Indeks Persentase Rumah Tangga dengan Dinding Tembok', 0, 91.73, 85.02, 5),
+(44, 'Indeks Persentase Rumah Tangga dengan Atap Beton/Tembok', 0, 94.66, 90.05, 5),
+(45, 'Indeks Persentase Rumah Tangga dengan Sumber Air Minum Kemasan/Isi Ulang', 0, 84.78, 68.7, 5),
+(46, 'Indeks Persentase Rumah Tangga dengan Fasilitas BAB Sendiri', 0, 91.8, 86.35, 5),
+(47, 'Indeks Ruang Fiskal Daerah', 0, 0.683071642, 0.558244311, 6),
+(48, 'Indeks Derajat Desentralisasi Fiskal', 0, 0.310386692, 0.240590091, 6),
+(49, 'Indeks Rasio belanja pendidikan terhadap penduduk usia sekolah', 0, 2.259465144, 1.688141333, 6),
+(50, 'Indeks Rasio belanja kesehatan terhadap total penduduk', 0, 0.350097427, 0.153151906, 6),
+(51, 'Indeks Produktivitas Lahan Sawah', 0, 65.5, 61.55, 7),
+(52, 'Indeks Ketersediaan air bersih perkapita', 0, 0.070404524, 0.050192935, 7),
+(53, 'Indeks Ketersedian listrik per kapita', 0, 0.000739032, 0.000612356, 7);
 
 -- --------------------------------------------------------
 
@@ -134,12 +133,12 @@ CREATE TABLE `ipi` (
 --
 
 INSERT INTO `ipi` (`id_nilai_ipi`, `tahun`, `nilai_rescale`) VALUES
-(1, 2012, 4.54),
-(2, 2013, 4.35),
-(3, 2014, 4.95),
-(4, 2015, 5.29),
-(5, 2016, 5.46),
-(6, 2017, 4.99);
+(1, 2012, 4.61),
+(2, 2013, 4.42),
+(3, 2014, 5.01),
+(4, 2015, 5.24),
+(5, 2016, 5.5),
+(6, 2017, 5.04);
 
 -- --------------------------------------------------------
 
@@ -159,12 +158,12 @@ CREATE TABLE `nilaidimensi` (
 --
 
 INSERT INTO `nilaidimensi` (`id_nilai_d`, `tahun`, `nilai_rescale`, `kode_d`) VALUES
-(1, 2012, 6.02, 1),
-(2, 2013, 5.19, 1),
-(3, 2014, 4.16, 1),
-(4, 2015, 4.89, 1),
-(5, 2016, 3.57, 1),
-(6, 2017, 3.22, 1),
+(1, 2012, 6.23, 1),
+(2, 2013, 5.4, 1),
+(3, 2014, 4.36, 1),
+(4, 2015, 4.72, 1),
+(5, 2016, 3.68, 1),
+(6, 2017, 3.38, 1),
 (7, 2012, 2.6, 2),
 (8, 2013, 4.37, 2),
 (9, 2014, 5.37, 2),
@@ -514,13 +513,7 @@ INSERT INTO `nilaiindikator` (`id_nilai_i`, `tahun`, `nilai`, `nilai_rescale`, `
 (315, 2014, 0.000675874, 5.01, 53),
 (316, 2015, 0.000695332, 6.55, 53),
 (317, 2016, 0.000654812, 3.35, 53),
-(318, 2017, 0.000612356, 0, 53),
-(319, 2012, 12.02, 0, 54),
-(320, 2013, 1234, 0.01, 54),
-(321, 2014, 10.2, 0, 54),
-(322, 2015, 1234444, 10, 54),
-(323, 2016, 0, 0, 54),
-(324, 2017, 0, 0, 54);
+(318, 2017, 0.000612356, 0, 53);
 
 -- --------------------------------------------------------
 
@@ -546,12 +539,12 @@ INSERT INTO `nilaisubdimensi` (`id_nilai_sd`, `tahun`, `nilai_rescale`, `kode_sd
 (4, 2015, 3.8916666666667, 1),
 (5, 2016, 3.12, 1),
 (6, 2017, 1.2883333333333, 1),
-(7, 2012, 5.0344444444444, 2),
-(8, 2013, 5.0077777777778, 2),
-(9, 2014, 4.7855555555556, 2),
-(10, 2015, 5.8022222222222, 2),
-(11, 2016, 2.5766666666667, 2),
-(12, 2017, 3.8433333333333, 2),
+(7, 2012, 5.66375, 2),
+(8, 2013, 5.6325, 2),
+(9, 2014, 5.38375, 2),
+(10, 2015, 5.2775, 2),
+(11, 2016, 2.89875, 2),
+(12, 2017, 4.32375, 2),
 (13, 2012, 4.1628571428571, 3),
 (14, 2013, 3.8880952380952, 3),
 (15, 2014, 3.4709523809524, 3),
