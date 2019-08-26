@@ -194,7 +194,7 @@
                                             <?php $jumlahIndikator = $jumlahData['detail'][$d]['subDimensi']['detail'][$sd]['indikator']['jumlah_indikator']; ?>
                                             <?php for ($ind = 0; $ind < $jumlahIndikator; $ind++) { ?>
                                             <!-- Indikator -->
-                                            <tr class="indikator" id="indikator">
+                                            <tr class="indikatorI" id="indikatorI">
                                                 <?php $id = "";
                                                             $indikator = $dimensi[$d]['subDimensi'][$sd]['indikator'];
                                                             if ($indikator[$ind]['status'] == 1) {
