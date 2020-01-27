@@ -57,11 +57,19 @@
                                     <div class="form-group col-md-2">
                                         <label for="sampaiTahun" class="text-xs">Sampai Tahun</label>
                                         <select class="custom-select" name="end_date" id="end-date">
-
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="sampaiTahun" class="text-xs">Jenis Grafik</label>
+                                        <select class="custom-select" name="grafik" id="switch" aria-label="Example select with button addon">
+                                            <option selected value="line">Pilih Jenis Grafik</option>
+                                            <option value="bar">bar</option>
+                                            <option value="line">scatter</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-2" style="padding-top: 1.9rem;">
                                         <label for=""></label>
+                                        <input type="hidden" class="grafik" value="<?= $this->input->get('grafik') ?>">
                                         <button type="submit" class="btn btn-primary" id="Search-Button">Cari</button>
                                     </div>
                                 </div>
@@ -77,16 +85,16 @@
                                 <div class="card-body">
                                     <?php $subdimensi = $this->db->get_where('subdimensi', ['kode_d' => $this->session->userdata('status_user')])->result_array(); ?>
                                     <?php foreach ($subdimensi as $sd) : ?>
-                                    <div class="row">
-                                        <div class="col-xs-2">
-                                            <a href="#" id="subdimensi<?= $sd['kode_sd']; ?>" role="button" class="btn square-legend bg-cream"></a>
+                                        <div class="row">
+                                            <div class="col-xs-2">
+                                                <a href="#" id="subdimensi<?= $sd['kode_sd']; ?>" role="button" class="btn square-legend bg-cream"></a>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <small>
+                                                    <a href="<?= base_url('admin/subdimensi?sd=') . $sd['kode_sd']; ?>" class="text-sm text-decoration-none text-secondary ml-4"><?= $sd['nama_sub_dimensi'] ?></a>
+                                                </small>
+                                            </div>
                                         </div>
-                                        <div class="col-xs-6">
-                                            <small>
-                                                <a href="<?= base_url('admin/subdimensi?sd=') . $sd['kode_sd']; ?>" class="text-sm text-decoration-none text-secondary ml-4"><?= $sd['nama_sub_dimensi'] ?></a>
-                                            </small>
-                                        </div>
-                                    </div>
                                     <?php endforeach; ?>
                                 </div>
                             </div>

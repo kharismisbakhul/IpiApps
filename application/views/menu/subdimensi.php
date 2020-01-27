@@ -42,8 +42,17 @@
 
                                         </select>
                                     </div>
-                                    <div class="col-lg-12 mt-2">
+                                    <div class="col-lg-12 mb-2">
+                                        <small>jenis grafik</small>
+                                        <select class="custom-select" name="grafik" id="switch" aria-label="Example select with button addon">
+                                            <option selected value="line">Pilih Jenis Grafik</option>
+                                            <option value="bar">bar</option>
+                                            <option value="line">scatter</option>
+                                        </select>
+                                    </div>
+                                    <div <div class="col-lg-12 mt-2">
                                         <input type="hidden" name="sd" value="<?= $this->input->get('sd');  ?>">
+                                        <input type="hidden" class="grafik" value="<?= $this->input->get('grafik') ?>">
                                         <button type="submit" class="btn btn-primary submit" style="width: 100%" id="submit">Submit</button>
                                     </div>
                                 </div>

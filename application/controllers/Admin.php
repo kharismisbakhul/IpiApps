@@ -43,7 +43,9 @@ class Admin extends CI_Controller
         $data['tahun_selc'] = $this->admin->getTahun();
         $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
 
-        if ($this->input->get('star_date') && $this->input->get('end_date')) { } else {
+        if ($this->input->get('star_date') && $this->input->get('end_date')) {
+            $data['title2'] = 'Indeks Pembangunan Inklusif';
+        } else {
             $data['title2'] = 'Indeks Pembangunan Inklusif';
             //Start - Tambahan Data buat load awal (Semua data)
             $data['ipi'] = $this->admin->getIPI();
@@ -231,7 +233,7 @@ class Admin extends CI_Controller
         $data['n_dimensi'] = $this->db->select('nama_dimensi,kode_d')->get_where('dimensi')->result_array();
         $data['n_ipi'] = 'Indeks Pembangunan Inklusif';
         foreach ($data['n_dimensi'] as $d) {
-            $data['dimensi'][$d['kode_d']] = $this->_getNilaiRescaleSubDimensi($d['kode_d'], $star_date, $end_date);
+            $data['dimensi'][$d['kode_d']] = $this->_getNilaiDimensi($d['kode_d'], $star_date, $end_date);
         }
 
         echo json_encode($data);
@@ -335,7 +337,7 @@ class Admin extends CI_Controller
 
         $data['n_subdimensi'] = $this->db->select('nama_sub_dimensi,kode_sd')->get_where('subdimensi', ['kode_sd' => $subdimensi])->row_array();
 
-        $data['n_indikator'] = $this->db->select('nama_indikator,kode_indikator')->get_where('indikator', ['kode_sd' => $subdimensi])->result_array();
+        $data['n_indikator'] = $this->db->select('nama_indikator,kode_indikator,baris')->order_by('baris', 'ASC')->get_where('indikator', ['kode_sd' => $subdimensi])->result_array();
         $data['nilai_indikator'] = $this->_getNilaiRealIndikator($subdimensi);
         $data['indikator'] = $this->_getNilaiIndikator($subdimensi, $star_date, $end_date);
         echo json_encode($data);
@@ -378,7 +380,7 @@ class Admin extends CI_Controller
             $data['tahun'] = $this->admin->getTahun($star_date, $end_date);
             $data['dimensi'] = $this->db->select('kode_d,nama_dimensi')->get('dimensi')->result_array();
             $data['subdimensi'] = $this->db->select('kode_sd,kode_d,nama_sub_dimensi')->get('subdimensi')->result_array();
-            $data['indikator'] = $this->db->select('kode_indikator,nama_indikator,kode_sd,status,max_nilai,min_nilai,status')->get('indikator')->result_array();
+            $data['indikator'] = $this->db->select('kode_indikator,nama_indikator,kode_sd,status,max_nilai,min_nilai,status,baris')->order_by('baris', 'ASC')->get('indikator')->result_array();
             $data['nilai_indikator'] = $this->admin->getNilaiIndikator($star_date, $end_date);
             $this->loadTemplate($data);
             $this->load->view('menu/report_rescale', $data);

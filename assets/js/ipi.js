@@ -11,6 +11,10 @@ let nilaiIpi = [];
 let nilaiDimensi = [];
 let max_tahun;
 let min_tahun;
+let grafik = 'line';
+if ($('.grafik').val()) {
+	grafik = $('.grafik').val()
+}
 
 $(document).ready(function () {
 	$.ajax({
@@ -69,7 +73,10 @@ $(document).ready(function () {
 			for (var i in data["n_dimensi"]) {
 				setDataDimensi.push({
 					label: nama_dimensi[i],
-					type: "bar",
+					type: grafik,
+					showLine: false,
+					pointRadius: 5,
+					pointHoverRadius: 10,
 					backgroundColor: color[i],
 					data: dataTampung[data["n_dimensi"][i].kode_d]
 				})
@@ -235,4 +242,3 @@ function _getDataToTable(data, dataTampung) {
 	}
 	$(".iniDataIpi").append(tableTr);
 }
-//akhir

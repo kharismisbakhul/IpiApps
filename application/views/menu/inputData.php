@@ -170,6 +170,14 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="modal-subDimensi" class="col-sm-4 col-form-label">Baris / Indeks Indikator</label>
+                        <div class="col-sm-8">
+                            <select class="form-control modal-baris-indeks" name="modal-baris-indeks" id="modal-baris-indeks">
+                            </select>
+                            <?= form_error('modal-baris-indeks', '<small class="text-danger pl-3">', '</small>'); ?>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="modal-indikator" class="col-sm-4 col-form-label">Indikator</label>
                         <div class="col-sm-8">
                             <textarea class="form-control" id="modal-indikator" name="modal-indikator" placeholder="Indikator" style="resize:none; max-height: 100px;" required></textarea>

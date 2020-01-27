@@ -46,7 +46,7 @@ class Data extends CI_Controller
     }
     public function getIndikator($kode_sd)
     {
-        $indikator = $this->db->get_where('indikator', ['kode_sd' => $kode_sd])->result_array();
+        $indikator = $this->db->order_by('baris', 'ASC')->get_where('indikator', ['kode_sd' => $kode_sd])->result_array();
         echo json_encode($indikator);
     }
     public function getNilai()

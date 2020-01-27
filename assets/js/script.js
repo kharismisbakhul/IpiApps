@@ -22,19 +22,19 @@ let min_tahun;
 // 	$(".iniDataIpi").html("");
 // });
 
-$(document).ready(function() {
+$(document).ready(function () {
 	$.ajax({
 		url: iniUrl,
 		method: "get",
 		dataType: "json",
 		startTime: performance.now(),
-		beforeSend: function(data) {
+		beforeSend: function (data) {
 			$("#ipi-chart").hide();
 			$(".chart").append(
 				'<img src="http://localhost/IpiApps/assets/img/loader.gif" width="10%" alt="no data" class="rounded mx-auto d-block loader">'
 			);
 		},
-		success: function(data) {
+		success: function (data) {
 			console.log(data);
 			$(".loader").remove();
 			$("#ipi-chart").show();
@@ -83,45 +83,40 @@ $(document).ready(function() {
 						}
 					},
 					scales: {
-						xAxes: [
-							{
-								time: {
-									unit: "year"
-								},
-								gridLines: {
-									display: true,
-									drawBorder: false
-								},
-								ticks: {
-									min: 2,
-									max: 0,
-									maxTicksLimit: 7
-								},
-								maxBarThickness: 70
+						xAxes: [{
+							time: {
+								unit: "year"
+							},
+							gridLines: {
+								display: true,
+								drawBorder: false
+							},
+							ticks: {
+								min: 2,
+								max: 0,
+								maxTicksLimit: 7
+							},
+							maxBarThickness: 70
+						}],
+						yAxes: [{
+							ticks: {
+								min: 0,
+								max: 10,
+								maxTicksLimit: 20,
+								padding: 30
+								// Include a dollar sign in the ticks
+							},
+							gridLines: {
+								color: "rgb(220, 221, 225)",
+								zeroLineColor: "rgb(234, 236, 244)",
+								drawBorder: false,
+								borderDash: [5, 5],
+								zeroLineBorderDash: [2]
 							}
-						],
-						yAxes: [
-							{
-								ticks: {
-									min: 0,
-									max: 10,
-									maxTicksLimit: 20,
-									padding: 30
-									// Include a dollar sign in the ticks
-								},
-								gridLines: {
-									color: "rgb(220, 221, 225)",
-									zeroLineColor: "rgb(234, 236, 244)",
-									drawBorder: false,
-									borderDash: [5, 5],
-									zeroLineBorderDash: [2]
-								}
-							}
-						]
+						}]
 					},
 					annotation: {
-						annotations: [
-							{
+						annotations: [{
 								type: "box",
 								yScaleID: "y-axis-0",
 								yMin: 0,
@@ -169,7 +164,7 @@ $(document).ready(function() {
 				}
 			});
 		},
-		error: function(data) {
+		error: function (data) {
 			$(".loader").remove();
 			$("#chart-subdimensi").remove();
 			$(".chart").append(
@@ -182,7 +177,7 @@ $(document).ready(function() {
 
 //untutk data table
 function _getDataToTable(data) {
-	data["tahun"].forEach(function(p) {
+	data["tahun"].forEach(function (p) {
 		$(".tahun-ipi").append(`<th scope="col">` + p.tahun + `</th>`);
 	});
 
@@ -192,8 +187,8 @@ function _getDataToTable(data) {
 	$(".ipi").append(
 		`
         <td colspan="2" scope="col">` +
-			data["n_ipi"] +
-			`</td>
+		data["n_ipi"] +
+		`</td>
         `
 	);
 
@@ -201,8 +196,8 @@ function _getDataToTable(data) {
 		$(".ipi").append(
 			`
         <td class="n_ipi" scope="col">` +
-				parseFloat(data["ipi"][i]).toFixed(2) +
-				`</td>
+			parseFloat(data["ipi"][i]).toFixed(2) +
+			`</td>
         `
 		);
 	}

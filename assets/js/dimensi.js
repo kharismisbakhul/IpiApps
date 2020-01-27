@@ -24,6 +24,12 @@ let nilaiSubDimensi = [];
 let max_tahun;
 let min_tahun;
 
+let grafik = 'line';
+if ($('.grafik').val()) {
+	grafik = $('.grafik').val()
+}
+
+
 $(document).ready(function () {
 	$.ajax({
 		url: iniUrl,
@@ -82,15 +88,23 @@ $(document).ready(function () {
 			});
 			let color = ["#2d98da", "#20bf6b", "#fc5c65"];
 			let count = 1;
+			console.log(data['n_sb_dimensi'])
+			console.log(nama_sb_dimensi)
+			console.log(dataTampung)
 			for (var i in data["n_sb_dimensi"]) {
 				setDataDimensi.push({
 					label: nama_sb_dimensi[i],
-					type: "bar",
+					type: grafik,
+					showLine: false,
+					pointRadius: 5,
+					pointHoverRadius: 10,
 					backgroundColor: color[i],
 					data: dataTampung[data["n_sb_dimensi"][i].kode_sd]
 				})
 				$('#subdimensi' + data["n_sb_dimensi"][i].kode_sd).css('background-color', color[i]);;
 			}
+			console.log(tahun)
+			console.log(setDataDimensi)
 
 			const canvas = document.querySelector("#chart-dimensi");
 			const ctx = canvas.getContext("2d");

@@ -77,6 +77,7 @@ class InputData extends CI_Controller
         $this->load->model('Admin_model', 'admin');
         $Dimensi = $this->input->post('modal-dimensi');
         $kode_sd = $this->input->post('modal-subDimensi');
+        $baris = $this->input->post('modal-baris-indeks');
         $nama_indikator = $this->input->post('modal-indikator');
         $status = $this->input->post('modal-status');
         $status_kode = 0;
@@ -88,25 +89,53 @@ class InputData extends CI_Controller
             $status_kode = 2;
         }
 
-        $data = array(
-            'nama_indikator' => $nama_indikator,
-            'status' => $status_kode,
-            'kode_sd' => $kode_sd
-        );
-
         if ($Dimensi == "Pilih Dimensi" && $kode_sd == null) {
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Dimensi Belum ada yang dipilih</div>');
         } else if ($kode_sd == null) {
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Sub Dimensi belum ada yang dipilih</div>');
+        } else if ($baris == null) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Baris indikator belum ada yang dipilih</div>');
         } else {
             $cek_indikator =  $this->db->get_where('indikator', ['nama_indikator' => $nama_indikator])->row_array();
             if ($cek_indikator != null) {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Indikator sudah ada!!</div>');
             } else {
-                $this->db->insert('indikator', $data);
+                // Cek Baris Indikator
+                // Ambil semua data indikator sesudah baris tersebut untuk diupdate
+                $this->db->where('kode_sd', $kode_sd);
+                $this->db->where('baris >=', intval($baris));
+                $this->db->from('indikator');
+                $row_after_indikator =  $this->db->get()->result_array();
+
+                // Data baris yang lain
+                $data_temp = [];
+                // Seleksi baris terakhir atau tidak
+                if ($row_after_indikator != null) {
+
+                    // Update data baris dibelakangnya (1 ke 2, 2 ke 3, dsb)
+                    for ($i = 0; $i < count($row_after_indikator); $i++) {
+                        $data_i = array(
+                            'kode_indikator' => intval($row_after_indikator[$i]['kode_indikator']),
+                            'baris' => intval($row_after_indikator[$i]['baris'] + 1)
+                        );
+                        array_push($data_temp, $data_i);
+                    }
+                    $this->db->update_batch('indikator', $data_temp, 'kode_indikator');
+                }
+
+                // Insert data baru
+                $indikator_new = array(
+                    'nama_indikator' => $nama_indikator,
+                    'status' => $status_kode,
+                    'kode_sd' => intval($kode_sd),
+                    'baris' => intval($baris)
+                );
+
+                $this->db->insert('indikator', $indikator_new);
                 $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Variabel indikator berhasil ditambahkan</div>');
             }
         }
+
 
         $this->db->select('MIN(tahun) as tahun');
         $this->db->from('nilaiindikator');
@@ -116,7 +145,7 @@ class InputData extends CI_Controller
         $this->db->from('nilaiindikator');
         $tahun_max = $this->db->get()->row_array();
 
-        $indikator = $this->db->get_where('indikator', ['nama_indikator' => $nama_indikator])->row_array();
+        $indikator = $this->db->get_where('indikator', ['nama_indikator' => $nama_indikator, 'baris' => intval($baris)])->row_array();
         for ($i = intval($tahun_min['tahun']); $i <= intval($tahun_max['tahun']); $i++) {
             $dataNilai = array(
                 'tahun' => $i,
@@ -166,6 +195,35 @@ class InputData extends CI_Controller
 
         $this->load->model('Admin_model', 'admin');
         $kode_indikator = $this->input->post('modal-indikator-hapus');
+        // Cek Baris Indikator
+        // Ambil semua data indikator sesudah baris tersebut untuk diupdate
+        $this->db->where('kode_indikator', intval($kode_indikator));
+        $this->db->from('indikator');
+        $indikator_temp =  $this->db->get()->row_array();
+
+        $this->db->where('kode_indikator !=', intval($indikator_temp['kode_indikator']));
+        $this->db->where('kode_sd', intval($indikator_temp['kode_sd']));
+        $this->db->where('baris >=', intval($indikator_temp['baris']));
+        $this->db->from('indikator');
+        $row_after_indikator =  $this->db->get()->result_array();
+
+        // Data baris yang lain
+        $data_temp = [];
+        // Seleksi baris terakhir atau tidak
+        if ($row_after_indikator != null) {
+
+            // Update data baris dibelakangnya (1 ke 2, 2 ke 3, dsb)
+            for ($i = 0; $i < count($row_after_indikator); $i++) {
+                $data_i = array(
+                    'kode_indikator' => intval($row_after_indikator[$i]['kode_indikator']),
+                    'baris' => intval($row_after_indikator[$i]['baris'] - 1)
+                );
+                array_push($data_temp, $data_i);
+            }
+            $this->db->update_batch('indikator', $data_temp, 'kode_indikator');
+        }
+
+        // Hapus indikator
         $this->db->where('kode_indikator', $kode_indikator);
         $this->db->delete('nilaiindikator');
         $this->db->where('kode_indikator', $kode_indikator);

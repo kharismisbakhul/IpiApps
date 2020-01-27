@@ -132,7 +132,7 @@ class Admin_model extends CI_Model
 
     public function getIndikatorRange($kode_sd, $start, $end)
     {
-        $indikator_sd = $this->db->get_where('indikator', ['kode_sd' => $kode_sd])->result_array();
+        $indikator_sd = $this->db->order_by('baris', 'ASC')->get_where('indikator', ['kode_sd' => $kode_sd])->result_array();
         for ($i = 0; $i < count($indikator_sd); $i++) {
             $kode_indikator = $indikator_sd[$i]['kode_indikator'];
             $indikator_sd[$i]['nilai_indikator'] = $this->getIndikatorRangeNilai($kode_indikator, $start, $end);
@@ -318,7 +318,7 @@ class Admin_model extends CI_Model
     }
     public function getIndikator($sbdimensi, $star_date = null, $end_date = null)
     {
-        $this->db->select('indikator.kode_indikator,nilaiindikator.tahun,indikator.kode_sd');
+        $this->db->select('indikator.kode_indikator,nilaiindikator.tahun,indikator.kode_sd, indikator.baris');
         $this->db->from('indikator');
         $this->db->join('nilaiindikator', 'indikator.kode_indikator = nilaiindikator.kode_indikator', 'left');
         $this->db->where('indikator.kode_sd', $sbdimensi);
@@ -326,6 +326,7 @@ class Admin_model extends CI_Model
             $this->db->where('nilaiindikator.tahun >=', $star_date);
             $this->db->where('nilaiindikator.tahun <=', $end_date);
         }
+        // $this->db->order_by('indikator.baris', 'ASC');
         return $this->db->get()->result_array();
     }
 

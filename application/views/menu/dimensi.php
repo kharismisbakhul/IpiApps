@@ -42,8 +42,17 @@
 
                                         </select>
                                     </div>
+                                    <div class="col-lg-12 mb-2">
+                                        <small>jenis grafik</small>
+                                        <select class="custom-select" name="grafik" id="switch" aria-label="Example select with button addon">
+                                            <option selected value="line">Pilih Jenis Grafik</option>
+                                            <option value="bar">bar</option>
+                                            <option value="line">scatter</option>
+                                        </select>
+                                    </div>
                                     <div class="col-lg-12 mt-2">
                                         <input type="hidden" name="d" value="<?= $this->input->get('d');  ?>">
+                                        <input type="hidden" class="grafik" value="<?= $this->input->get('grafik') ?>">
                                         <button type="submit" class="btn btn-primary submit" style="width: 100%" id="submit">Submit</button>
                                     </div>
                                 </div>
@@ -77,16 +86,16 @@
                                         <div class="card-body">
                                             <?php $subdimensi = $this->db->get_where('subdimensi', ['kode_d' => $this->input->get('d')])->result_array(); ?>
                                             <?php foreach ($subdimensi as $sd) : ?>
-                                            <div class="row">
-                                                <div class="col-xs-2">
-                                                    <a href="#" id="subdimensi<?= $sd['kode_sd']; ?>" role="button" class="btn square-legend bg-cream"></a>
+                                                <div class="row">
+                                                    <div class="col-xs-2">
+                                                        <a href="#" id="subdimensi<?= $sd['kode_sd']; ?>" role="button" class="btn square-legend bg-cream"></a>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <small>
+                                                            <a href="<?= base_url('admin/subdimensi?sd=') . $sd['kode_sd']; ?>" class="text-sm text-decoration-none text-secondary ml-4"><?= $sd['nama_sub_dimensi'] ?></a>
+                                                        </small>
+                                                    </div>
                                                 </div>
-                                                <div class="col-xs-6">
-                                                    <small>
-                                                        <a href="<?= base_url('admin/subdimensi?sd=') . $sd['kode_sd']; ?>" class="text-sm text-decoration-none text-secondary ml-4"><?= $sd['nama_sub_dimensi'] ?></a>
-                                                    </small>
-                                                </div>
-                                            </div>
                                             <?php endforeach; ?>
                                         </div>
                                     </div>
@@ -94,6 +103,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

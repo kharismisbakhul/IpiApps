@@ -49,7 +49,16 @@
 
                                     </select>
                                 </div>
+                                <div class="col-lg-12 mb-2">
+                                    <small>jenis grafik</small>
+                                    <select class="custom-select" name="grafik" id="switch" aria-label="Example select with button addon">
+                                        <option selected value="line">Pilih Jenis Grafik</option>
+                                        <option value="bar">bar</option>
+                                        <option value="line">scatter</option>
+                                    </select>
+                                </div>
                                 <div class="col-lg-12 mt-2">
+                                    <input type="hidden" class="grafik" value="<?= $this->input->get('grafik') ?>">
                                     <button type="submit" class="btn btn-primary submit" style="width: 100%" id="submit">Submit</button>
                                 </div>
                             </div>
@@ -81,16 +90,16 @@
                             <div class="legenda card no-border" style="width: auto;">
                                 <div class="card-body">
                                     <?php foreach ($dimensi as $d) : ?>
-                                    <div class="row">
-                                        <div class="col-xs-2">
-                                            <a href="#" id="dimensi<?= $d['kode_d']; ?>" role="button" class="btn square-legend bg-cream"></a>
+                                        <div class="row">
+                                            <div class="col-xs-2">
+                                                <a href="#" id="dimensi<?= $d['kode_d']; ?>" role="button" class="btn square-legend bg-cream"></a>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <small>
+                                                    <a href="<?= base_url('admin/dimensi?d=') . $d['kode_d']; ?>" class="text-sm text-decoration-none text-secondary ml-4"><?= $d['nama_dimensi'] ?></a>
+                                                </small>
+                                            </div>
                                         </div>
-                                        <div class="col-xs-6">
-                                            <small>
-                                                <a href="<?= base_url('admin/dimensi?d=') . $d['kode_d']; ?>" class="text-sm text-decoration-none text-secondary ml-4"><?= $d['nama_dimensi'] ?></a>
-                                            </small>
-                                        </div>
-                                    </div>
                                     <?php endforeach; ?>
                                 </div>
                             </div>

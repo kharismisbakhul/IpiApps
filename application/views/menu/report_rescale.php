@@ -162,7 +162,7 @@
                                             <tr>
                                                 <!-- Tahun Re-Scale Indikator (SCORE) -->
                                                 <?php foreach ($tahun as $rt) : ?>
-                                                <th scope="col"><?= $rt['tahun'] ?></th>
+                                                    <th scope="col"><?= $rt['tahun'] ?></th>
                                                 <?php endforeach; ?>
 
                                             </tr>
@@ -174,44 +174,44 @@
                                             <!-- dimensi -->
                                             <?php $indek1 = 1; ?>
                                             <?php foreach ($dimensi as $d) : ?>
-                                            <tr class="dimensi<?= $d['kode_d'] ?>" id="dimensiD">
-                                                <td><?= $indek1++ ?></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class="text-left"><?= $d['nama_dimensi'] ?></td>
-                                            </tr>
-                                            <!-- Subdimensi -->
-                                            <?php $indek2 = 1; ?>
-                                            <?php foreach ($subdimensi as $sd) : ?>
-                                            <?php if ($sd['kode_d'] == $d['kode_d']) : ?>
-                                            <tr class="subdimensi<?= $sd['kode_sd'] ?>" id="sub-dimensiSD">
-                                                <td></td>
-                                                <td><?= $indek2++; ?></td>
-                                                <td></td>
-                                                <td class="text-left"><?= $sd['nama_sub_dimensi'] ?></td>
-                                            </tr>
-                                            <!-- Indikator -->
-                                            <?php $indek3 = 1; ?>
-                                            <?php foreach ($indikator as $in) : ?>
-                                            <?php if ($in['kode_sd'] == $sd['kode_sd']) : ?>
-                                            <tr class="indikator<?= $in['kode_indikator']  ?>" id="indikatorI">
-                                                <td></td>
-                                                <td></td>
-                                                <td><?= $indek3++; ?></td>
-                                                <?php $id = "";
-                                                                    if ($in['status'] == 1) {
-                                                                        $id = "status1";
-                                                                    } elseif ($in['status'] == 2) {
-                                                                        $id = "status2";
-                                                                    } ?>
-                                                <td id="<?= $id ?>" class="text-left"><?= $in['nama_indikator'] ?></td>
-                                            </tr>
-                                            <?php endif; ?>
-                                            <?php endforeach; ?>
-                                            <!-- Akhir Indikator -->
-                                            <?php endif; ?>
-                                            <?php endforeach; ?>
-                                            <!-- akhir Subdimensi -->
+                                                <tr class="dimensi<?= $d['kode_d'] ?>" id="dimensiD">
+                                                    <td><?= $indek1++ ?></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-left"><?= $d['nama_dimensi'] ?></td>
+                                                </tr>
+                                                <!-- Subdimensi -->
+                                                <?php $indek2 = 1; ?>
+                                                <?php foreach ($subdimensi as $sd) : ?>
+                                                    <?php if ($sd['kode_d'] == $d['kode_d']) : ?>
+                                                        <tr class="subdimensi<?= $sd['kode_sd'] ?>" id="sub-dimensiSD">
+                                                            <td></td>
+                                                            <td><?= $indek2++; ?></td>
+                                                            <td></td>
+                                                            <td class="text-left"><?= $sd['nama_sub_dimensi'] ?></td>
+                                                        </tr>
+                                                        <!-- Indikator -->
+                                                        <?php $indek3 = 1; ?>
+                                                        <?php foreach ($indikator as $in) : ?>
+                                                            <?php if ($in['kode_sd'] == $sd['kode_sd']) : ?>
+                                                                <tr class="indikator<?= $in['kode_indikator']  ?>" id="indikatoriI">
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td><?= $indek3++; ?></td>
+                                                                    <?php $id = "";
+                                                                                        if ($in['status'] == 1) {
+                                                                                            $id = "status1";
+                                                                                        } elseif ($in['status'] == 2) {
+                                                                                            $id = "status2";
+                                                                                        } ?>
+                                                                    <td id="<?= $id ?>" class="text-left"><?= $in['nama_indikator'] ?></td>
+                                                                </tr>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; ?>
+                                                        <!-- Akhir Indikator -->
+                                                    <?php endif; ?>
+                                                <?php endforeach; ?>
+                                                <!-- akhir Subdimensi -->
                                             <?php endforeach; ?>
                                             <!-- akhir dimensi -->
 

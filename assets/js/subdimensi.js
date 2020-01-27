@@ -12,6 +12,10 @@ let nilaiIndikator = [];
 let nilaiReal = [];
 let max_tahun;
 let min_tahun;
+let grafik = 'line';
+if ($('.grafik').val()) {
+	grafik = $('.grafik').val()
+}
 $(document).ready(function () {
 	$.ajax({
 		url: iniUrl2,
@@ -110,7 +114,10 @@ $(document).ready(function () {
 				console.log(dataTampungSub[data["n_indikator"][i].kode_indikator]);
 				setDataDimensi.push({
 					label: nama_indikator[i],
-					type: "bar",
+					type: grafik,
+					showLine: false,
+					pointRadius: 5,
+					pointHoverRadius: 10,
 					backgroundColor: color[i],
 					data: dataTampungSub[data["n_indikator"][i].kode_indikator]
 				});
