@@ -111,12 +111,18 @@
                     <!-- Card Header - Dropdown -->
                     <div class="card-header" style="background-color: #3867d6">
                         <div class="text-sm font-weight-bold text-uppercase mb-1 text-white text-capitalize text-center">
-                            Action Hapus
+                            Action
                         </div>
                     </div>
                     <!-- Card Body -->
                     <div class="card-body">
-                        <button type="button" class="btn btn-warning btn-icon-split hapus-indikator pr-1" data-toggle="modal" data-target="#ModalHapusIndikator">
+                        <button type="button" class="btn btn-success btn-icon-split pindah-indikator pr-1" data-toggle="modal" data-target="#ModalPindahIndikator">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-fw fa-edit"></i>
+                            </span>
+                            <span class="text">Pindah Indikator</span>
+                        </button>
+                        <button type="button" class="btn btn-warning btn-icon-split hapus-indikator pr-1 mt-2" data-toggle="modal" data-target="#ModalHapusIndikator">
                             <span class="icon text-white-50">
                                 <i class="fas fa-fw fa-trash"></i>
                             </span>
@@ -132,6 +138,7 @@
                 </div>
             </div>
             <!-- End Option Delete -->
+
         <?php
         }; ?>
 
@@ -170,7 +177,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="modal-subDimensi" class="col-sm-4 col-form-label">Baris / Indeks Indikator</label>
+                        <label for="modal-baris-indeks" class="col-sm-4 col-form-label">Baris / Indeks Indikator</label>
                         <div class="col-sm-8">
                             <select class="form-control modal-baris-indeks" name="modal-baris-indeks" id="modal-baris-indeks">
                             </select>
@@ -204,6 +211,79 @@
     </div>
 </div>
 <!-- Akhir Modal Tambah Indikator -->
+
+<!-- Modal Pindah Indikator -->
+<div class="modal fade" id="ModalPindahIndikator" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-blue">
+                <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Pindah Variabel Indikator</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="formIsian" action="<?= base_url('inputData/pindahIndikator') ?>" method="post">
+                <div class="modal-body">
+                    <h4 class="text-center mb-4">Indikator Awal</h4>
+                    <div class="form-group row">
+                        <label for="modal-dimensi-1" class="col-sm-4 col-form-label">Dimensi</label>
+                        <div class="col-sm-8">
+                            <select class="form-control modal-dimensi-1" name="modal-dimensi-1" id="modal-dimensi-1">
+                            </select>
+                            <?= form_error('modal-dimensi-1', '<small class="text-danger pl-3">', '</small>'); ?>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="modal-subDimensi-1" class="col-sm-4 col-form-label">Sub Dimensi</label>
+                        <div class="col-sm-8">
+                            <select class="form-control modal-subDimensi-1" name="modal-subDimensi-1" id="modal-subDimensi-1">
+                            </select>
+                            <?= form_error('modal-subDimensi-1', '<small class="text-danger pl-3">', '</small>'); ?>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="modal-indikator-1" class="col-sm-4 col-form-label">Indikator</label>
+                        <div class="col-sm-8">
+                            <select class="form-control modal-indikator-1" name="modal-indikator-1" id="modal-indikator-1">
+                            </select>
+                            <?= form_error('modal-indikator-1', '<small class="text-danger pl-3">', '</small>'); ?>
+                        </div>
+                    </div>
+                    <h4 class="text-center mb-4 mt-2">Pindah Indikator Ke - </h4>
+                    <div class="form-group row">
+                        <label for="modal-dimensi-2" class="col-sm-4 col-form-label">Dimensi</label>
+                        <div class="col-sm-8">
+                            <select class="form-control modal-dimensi-2" name="modal-dimensi-2" id="modal-dimensi-2">
+                            </select>
+                            <?= form_error('modal-dimensi-2', '<small class="text-danger pl-3">', '</small>'); ?>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="modal-subDimensi-2" class="col-sm-4 col-form-label">Sub Dimensi</label>
+                        <div class="col-sm-8">
+                            <select class="form-control modal-subDimensi-2" name="modal-subDimensi-2" id="modal-subDimensi-2">
+                            </select>
+                            <?= form_error('modal-subDimensi-2', '<small class="text-danger pl-3">', '</small>'); ?>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="modal-baris-indeks-2" class="col-sm-4 col-form-label">Baris / Indeks Indikator</label>
+                        <div class="col-sm-8">
+                            <select class="form-control modal-baris-indeks-2" name="modal-baris-indeks-2" id="modal-baris-indeks-2">
+                            </select>
+                            <?= form_error('modal-baris-indeks-2', '<small class="text-danger pl-3">', '</small>'); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary tombolTambah">Pindah Indikator</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Akhir Modal Pindah Indikator -->
 
 <!-- Modal Hapus Indikator -->
 <div class="modal fade" id="ModalHapusIndikator" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

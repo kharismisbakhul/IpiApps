@@ -157,6 +157,78 @@ class InputData extends CI_Controller
 
         redirect('inputData');
     }
+
+    public function pindahIndikator()
+    {
+        $dimensi1 = $this->input->post('modal-dimensi-1');
+        $subdimensi1 = $this->input->post('modal-subDimensi-1');
+        $indikator1 = $this->input->post('modal-indikator-1');
+
+        $dimensi2 = $this->input->post('modal-dimensi-2');
+        $subdimensi2 = $this->input->post('modal-subDimensi-2');
+        $baris = $this->input->post('modal-baris-indeks-2');
+
+        if ($dimensi1 == "Pilih Dimensi" || $subdimensi1 == "Pilih Sub Dimensi" || $indikator1 == "Pilih Indikator" || $dimensi2 == "Pilih Dimensi" || $subdimensi2 == "Pilih Sub Dimensi" || $baris == "Pilih Baris / Indeks") {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Form Pemindahan Indikator Belum Lengkap, Mohon Coba Kembali dan Lengkapi</div>');
+            redirect('inputData');
+        } else {
+            $indikator = $this->db->get_where('indikator', ['kode_indikator' => intval($indikator1)])->row_array();
+
+            // Data Indikator Asal
+            // Ambil semua data indikator sesudah baris tersebut untuk diupdate
+            $this->db->where('kode_indikator !=', intval($indikator1));
+            $this->db->where('kode_sd', intval($subdimensi1));
+            $this->db->where('baris >=', intval($indikator['baris']));
+            $this->db->from('indikator');
+            $row_after_indikator =  $this->db->get()->result_array();
+
+            // Data baris yang lain
+            $data_temp = [];
+            // Seleksi baris terakhir atau tidak
+            if ($row_after_indikator != null) {
+                // Update data baris dibelakangnya (1 ke 2, 2 ke 3, dsb)
+                for ($i = 0; $i < count($row_after_indikator); $i++) {
+                    $data_i = array(
+                        'kode_indikator' => intval($row_after_indikator[$i]['kode_indikator']),
+                        'baris' => intval($row_after_indikator[$i]['baris'] - 1)
+                    );
+                    array_push($data_temp, $data_i);
+                }
+                $this->db->update_batch('indikator', $data_temp, 'kode_indikator');
+            }
+
+            // Data Tujuan
+            $this->db->where('kode_sd', intval($subdimensi2));
+            $this->db->where('baris >=', intval($baris));
+            $this->db->from('indikator');
+            $row_after_indikator_2 =  $this->db->get()->result_array();
+            // Data baris yang lain
+            $data_temp_2 = [];
+            // Seleksi baris terakhir atau tidak
+            if ($row_after_indikator_2 != null) {
+                // Update data baris dibelakangnya (1 ke 2, 2 ke 3, dsb)
+                for ($i = 0; $i < count($row_after_indikator_2); $i++) {
+                    $data_i = array(
+                        'kode_indikator' => intval($row_after_indikator_2[$i]['kode_indikator']),
+                        'baris' => intval($row_after_indikator_2[$i]['baris'] + 1)
+                    );
+                    array_push($data_temp_2, $data_i);
+                }
+                $this->db->update_batch('indikator', $data_temp_2, 'kode_indikator');
+            }
+
+            // Update real data indikator
+            $this->db->where('kode_indikator', intval($indikator1));
+            $this->db->update('indikator', ['kode_sd' => intval($subdimensi2), 'baris' => intval($baris)]);
+
+            // print_r($baris);
+            // print_r($data_temp_2);
+            // die;
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Variabel indikator berhasil dipindahkan</div>');
+            redirect('inputData');
+        }
+    }
+
     public function tambahTahun()
     {
         $tahun = intval($this->input->post('tambah-tahun'));

@@ -48,6 +48,7 @@ if ($this->uri->segment(1) == 'inputData') {
 <!-- Updated Data -->
 <script src="<?= base_url('assets/'); ?>js/inputData.js"></script>
 <script src="<?= base_url('assets/'); ?>js/inputIndikator.js"></script>
+<script src="<?= base_url('assets/'); ?>js/pindahIndikator.js"></script>
 <script src="<?= base_url('assets/'); ?>js/hapusIndikator.js"></script>
 <script src="<?= base_url('assets/'); ?>js/hapusDatadiTahun.js"></script>
 
@@ -56,15 +57,15 @@ if ($this->uri->segment(1) == 'inputData') {
 
 <!-- Script Chart -->
 <?php if ($this->input->get('d') || $this->uri->segment(1) == "operator") : ?>
-<script src="<?= base_url('assets/'); ?>js/dimensi.js"></script>
+    <script src="<?= base_url('assets/'); ?>js/dimensi.js"></script>
 <?php elseif ($this->input->get('sd')) : ?>
-<script src="<?= base_url('assets/'); ?>js/subdimensi.js"></script>
+    <script src="<?= base_url('assets/'); ?>js/subdimensi.js"></script>
 <?php elseif ($this->uri->segment(2) == 'ipi') : ?>
-<script src="<?= base_url('assets/'); ?>js/ipi.js"></script>
+    <script src="<?= base_url('assets/'); ?>js/ipi.js"></script>
 <?php elseif ($this->uri->segment(3) == 'rescale') : ?>
-<script src="<?= base_url('assets/'); ?>js/report.js"></script>
+    <script src="<?= base_url('assets/'); ?>js/report.js"></script>
 <?php elseif ($this->uri->segment(2) == null && $this->uri->segment(1) == "admin") : ?>
-<script src="<?= base_url('assets/'); ?>js/dashboard.js"></script>
+    <script src="<?= base_url('assets/'); ?>js/dashboard.js"></script>
 <?php endif; ?>
 
 <!-- Filter tahun -->
